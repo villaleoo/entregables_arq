@@ -1,14 +1,8 @@
-package dao;
+package entidades;
 
-import javax.persistence.*;
 
-@Entity
 public class Factura {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int idFactura;
-    @OneToOne
-    @JoinColumn(name = "idCliente")
     private Cliente cliente;
     public Factura() {
         super();   

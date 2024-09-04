@@ -1,16 +1,11 @@
-package dao;
+package entidades;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
-@Entity
+
+
 public class Producto {
-    @Id
     private int idProducto;
-    @Column(length = 45)
     private String nombre;
-    @Column
     private float valor;
 
     public Producto() {

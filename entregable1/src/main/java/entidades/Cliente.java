@@ -1,14 +1,10 @@
-package dao;
+package entidades;
 
-import javax.persistence.*;
 
-@Entity
 public class Cliente {
-    @Id
+
     private int idCliente;
-    @Column(length = 500)
     private String nombre;
-    @Column(length = 150)
     private String email;
     public Cliente() {
         super();
@@ -45,14 +41,4 @@ public class Cliente {
         return STR."Cliente{idCliente=\{idCliente}, nombre='\{nombre}', email='\{email}'}";
     }
 
-    @OneToOne(mappedBy = "cliente", optional = false)
-    private Factura factura;
-
-    public Factura getFactura() {
-        return factura;
-    }
-
-    public void setFactura(Factura factura) {
-        this.factura = factura;
-    }
 }
