@@ -1,13 +1,13 @@
-arget/
+target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-entregable1/.idea/modules.xml
-entregable1/.idea/jarRepositories.xml
-entregable1/.idea/compiler.xml
-entregable1/.idea/libraries/
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
 *.iws
 *.iml
 *.ipr
