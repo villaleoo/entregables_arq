@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-// se encarga de leer archivos CSV en la carpeta data y retorna un mapa para
+// se encarga de leer archivos CSV en la carpeta data y retornar un mapa con los CSV productos.csv={arhivo} para leerlo por filas
 public class ReaderFilesCSV {
 
     //esta funcion a partir de la lista obtenida por getListFilesCSV, recorre los archivos CSV y les da un formato utilizando el CSVFormat.
