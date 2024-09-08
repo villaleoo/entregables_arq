@@ -120,9 +120,11 @@ public class FacturaProductoDAO {
 
 
     public ProductoDTO findProductoMasRecaudo() {
-        String query = "SELECT f.idFactura, f.idProducto, f.cantidad " +
-                "FROM Factura_Producto f " +
-                "WHERE f.idFactura = ? AND f.idProducto = ?";
+        String query = "SELECT p.idProducto, p.nombre, p.valor, SUM(fp.cantidad) AS total_vendido, (p.valor * SUM(fp.cantidad)) AS recaudacion_total\n" +
+                "FROM Producto p\n" +
+                "JOIN Factura_Producto fp ON p.idProducto = fp.idProducto\n" +
+                "GROUP BY p.idProducto, p.valor\n" +
+                "ORDER BY recaudacion_total DESC";
         ProductoDTO productoMasRecaudo = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -134,9 +136,10 @@ public class FacturaProductoDAO {
                 int idProducto = rs.getInt("idProducto");
                 String nombre = rs.getString("nombre");
                 float valor = rs.getFloat("valor");
-                int cantidad = rs.getInt("cantidad");
+                int cantidad = rs.getInt("total_vendido");
+                int recaudacionTotal = rs.getInt("recaudacion_total");
 
-                productoMasRecaudo = new ProductoDTO(idProducto, nombre, valor, cantidad);
+                productoMasRecaudo = new ProductoDTO(idProducto, nombre, valor, cantidad, recaudacionTotal);
             }
         } catch (SQLException e) {
             e.printStackTrace();

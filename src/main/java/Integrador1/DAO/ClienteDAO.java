@@ -1,5 +1,6 @@
 package Integrador1.DAO;
 
+import Integrador1.DTO.ClienteDTO;
 import Integrador1.Entities.Cliente;
 import Integrador1.Entities.Producto;
 import org.apache.commons.csv.CSVFormat;
@@ -115,7 +116,28 @@ public class ClienteDAO {
                 Cliente act = new Cliente(rs.getInt("idCliente"), rs.getString("nombre"), rs.getString("email"));
                 res.add(act);
             }
-            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return res;
+    }
+
+    public List<ClienteDTO> getClientWithMoreBills() {
+        List<ClienteDTO> res = new LinkedList<>();
+        try {
+            String select = "SELECT c.*, COUNT(f.idCliente) cant_Facturaciones\n" +
+                    "FROM Cliente c\n" +
+                    "JOIN Factura f ON c.idCliente = f.idCliente\n" +
+                    "GROUP BY c.idCliente\n" +
+                    "ORDER BY cant_Facturaciones DESC";
+            PreparedStatement ps = conn.prepareStatement(select);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ClienteDTO act = new ClienteDTO(rs.getInt("idCliente"), rs.getString("nombre"), rs.getString("email"),
+                        rs.getInt("cant_Facturaciones"));
+                res.add(act);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

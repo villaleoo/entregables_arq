@@ -5,12 +5,14 @@ public class ProductoDTO {
     private String nombre;
     private float valor;
     private int cantidad;
+    private int recaudacionTotal;
 
-    public ProductoDTO(int idProducto, String nombre, float valor, int cantidad) {
+    public ProductoDTO(int idProducto, String nombre, float valor, int cantidad, int recaudacionTotal) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.valor = valor;
         this.cantidad = cantidad;
+        this.recaudacionTotal = recaudacionTotal;
     }
 
     public int getIdProducto() {
@@ -39,5 +41,24 @@ public class ProductoDTO {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public int getRecaudacionTotal() {
+        return recaudacionTotal;
+    }
+
+    public void setRecaudacionTotal(int recaudacionTotal) {
+        this.recaudacionTotal = recaudacionTotal;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductoDTO{" +
+                "idProducto=" + idProducto +
+                ", nombre='" + nombre + '\'' +
+                ", valor=" + valor +
+                ", cantidad=" + cantidad +
+                ", recaudacionTotal=" + recaudacionTotal +
+                '}';
     }
 }
