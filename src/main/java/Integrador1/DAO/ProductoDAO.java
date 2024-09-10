@@ -46,6 +46,8 @@ public class ProductoDAO {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement(query);
+            ps.setInt(1, id); // Establecer el parámetro en la consulta SQL
+
             ps.executeUpdate();
             System.out.println("Producto eliminado exitosamente.");
             return true;
@@ -65,9 +67,9 @@ public class ProductoDAO {
     }
 
     public Producto find(Integer pk) {
-        String query = "SELECT p.nombre, p.edad, p.idDireccion " +
-                "FROM Persona p " +
-                "WHERE p.idPersona = ?";
+        String query = "SELECT p.idProducto, p.nombre, p.valor " +
+                "FROM Producto p " +
+                "WHERE p.idProducto = ?";
         Producto productoById = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -78,7 +80,7 @@ public class ProductoDAO {
             rs = ps.executeQuery();
             if (rs.next()) { // Verificar si hay resultados
                 String nombre = rs.getString("nombre");
-                int valor = rs.getInt("valor");
+                float valor = rs.getFloat("valor");
 
                 // Crear una nueva instancia de Persona con los datos recuperados de la consulta
                 productoById = new Producto(pk, nombre, valor);
@@ -101,14 +103,14 @@ public class ProductoDAO {
     public List<Producto> selectList() {
         List<Producto> res = new LinkedList<>();
         try {
-            String select = "SELECT p.nombre, p.edad, p.idDireccion  FROM Producto p";
+            String select = "SELECT p.idProducto, p.nombre, p.valor  FROM Producto p";
             PreparedStatement ps = conn.prepareStatement(select);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Producto act = new Producto(rs.getInt("idProducto"), rs.getString("nombre"), rs.getInt("valor"));
                 res.add(act);
             }
-            conn.close();
+           // conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

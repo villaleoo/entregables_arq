@@ -161,7 +161,7 @@ public class HelperDerby {
 
     public void populateDB() throws Exception {
         try {
-            System.out.println("Populating DB...");
+            System.out.println("Cargando DB...");
             for (CSVRecord row : getData("clientes.csv")) {
                 if (row.size() >= 3) {
                     String idString = row.get(0);

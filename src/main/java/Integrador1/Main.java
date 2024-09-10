@@ -8,7 +8,9 @@ import Integrador1.DAO.ProductoDAO;
 import Integrador1.DTO.ClienteDTO;
 import Integrador1.DTO.ProductoDTO;
 import Integrador1.Entities.Cliente;
+import Integrador1.Entities.Factura;
 import Integrador1.Entities.FacturaProducto;
+import Integrador1.Entities.Producto;
 import Integrador1.Factory.AbstractFactory;
 import Integrador1.Utils.HelperDerby;
 import Integrador1.Utils.HelperMySQL;
@@ -18,16 +20,15 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-
-     //DB DERBY:
-     /*HelperDerby dbDerby = new HelperDerby();
+    //DB DERBY:
+    /*HelperDerby dbDerby = new HelperDerby();
         dbDerby.dropTables();
         dbDerby.createTables();
         dbDerby.populateDB();
-        dbDerby.closeConnection();
-      */
+        dbDerby.closeConnection(); */
 
-        HelperMySQL dbMySQL = new HelperMySQL();
+
+       HelperMySQL dbMySQL = new HelperMySQL();
         dbMySQL.dropTables();
         dbMySQL.createTables();
         dbMySQL.populateDB();
@@ -44,16 +45,6 @@ public class Main {
         FacturaDAO factura = chosenFactory.getFacturaDAO();
 
 
-        System.out.println("Busco una Persona por id: ");
-        Cliente personaById = cliente.find(2);
-        System.out.println(personaById);
-        System.out.println("////////////////////////////////////////////");
-        System.out.println("////////////////////////////////////////////");
-
-
-        System.out.println("////////////////////////////////////////////");
-        System.out.println("////////////////////////////////////////////");
-
         System.out.println("EJ 3: Escriba un programa JDBC que retorne el producto que más recaudó. Se define\n" +
                 "“recaudación” como cantidad de productos vendidos multiplicado por su valor.\n ");
         ProductoDTO prodMasRecaudo = factura_producto.findProductoMasRecaudo();
@@ -68,7 +59,5 @@ public class Main {
         for (ClienteDTO cl : listaClientesMasFacturados) {
             System.out.println(cl);
         }
-
-
     }
 }

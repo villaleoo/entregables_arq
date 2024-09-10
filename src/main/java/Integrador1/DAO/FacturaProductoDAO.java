@@ -43,11 +43,13 @@ public class FacturaProductoDAO {
         }
     }
 
-    public boolean delete(Integer id) {
+    public boolean delete(Integer idFactura, Integer idProducto) {
         String query = "DELETE FROM Factura_Producto WHERE idFactura = ? AND idProducto = ?";
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement(query);
+            ps.setInt(1, idFactura); // Establecer el parámetro en la consulta SQL
+            ps.setInt(2, idProducto); // Establecer el parámetro en la consulta SQL
             ps.executeUpdate();
             System.out.println("Factura_Producto eliminado exitosamente.");
             return true;
@@ -110,7 +112,7 @@ public class FacturaProductoDAO {
                 FacturaProducto act = new FacturaProducto(rs.getInt("idFactura"), rs.getInt("idProducto"), rs.getInt("cantidad"));
                 res.add(act);
             }
-            conn.close();
+           // conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -123,7 +125,7 @@ public class FacturaProductoDAO {
         String query = "SELECT p.idProducto, p.nombre, p.valor, SUM(fp.cantidad) AS total_vendido, (p.valor * SUM(fp.cantidad)) AS recaudacion_total\n" +
                 "FROM Producto p\n" +
                 "JOIN Factura_Producto fp ON p.idProducto = fp.idProducto\n" +
-                "GROUP BY p.idProducto, p.valor\n" +
+                "GROUP BY p.idProducto,  p.nombre, p.valor\n" +
                 "ORDER BY recaudacion_total DESC";
         ProductoDTO productoMasRecaudo = null;
         PreparedStatement ps = null;

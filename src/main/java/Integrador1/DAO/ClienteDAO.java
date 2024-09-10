@@ -25,14 +25,14 @@ public class ClienteDAO {
     }
 
     public void insertCliente(Cliente cliente) {
-        String query = "INSERT INTO Cliente (idCliente, nombre, email) VALUES (?, ?, ?";
+        String query = "INSERT INTO Cliente (idCliente, nombre, email) VALUES (?, ?, ?)";
         PreparedStatement ps = null;
 
         try {
             ps = conn.prepareStatement(query);
             ps.setInt(1, cliente.getIdCliente()); // idPersona
             ps.setString(2, cliente.getNombre()); // nombre
-            ps.setString(2, cliente.getEmail()); // email
+            ps.setString(3, cliente.getEmail()); // email
             ps.executeUpdate();
             System.out.println("Cliente insertado exitosamente.");
         } catch (SQLException e) {
@@ -54,6 +54,7 @@ public class ClienteDAO {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement(query);
+            ps.setInt(1, id); // Establece el valor del parámetro idCliente
             ps.executeUpdate();
             System.out.println("Cliente eliminado exitosamente.");
             return true;
@@ -73,9 +74,7 @@ public class ClienteDAO {
     }
 
     public Cliente find(Integer pk) {
-        String query = "SELECT c.idCliente, c.nombre, c.email " +
-                "FROM Cliente c " +
-                "WHERE c.idCliente = ?";
+        String query = "SELECT c.idCliente, c.nombre, c.email " + "FROM Cliente c " + "WHERE c.idCliente = ?";
         Cliente clienteById = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -116,6 +115,7 @@ public class ClienteDAO {
                 Cliente act = new Cliente(rs.getInt("idCliente"), rs.getString("nombre"), rs.getString("email"));
                 res.add(act);
             }
+            // conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -126,16 +126,15 @@ public class ClienteDAO {
     public List<ClienteDTO> getClientWithMoreBills() {
         List<ClienteDTO> res = new LinkedList<>();
         try {
-            String select = "SELECT c.*, COUNT(f.idCliente) cant_Facturaciones\n" +
-                    "FROM Cliente c\n" +
-                    "JOIN Factura f ON c.idCliente = f.idCliente\n" +
-                    "GROUP BY c.idCliente\n" +
-                    "ORDER BY cant_Facturaciones DESC";
+            String select = "SELECT c.*, COUNT(f.idCliente) cant_Facturaciones\n"
+                    + "FROM Cliente c\n"
+                    + "JOIN Factura f ON c.idCliente = f.idCliente\n"
+                    + "GROUP BY c.idCliente, c.nombre, c.email\n"
+                    + "ORDER BY cant_Facturaciones DESC";
             PreparedStatement ps = conn.prepareStatement(select);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                ClienteDTO act = new ClienteDTO(rs.getInt("idCliente"), rs.getString("nombre"), rs.getString("email"),
-                        rs.getInt("cant_Facturaciones"));
+                ClienteDTO act = new ClienteDTO(rs.getInt("idCliente"), rs.getString("nombre"), rs.getString("email"), rs.getInt("cant_Facturaciones"));
                 res.add(act);
             }
         } catch (SQLException e) {

@@ -26,7 +26,7 @@ public class FacturaDAO {
             ps.setInt(1, factura.getIdFactura());
             ps.setInt(2, factura.getIdCliente());
             ps.executeUpdate();
-            System.out.println("Producto insertado exitosamente.");
+            System.out.println("Factura insertada exitosamente.");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -46,6 +46,7 @@ public class FacturaDAO {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement(query);
+            ps.setInt(1, id); // Establecer el parámetro en la consulta SQL
             ps.executeUpdate();
             System.out.println("Factura eliminada exitosamente.");
             return true;
@@ -65,9 +66,7 @@ public class FacturaDAO {
     }
 
     public Factura find(Integer pk) {
-        String query = "SELECT p.idFactura, p.idProducto" +
-                "FROM Producto p " +
-                "WHERE p.idFactura = ?";
+        String query = "SELECT p.idFactura, p.idCliente FROM Factura p WHERE p.idFactura = ?";
         Factura facturaById = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -78,7 +77,7 @@ public class FacturaDAO {
             rs = ps.executeQuery();
             if (rs.next()) { // Verificar si hay resultados
                 int idFactura = rs.getInt("idFactura");
-                int idProducto = rs.getInt("idProducto");
+                int idProducto = rs.getInt("idCliente");
 
                 // Crear una nueva instancia de Persona con los datos recuperados de la consulta
                 facturaById = new Factura(idFactura, idProducto);
@@ -105,10 +104,10 @@ public class FacturaDAO {
             PreparedStatement ps = conn.prepareStatement(select);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Factura act = new Factura(rs.getInt("idFactura"), rs.getInt("idProducto"));
+                Factura act = new Factura(rs.getInt("idFactura"), rs.getInt("idCliente"));
                 res.add(act);
             }
-            conn.close();
+            //conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
