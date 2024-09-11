@@ -49,7 +49,7 @@ public class ClienteDAO {
         }
     }
 
-    public boolean delete(Integer id) {
+    public boolean delete(Integer id)  {
         String query = "DELETE FROM Cliente WHERE idCliente = ?";
         PreparedStatement ps = null;
         try {
@@ -126,15 +126,17 @@ public class ClienteDAO {
     public List<ClienteDTO> getClientWithMoreBills() {
         List<ClienteDTO> res = new LinkedList<>();
         try {
-            String select = "SELECT c.*, COUNT(f.idCliente) cant_Facturaciones\n"
-                    + "FROM Cliente c\n"
-                    + "JOIN Factura f ON c.idCliente = f.idCliente\n"
-                    + "GROUP BY c.idCliente, c.nombre, c.email\n"
-                    + "ORDER BY cant_Facturaciones DESC";
+            String select = "SELECT c.idCliente, c.nombre, c.email, SUM(fp.cantidad * p.valor) AS totalFacturado " +
+                    "FROM Cliente c " +
+                    "JOIN Factura f ON c.idCliente = f.idCliente " +
+                    "JOIN Factura_Producto fp ON f.idFactura = fp.idFactura " +
+                    "JOIN Producto p ON fp.idProducto = p.idProducto " +
+                    "GROUP BY c.idCliente, c.nombre, c.email " +
+                    "ORDER BY totalFacturado DESC";
             PreparedStatement ps = conn.prepareStatement(select);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                ClienteDTO act = new ClienteDTO(rs.getInt("idCliente"), rs.getString("nombre"), rs.getString("email"), rs.getInt("cant_Facturaciones"));
+                ClienteDTO act = new ClienteDTO(rs.getInt("idCliente"), rs.getString("nombre"), rs.getString("email"), rs.getInt("totalFacturado"));
                 res.add(act);
             }
         } catch (SQLException e) {

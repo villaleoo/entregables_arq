@@ -4,13 +4,13 @@ public class ClienteDTO {
     private int idCliente;
     private String nombre;
     private String email;
-    private int cantFacturaciones;
+    private int totalFacturado;
 
-    public ClienteDTO(int idCliente, String nombre, String email, int cantFacturaciones) {
+    public ClienteDTO(int idCliente, String nombre, String email, int totalFacturado) {
         this.idCliente = idCliente;
         this.nombre = nombre;
         this.email = email;
-        this.cantFacturaciones = cantFacturaciones;
+        this.totalFacturado = totalFacturado;
     }
 
     public int getIdCliente() {
@@ -35,11 +35,11 @@ public class ClienteDTO {
     }
 
     public int getCantFacturaciones() {
-        return cantFacturaciones;
+        return totalFacturado;
     }
 
-    public void setCantFacturaciones(int cantFacturaciones) {
-        this.cantFacturaciones = cantFacturaciones;
+    public void setCantFacturaciones(int totalFacturado) {
+        this.totalFacturado = totalFacturado;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ClienteDTO {
                 "idCliente=" + idCliente +
                 ", nombre='" + nombre + '\'' +
                 ", email='" + email + '\'' +
-                ", cantFacturaciones=" + cantFacturaciones +
+                ", totalFacturado=" + totalFacturado +
                 '}';
     }
 }

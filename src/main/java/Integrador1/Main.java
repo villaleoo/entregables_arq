@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-    //DB DERBY:
+        //DB DERBY:
     /*HelperDerby dbDerby = new HelperDerby();
         dbDerby.dropTables();
         dbDerby.createTables();
@@ -28,7 +28,7 @@ public class Main {
         dbDerby.closeConnection(); */
 
 
-       HelperMySQL dbMySQL = new HelperMySQL();
+        HelperMySQL dbMySQL = new HelperMySQL();
         dbMySQL.dropTables();
         dbMySQL.createTables();
         dbMySQL.populateDB();
@@ -53,7 +53,7 @@ public class Main {
         System.out.println("////////////////////////////////////////////");
         System.out.println("////////////////////////////////////////////");
 
-        System.out.println("EJ 4) Escriba un programa JDBC que imprima una lista de clientes, ordenada por a cuál se le\n" +
+        System.out.println("EJ 4: Escriba un programa JDBC que imprima una lista de clientes, ordenada por a cuál se le\n" +
                 "facturó más.");
         List<ClienteDTO> listaClientesMasFacturados = cliente.getClientWithMoreBills();
         for (ClienteDTO cl : listaClientesMasFacturados) {
