@@ -20,7 +20,7 @@ import java.util.List;
 
 public static void main (String [] args){
 
-    EntityManagerFactory emf= Persistence.createEntityManagerFactory("sistemaUniversidad");
+    EntityManagerFactory emf= Persistence.createEntityManagerFactory("mySQLPersistance");
     EntityManager em = emf.createEntityManager();
 
     RepositoryCarrera rc =RepositoryCarrera.getInstance(em);
