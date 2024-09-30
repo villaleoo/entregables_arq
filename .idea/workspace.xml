@@ -4,26 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ffeff1f7-ee87-46a0-aac7-cb6b8ea3161d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/src/main/java/com/example/entregable2/HelloApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/src/main/java/com/example/entregable2/HelloController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entregable2/src/main/resources/com/example/entregable2/hello-view.fxml" afterDir="false" />
+    <list default="true" id="42c6abc7-37f7-42e0-b029-bd6736762594" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador1/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador1/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador1/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador1/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador1/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador1/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador1/src/main/java/org/example/integrador1/HelloApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador1/src/main/java/org/example/integrador1/HelloController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador1/src/main/resources/org/example/integrador1/hello-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador2/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador2/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador2/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador2/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador2/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador2/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador2/src/main/java/org/example/integrador2/HelloApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador2/src/main/java/org/example/integrador2/HelloController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integrador2/src/main/resources/org/example/integrador2/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,9 +38,10 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
+  "customColor": "",
+  "associatedIndex": 8
 }]]></component>
-  <component name="ProjectId" id="2mlgDweNWGVEwFAJ4pJSd6Fyc9b" />
+  <component name="ProjectId" id="2mloq9tVb4qgCVw7lnt78TqALdq" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
@@ -48,19 +53,39 @@
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "rama__leopoldo",
-    "jdk.selected.JAVA_MODULE": "openjdk-22",
+    "jdk.selected.JAVA_MODULE": "corretto-21",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/villa/IdeaProjects/entregables_arq/entregable2",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="integrado2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="integrado2" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -72,12 +97,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ffeff1f7-ee87-46a0-aac7-cb6b8ea3161d" name="Changes" comment="" />
-      <created>1727656472913</created>
+      <changelist id="42c6abc7-37f7-42e0-b029-bd6736762594" name="Changes" comment="" />
+      <created>1727660738838</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1727656472913</updated>
-      <workItem from="1727656475173" duration="300000" />
+      <updated>1727660738838</updated>
+      <workItem from="1727660740481" duration="1854000" />
     </task>
     <servers />
   </component>
