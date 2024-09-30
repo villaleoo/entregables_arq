@@ -28,7 +28,6 @@ public static void main (String [] args){
     RepositoryInscripcion ri = RepositoryInscripcion.getInstance(em);
 
 
-
     ServiceCarrera servicio_carrera = new ServiceCarrera(rc);
     ServiceEstudiante servicio_estudiante = new ServiceEstudiante(re);
     ServiceInscripcion servicio_inscripcion = new ServiceInscripcion(ri,re,rc);
@@ -51,18 +50,48 @@ public static void main (String [] args){
     Carrera c3 = new Carrera("Licenciatura en administracion de empresas",Facultad.ECONOMICAS);
     Carrera c4 = new Carrera("Medicina veterinaria",Facultad.VETERINARIAS);
 
+
     /*
-    * En carrera 1: 3 estudiantes
-    * En carrera 2: 2 estudiantes
-    * En carrera 3: 1 estudiante
-    * En carrera 4: 2 estudiantes
-    *
-    * fechas de inscripcion y de egreso configuradas/personalizadas (por defecto la inscripcion es la fecha del dia Localdate.now() y la de egreso=null)
-    * */
+     * En carrera 1: 3 estudiantes
+     * En carrera 2: 2 estudiantes
+     * En carrera 3: 1 estudiante
+     * En carrera 4: 2 estudiantes
+     *
+     * fechas de inscripcion y de egreso configuradas/personalizadas (por defecto la inscripcion es la fecha del dia Localdate.now() y la de egreso=null)
+     * */
+
+
+    Inscripcion i1= new Inscripcion(e1,c1);
+    i1.setFechaInscripcion(LocalDate.of(2020,3,3));
+    i1.setFechaEgreso(LocalDate.of(2024,6,12));
+
+    Inscripcion i2 = new Inscripcion(e1,c2);
+    i2.setFechaInscripcion(LocalDate.of(2020,3,3));
+
+    Inscripcion i3= new Inscripcion(e2,c3);
+    i3.setFechaInscripcion(LocalDate.of(2021,3,3));
+    i3.setFechaEgreso(LocalDate.of(2023,12,12));
+
+    Inscripcion i4 = new Inscripcion(e3,c2);
+    i4.setFechaInscripcion(LocalDate.of(2017,3,3));
+    i4.setFechaEgreso(LocalDate.of(2022,12,12));
+
+    Inscripcion i5 = new Inscripcion(e3,c1);
+
+    Inscripcion i6 = new Inscripcion(e4,c3);
+    i6.setFechaInscripcion(LocalDate.of(2019,3,3));
+    i6.setFechaEgreso(LocalDate.of(2024,3,3));
+
+    Inscripcion i7 = new Inscripcion(e5,c4);
+    i7.setFechaInscripcion(LocalDate.of(2018,3,3));
+    i7.setFechaEgreso(LocalDate.of(2023,12,12));
+
+    Inscripcion i8 = new Inscripcion(e6,c4);
+    i8.setFechaInscripcion(LocalDate.of(2015,3,3));
 
 
     ///////////////////////////////////////PERSISTENCIA/////////////////////////////////////
-    /*
+
     servicio_carrera.insert(c1);
     servicio_carrera.insert(c2);
     servicio_carrera.insert(c3);
@@ -75,33 +104,16 @@ public static void main (String [] args){
     servicio_estudiante.insert(e5);
     servicio_estudiante.insert(e6);
 
-   servicio_inscripcion.insert(5,1);
-   servicio_inscripcion.insert(5,2);
-   servicio_inscripcion.insert(6,1);
-   servicio_inscripcion.insert(7,2);
-   servicio_inscripcion.insert(7,1);
-   servicio_inscripcion.insert(8,3);
-   servicio_inscripcion.insert(9,4);
-   servicio_inscripcion.insert(10,4);
+    servicio_inscripcion.insert(i1);
+    servicio_inscripcion.insert(i2);
+    servicio_inscripcion.insert(i3);
+    servicio_inscripcion.insert(i4);
+    servicio_inscripcion.insert(i5);
+    servicio_inscripcion.insert(i6);
+    servicio_inscripcion.insert(i7);
+    servicio_inscripcion.insert(i8);
 
-   servicio_inscripcion.updateInscripcion(5,1,LocalDate.of(2020,3,3));
-   servicio_inscripcion.updateEgreso(5,1,LocalDate.of(2024,6,12));
-   servicio_inscripcion.updateInscripcion(5,2,LocalDate.of(2020,3,3));
 
-   servicio_inscripcion.updateInscripcion(6,1,LocalDate.of(2021,3,3));
-   servicio_inscripcion.updateEgreso(6,1,LocalDate.of(2023,12,12));
-
-   servicio_inscripcion.updateInscripcion(7,2,LocalDate.of(2017,3,3));
-   servicio_inscripcion.updateEgreso(7,2,LocalDate.of(2022,12,12));
-
-   servicio_inscripcion.updateInscripcion(8,3,LocalDate.of(2019,3,3));
-   servicio_inscripcion.updateEgreso(8,3,LocalDate.of(2024,3,3));
-
-   servicio_inscripcion.updateInscripcion(9,4,LocalDate.of(2018,3,3));
-   servicio_inscripcion.updateEgreso(9,4,LocalDate.of(2023,12,12));
-
-   servicio_inscripcion.updateInscripcion(10,4,LocalDate.of(2015,3,3));
-*/
 
     //////////////////////////////////////////////SERVICIOS/////////////////////////////////////////////
 
@@ -160,7 +172,6 @@ public static void main (String [] args){
 
     /*3) */
     servicio_carrera.showReport();
-
 
 
 }

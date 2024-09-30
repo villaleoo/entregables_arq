@@ -17,21 +17,24 @@ import java.util.List;
 public class ServiceInscripcion {
 
     private RepositoryInscripcion repository;
-    private RepositoryEstudiante repEstudiante;
+    private RepositoryEstudiante repositoryEstudiante;
     private RepositoryCarrera repositoryCarrera;
 
 
     public ServiceInscripcion(RepositoryInscripcion repository, RepositoryEstudiante repEstudiante, RepositoryCarrera repCarrera){
         this.repository=repository;
-        this.repEstudiante=repEstudiante;
+        this.repositoryEstudiante=repEstudiante;
         this.repositoryCarrera=repCarrera;
     }
 
-    public Inscripcion insert (Integer id_persona, Integer id_carrera){
-        Estudiante e = this.repEstudiante.findById(id_persona);
-        Carrera c = this.repositoryCarrera.findById(id_carrera);
+
+    public Inscripcion insert (Inscripcion i){
+        Estudiante e = this.repositoryEstudiante.findById(i.getIdEstudiante());
+        Carrera c = this.repositoryCarrera.findById(i.getIdCarrera());
+
         if (e == null || c == null) return null;
-        return this.repository.persist(new Inscripcion(e, c));
+        return this.repository.persist(i);
+
     }
 
     public List<Inscripcion> getAll(){
@@ -42,19 +45,7 @@ public class ServiceInscripcion {
         return  this.repository.findById(new InscripcionId(id_estudiante,id_carrera));
     }
 
-    public Inscripcion updateEgreso (Integer id_estudiante, Integer id_carrera, LocalDate fecha_egreso){
-        Inscripcion i = this.repository.findById(new InscripcionId(id_estudiante,id_carrera));
-        i.setFechaEgreso(fecha_egreso);
 
-        return this.repository.update(i);
-    }
-
-    public Inscripcion updateInscripcion(Integer id_estudiante,Integer id_carrera, LocalDate fecha_inscripcion){
-        Inscripcion i = this.repository.findById(new InscripcionId(id_estudiante,id_carrera));
-        i.setFecha_inscripcion(fecha_inscripcion);
-
-        return this.repository.update(i);
-    }
 
 
 

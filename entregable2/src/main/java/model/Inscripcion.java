@@ -2,6 +2,7 @@ package model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 public class Inscripcion {
@@ -61,8 +62,21 @@ public class Inscripcion {
         this.fecha_egreso= LocalDate.now();
     }
 
-    public void setFecha_inscripcion(LocalDate fecha_inscripcion) {
+    public void setFechaInscripcion(LocalDate fecha_inscripcion) {
         this.fecha_inscripcion = fecha_inscripcion;
+    }
+
+    public void imprimirAntiguedad(){
+        LocalDate endDate = LocalDate.now();
+        Period difference = Period.between(this.fecha_inscripcion, endDate);
+
+        System.out.println("Antigüedad: " + difference.getYears() + " años, " +
+                difference.getMonths() + " meses, y " +
+                difference.getDays() + " días.");
+    }
+
+    public boolean isGraduo(){
+        return this.fecha_egreso != null;
     }
 
     @Override
