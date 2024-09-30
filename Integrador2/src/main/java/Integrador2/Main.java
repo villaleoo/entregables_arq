@@ -1,9 +1,6 @@
 package Integrador2;
 
-import Integrador2.Entities.Carrera;
 import Integrador2.Entities.Estudiante;
-import Integrador2.Entities.Inscripcion;
-import Integrador2.Factory.AbstractFactory;
 import Integrador2.Repository.CarreraRepository;
 import Integrador2.Repository.InscripcionRepository;
 import Integrador2.Repository.EstudianteRepository;
@@ -12,40 +9,24 @@ import Integrador2.Utils.HelperMySQL;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        //DB DERBY:
-       /*HelperDerby dbDerby = new HelperDerby();
-        dbDerby.dropTables();
-        dbDerby.closeConnection();*/
-
-
-        AbstractFactory chosenFactory = AbstractFactory.getRepositoryFactory(1);
-
-
-        HelperMySQL dbMySQL = new HelperMySQL();
-        dbMySQL.dropTables();
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Integrador2");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
         EntityManager em = emf.createEntityManager();
+        HelperMySQL dbMySQL = new HelperMySQL();
         dbMySQL.insertDefaultData(em);
-        dbMySQL.closeConnection();
 
 
         EstudianteRepository estudianteRepository = EstudianteRepository.getInstance(em);
         CarreraRepository carreraRepository = CarreraRepository.getInstance(em);
         InscripcionRepository inscripcionRepository = InscripcionRepository.getInstance(em);
-
-
         em.getTransaction().begin();
 
-
         //"2)A) dar de alta un estudiante"
-        estudianteRepository.persist(new Estudiante("Juan", "Lopez", 32, "Masculino", 323213, "Buenos Aires", 312321));
+        estudianteRepository.persist(new Estudiante("Juan", "Lopez", 32, "Masculino", 323213, "Buenos Aires", 2312));
 
         //2)B "matricular un estudiante en una carrera"
         inscripcionRepository.matricularEstudiante(4343432, "TUDAI", LocalDate.of(2021, 5, 12));
@@ -108,8 +89,6 @@ public class Main {
         inscripcionRepository.matricularEstudiante(4355678, "Ingeniería en Sistemas", LocalDate.of(2023, 5, 29));
 
 
-
-
         System.out.println("2)C) recuperar todos los estudiantes, y especificar algún criterio de ordenamiento simple. ");
         System.out.println(estudianteRepository.getEstudiantesOrderedBy("nombre"));
 
@@ -140,15 +119,11 @@ public class Main {
         System.out.println("\n//////////////////////////////////////////");
         System.out.println("//////////////////////////////////////////\n");
 
-        System.out.println("3) Generar un reporte de las carreras, que para cada carrera incluya información de los\n" +
-                "inscriptos y egresados por año. Se deben ordenar las carreras alfabéticamente, y presentar\n" +
-                "los años de manera cronológica.");
+        System.out.println("3) Generar un reporte de las carreras, que para cada carrera incluya información de los\n" + "inscriptos y egresados por año. Se deben ordenar las carreras alfabéticamente, y presentar\n" + "los años de manera cronológica.");
 
         System.out.println(inscripcionRepository.getReporte());
 
         em.getTransaction().commit();
         em.close();
-        emf.close();
-
     }
 }

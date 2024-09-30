@@ -44,7 +44,7 @@ public class InscripcionRepository extends BaseJPARepository<Inscripcion, Long> 
     @Override
     public List<ReporteDTO> getReporte() {
         List<ReporteDTO> res = new ArrayList<>();
-        String queryCantInscriptos = "SELECT  i.carrera, c.nombreCarrera,  YEAR(i.fechaInscripcion), COUNT(i.estudiante) AS cantInscriptos" +
+        String queryCantInscriptos = "SELECT  i.carrera, c.nombreCarrera, YEAR(i.fechaInscripcion), COUNT(i.estudiante) AS cantInscriptos" +
                 ", SUM(CASE WHEN i.graduado = true THEN 1 ELSE 0 END) AS cantGraduados " +
                 "FROM Inscripcion i " +
                 "JOIN i.carrera c " +

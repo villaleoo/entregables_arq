@@ -9,6 +9,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -19,66 +20,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class HelperMySQL {
-    private Connection conn = null;
-
-
 
     public HelperMySQL() {
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String uri = "jdbc:mysql://localhost:3306/Integrador2";
-
-        try {
-            Class.forName(driver).getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException |
-                 InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        try {
-            conn = DriverManager.getConnection(uri, "root", "");
-            conn.setAutoCommit(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
-
-    public void closeConnection() {
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void closePsAndCommit(Connection conn, PreparedStatement ps) {
-        if (conn != null) {
-            try {
-                ps.close();
-                conn.commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void dropTables() throws SQLException {
-        String dropInscripcion = "DROP TABLE IF EXISTS Inscripcion";
-        this.conn.prepareStatement(dropInscripcion).execute();
-        this.conn.commit();
-
-        String dropEstudiante = "DROP TABLE IF EXISTS Estudiante";
-        this.conn.prepareStatement(dropEstudiante).execute();
-        this.conn.commit();
-
-        String dropCarrera = "DROP TABLE IF EXISTS Carrera";
-        this.conn.prepareStatement(dropCarrera).execute();
-        this.conn.commit();
-    }
-
-
     private Iterable<CSVRecord> getData(String archivo) throws IOException {
         String path = "src\\main\\resources\\" + archivo;
         Reader in = new FileReader(path);
@@ -95,7 +39,7 @@ public class HelperMySQL {
                 if (row.size() >= 1) {
                     String nombreCarrera = row.get(0);
 
-                    if ( !nombreCarrera.isEmpty()) {
+                    if (!nombreCarrera.isEmpty()) {
                         try {
                             Carrera carrera = new Carrera(nombreCarrera);
                             CarreraRepository.getInstance(em).persist(carrera);

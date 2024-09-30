@@ -27,7 +27,7 @@ public class CarreraRepository extends BaseJPARepository<Carrera, Long> implemen
         String q = "SELECT new Integrador2.DTO.CarreraDTO (c.nombreCarrera, COUNT(i.carrera) ) " +
                 "FROM Inscripcion i " +
                 "JOIN i.carrera c " +
-                "GROUP BY (i.carrera) " +
+                "GROUP BY (c.nombreCarrera) " + //Antes era i.carrera (chequear)
                 "ORDER BY COUNT(i.carrera) DESC";
         return em.createQuery(q).getResultList();
     }
