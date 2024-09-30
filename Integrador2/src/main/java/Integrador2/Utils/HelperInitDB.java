@@ -9,19 +9,13 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
-public class HelperMySQL {
+public class HelperInitDB {
 
-    public HelperMySQL() {
+    public HelperInitDB() {
     }
     private Iterable<CSVRecord> getData(String archivo) throws IOException {
         String path = "src\\main\\resources\\" + archivo;

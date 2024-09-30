@@ -4,7 +4,7 @@ import Integrador2.Entities.Estudiante;
 import Integrador2.Repository.CarreraRepository;
 import Integrador2.Repository.InscripcionRepository;
 import Integrador2.Repository.EstudianteRepository;
-import Integrador2.Utils.HelperMySQL;
+import Integrador2.Utils.HelperInitDB;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -16,8 +16,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MySQL");
         EntityManager em = emf.createEntityManager();
-        HelperMySQL dbMySQL = new HelperMySQL();
-        dbMySQL.insertDefaultData(em);
+        HelperInitDB helper = new HelperInitDB();
+        helper.insertDefaultData(em);
 
 
         EstudianteRepository estudianteRepository = EstudianteRepository.getInstance(em);
