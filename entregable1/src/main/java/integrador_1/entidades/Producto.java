@@ -1,4 +1,4 @@
-package entidades;
+package integrador_1.entidades;
 
 
 
@@ -40,6 +40,6 @@ public class Producto {
 
     @Override
     public String toString() {
-        return STR."Producto{idProducto=\{idProducto}, number='\{nombre}', valor=\{valor}}";
+        return STR."Producto{idProducto=\{idProducto}, nombre='\{nombre}', valor=$\{valor}}";
     }
 }

@@ -1,4 +1,4 @@
-package entidades;
+package integrador_1.entidades;
 
 
 

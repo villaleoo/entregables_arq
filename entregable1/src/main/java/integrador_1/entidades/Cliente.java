@@ -1,4 +1,4 @@
-package entidades;
+package integrador_1.entidades;
 
 
 public class Cliente {
@@ -10,7 +10,7 @@ public class Cliente {
         super();
     }
 
-    public Cliente(String email, int idCliente, String nombre) {
+    public Cliente(int idCliente, String nombre, String email) {
         this.email = email;
         this.idCliente = idCliente;
         this.nombre = nombre;
