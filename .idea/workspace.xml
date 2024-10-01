@@ -4,11 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c6c02c2-93a2-487d-b5f9-3f19b2c921df" name="Changes" comment="" />
+    <list default="true" id="5c6c02c2-93a2-487d-b5f9-3f19b2c921df" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/entregable2/src/main/java/utils/Helper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/entregable2/src/main/resources/carreras.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/entregable2/src/main/resources/estudiantes.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/entregable2/src/main/resources/inscripciones.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entregable2/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/entregable2/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entregable2/src/main/java/model/Inscripcion.java" beforeDir="false" afterPath="$PROJECT_DIR$/entregable2/src/main/java/model/Inscripcion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entregable2/src/main/java/service/ServiceCarrera.java" beforeDir="false" afterPath="$PROJECT_DIR$/entregable2/src/main/java/service/ServiceCarrera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entregable2/src/main/java/utils/enums/Facultad.java" beforeDir="false" afterPath="$PROJECT_DIR$/entregable2/src/main/java/utils/enums/Facultad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entregable2/src/main/java/utils/enums/Genero.java" beforeDir="false" afterPath="$PROJECT_DIR$/entregable2/src/main/java/utils/enums/Genero.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entregable2/target/classes/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/entregable2/target/classes/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entregable2/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/entregable2/target/classes/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entregable2/target/classes/model/Inscripcion.class" beforeDir="false" afterPath="$PROJECT_DIR$/entregable2/target/classes/model/Inscripcion.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entregable2/target/classes/service/ServiceInscripcion.class" beforeDir="false" afterPath="$PROJECT_DIR$/entregable2/target/classes/service/ServiceInscripcion.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entregable2/target/classes/utils/enums/Facultad.class" beforeDir="false" afterPath="$PROJECT_DIR$/entregable2/target/classes/utils/enums/Facultad.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entregable2/target/classes/utils/enums/Genero.class" beforeDir="false" afterPath="$PROJECT_DIR$/entregable2/target/classes/utils/enums/Genero.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -22,19 +47,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;rama__leopoldo&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "rama__leopoldo",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\villa\IdeaProjects\entregables_arq\entregable1" />
@@ -56,7 +86,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1727803245392</updated>
-      <workItem from="1727803246576" duration="358000" />
+      <workItem from="1727803246576" duration="1172000" />
+      <workItem from="1727805117937" duration="4391000" />
     </task>
     <servers />
   </component>
