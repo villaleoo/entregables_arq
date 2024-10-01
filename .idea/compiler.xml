@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Integrador1" />
         <module name="integrador2" />
         <module name="integrador1" />
       </profile>
@@ -13,6 +14,7 @@
     <bytecodeTargetLevel>
       <module name="integrado2" target="1.5" />
       <module name="integrador" target="18" />
+      <module name="integrador1" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>
