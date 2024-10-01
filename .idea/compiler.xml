@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Integrador1" />
+        <module name="integrador1" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="integrado2" target="1.5" />
+      <module name="integrador" target="18" />
+      <module name="integrador1" target="21" />
+      <module name="integrador2" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
