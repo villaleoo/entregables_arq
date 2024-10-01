@@ -1,0 +1,48 @@
+nombre,apellido,fecha_nacimiento,genero,dni,ciudad,nroLibreta
+Facundo,Gonzalez,1999-05-14,Masculino,4343432,Tandil,250418
+Juan,Perez,2000-07-23,Masculino,4351123,Buenos Aires,250419
+Maria,Lopez,1998-03-12,Femenino,4351234,Córdoba,250420
+Sofia,Garcia,1997-11-30,Femenino,4351345,Rosario,250421
+Pedro,Martinez,1999-08-19,Masculino,4351456,Mendoza,250422
+Carla,Fernandez,2001-01-25,Femenino,4351567,La Plata,250423
+Lucas,Gutierrez,1998-06-17,Masculino,4351678,San Juan,250424
+Camila,Ramirez,1999-09-05,Femenino,4351789,Salta,250425
+Ignacio,Sanchez,2000-02-28,Masculino,4351890,Tucumán,250426
+Valentina,Herrera,1997-04-22,Femenino,4351901,Chaco,250427
+Lautaro,Mendez,1998-10-10,Masculino,4352012,Neuquén,250428
+Florencia,Alvarez,2001-12-03,Femenino,4352123,Misiones,250429
+Nicolas,Diaz,1999-07-14,Masculino,4352234,Santa Fe,250430
+Juliana,Morales,1998-05-09,Femenino,4352345,San Luis,250431
+Diego,Rojas,2000-11-21,Masculino,4352456,Chubut,250432
+Emilia,Castro,1999-03-18,Femenino,4352567,Formosa,250433
+Tomas,Romero,1997-08-27,Masculino,4352678,Jujuy,250434
+Martina,Acosta,2000-01-15,Femenino,4352789,Río Negro,250435
+Agustin,Sosa,1998-09-30,Masculino,4352890,Tierra del Fuego,250436
+Antonella,Ibarra,1999-06-11,Femenino,4352901,Catamarca,250437
+Gonzalo,Ortiz,2001-04-07,Masculino,4353012,Corrientes,250438
+Victoria,Vega,1997-12-25,Femenino,4353123,Entre Ríos,250439
+Franco,Silva,1998-03-03,Masculino,4353234,Santiago del Estero,250440
+Paula,Molina,2000-10-19,Femenino,4353345,San Juan,250441
+Matias,Navarro,1999-11-08,Masculino,4353456,Salta,250442
+Micaela,Reyes,1998-07-22,Femenino,4353567,San Luis,250443
+Julian,Arias,1997-05-16,Masculino,4353678,Santa Cruz,250444
+Lucia,Paz,1999-09-29,Femenino,4353789,Tucumán,250445
+Jeremias,Vargas,1998-02-14,Masculino,4353890,Buenos Aires,250446
+Daniela,Rivas,2000-06-06,Femenino,4353901,Córdoba,250447
+Ramiro,Benitez,1997-10-23,Masculino,4354012,Corrientes,250448
+Florencia,Quiroga,1999-12-12,Femenino,4354123,Misiones,250449
+Santiago,Escobar,2001-03-27,Masculino,4354234,Chaco,250450
+Lara,Varela,1998-08-04,Femenino,4354345,Tierra del Fuego,250451
+Pablo,Peralta,1999-11-15,Masculino,4354456,Río Negro,250452
+Carla,Muñoz,1997-07-01,Femenino,4354567,Entre Ríos,250453
+Gabriel,Campos,2000-05-20,Masculino,4354678,Mendoza,250454
+Julieta,Ledesma,2001-09-13,Femenino,4354789,San Juan,250455
+Federico,Palacios,1998-01-29,Masculino,4354890,San Luis,250456
+Tamara,Mendez,1999-04-17,Femenino,4354901,Santa Cruz,250457
+Esteban,Soto,1997-06-25,Masculino,4355012,Catamarca,250458
+Luciana,Moreno,2000-08-08,Femenino,4355123,Jujuy,250459
+Alan,Ruiz,1999-02-19,Masculino,4355234,Chubut,250460
+Agustina,Figueroa,1998-11-30,Femenino,4355345,Formosa,250461
+Cristian,Castillo,2001-07-18,Masculino,4355456,Santiago del Estero,250462
+Valeria,Farias,1997-09-05,Femenino,4355567,Tucumán,250463
+Bruno,Aguirre,2000-12-21,Masculino,4355678,Buenos Aires,250464

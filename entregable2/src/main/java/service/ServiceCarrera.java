@@ -31,8 +31,9 @@ public class ServiceCarrera {
             System.out.println(rep);
         }
 
+    }
 
-
-
+    public Carrera getById(Integer id){
+        return this.repository.findById(id);
     }
 }
