@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.Query;
 import Integrador3.DTO.EstudianteCarreraDTO;
 import Integrador3.DTO.EstudianteDTO;
 import Integrador3.Entities.Estudiante;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface IEstudianteRepository extends JpaRepository<Estudiante, Long> {
 
     @Query("SELECT new Integrador3.DTO.EstudianteDTO (e.nombre, e.apellido, e.edad,e.genero, e.documento, e.ciudad, e.nroLibreta)  " +

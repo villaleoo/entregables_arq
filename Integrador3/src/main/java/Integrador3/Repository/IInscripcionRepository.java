@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.Query;
 import Integrador3.DTO.InscripcionDTO;
 import Integrador3.DTO.ReporteDTO;
 import Integrador3.Entities.Inscripcion;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface IInscripcionRepository extends JpaRepository<Inscripcion, Long> {
     @Query("SELECT new Integrador3.DTO.ReporteDTO(i.carrera.idCarrera, c.nombreCarrera, YEAR(i.fechaInscripcion), COUNT(i.estudiante)  " +
             ", SUM(CASE WHEN i.fechaGraduacion IS NOT NULL THEN 1 ELSE 0 END))   " +
