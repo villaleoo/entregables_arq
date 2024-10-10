@@ -23,4 +23,9 @@ public class InscripcionDTO {
         this.idCarrera = idCarrera;
         this.idEstudiante = idEstudiante;
     }
+
+    public InscripcionDTO(LocalDate fechaInscripcion, LocalDate fechaGraduacion) {
+        this.fechaInscripcion = fechaInscripcion;
+        this.fechaGraduacion = fechaGraduacion;
+    }
 }

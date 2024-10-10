@@ -1,10 +1,7 @@
 package Integrador3.Entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -44,6 +41,14 @@ public class Inscripcion {
         this.fechaInscripcion = LocalDate.now();
         this.fechaGraduacion = null;
         this.setAntiguedadEnCarrera();
+    }
+
+    public Inscripcion(Carrera carrera, Estudiante estudiante, LocalDate fechaInscripcion, LocalDate fechaGraduacion) {
+        this.id = new InscripcionID(carrera.getIdCarrera(), estudiante.getIdEstudiante());
+        this.carrera = carrera;
+        this.estudiante = estudiante;
+        this.fechaInscripcion = fechaInscripcion;
+        this.fechaGraduacion = fechaGraduacion;
     }
 
     private void setAntiguedadEnCarrera() {

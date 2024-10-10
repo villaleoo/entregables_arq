@@ -1,13 +1,15 @@
 package Integrador3.Service;
 
+import Integrador3.DTO.CarreraDTO;
+import Integrador3.DTO.CarreraInscriptosDTO;
+import Integrador3.Entities.Carrera;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import Integrador3.DTO.EstudianteCarreraDTO;
 import Integrador3.DTO.EstudianteDTO;
 import Integrador3.Entities.Estudiante;
-import Integrador3.Repository.IEstudianteRepository;
+import Integrador3.Repository.EstudianteRepository;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.List;
 public class EstudianteService {
 
     @Autowired
-    private IEstudianteRepository estudianteRepository;
+    private EstudianteRepository estudianteRepository;
 
 
     public void addEstudiante(EstudianteDTO estudiante) {
@@ -67,8 +69,26 @@ public class EstudianteService {
         return estudianteRepository.getEstudiantesByGenero(genero);
     }
 
-
     public List<EstudianteCarreraDTO> getEstudiantesByCarreraAndCiudad(String carrera, String ciudad) {
         return estudianteRepository.getEstudiantesByCarreraAndCiudad(carrera, ciudad);
     }
+
+    public void deleteEstudiante(Long id) {
+        estudianteRepository.deleteById(id);
+    }
+
+    public EstudianteDTO updateEstudiante(Long id, EstudianteDTO estudiante) {
+        Estudiante newEstudiante = estudianteRepository.findById(id).orElse(null);
+        newEstudiante.setNombre(estudiante.getNombre());
+        newEstudiante.setApellido(estudiante.getApellido());
+        newEstudiante.setEdad(estudiante.getEdad());
+        newEstudiante.setGenero(estudiante.getGenero());
+        newEstudiante.setDocumento(estudiante.getDocumento());
+        newEstudiante.setCiudad(estudiante.getCiudad());
+        newEstudiante.setNroLibreta(estudiante.getNroLibreta());
+        estudianteRepository.save(newEstudiante);
+        return estudiante;
+    }
+
+
 }

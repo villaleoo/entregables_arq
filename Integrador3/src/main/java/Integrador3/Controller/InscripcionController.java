@@ -1,5 +1,6 @@
 package Integrador3.Controller;
 
+import Integrador3.DTO.CarreraDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,20 @@ public class InscripcionController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<InscripcionDTO>> getAllCarreras() {
+    public ResponseEntity<List<InscripcionDTO>> getAllInscripciones() {
         return new ResponseEntity<>(inscripcionService.getAllInscripciones(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/idCarrera/{idCarrera}/idEstudiante/{idEstudiante}")
+    public ResponseEntity<String> deleteInscripcion(@PathVariable Long idCarrera, @PathVariable Long idEstudiante) {
+        inscripcionService.deleteInscripcion(idCarrera, idEstudiante);
+        return new ResponseEntity<>("Inscripcion eliminada exitosamente", HttpStatus.OK);
+    }
+
+    @PutMapping("/update/idCarrera/{idCarrera}/idEstudiante/{idEstudiante}")
+    public ResponseEntity<InscripcionDTO> updateInscripcion(@PathVariable Long idCarrera, @PathVariable Long idEstudiante, @RequestBody InscripcionDTO inscripcion) {
+        inscripcionService.updateInscripcion(idCarrera, idEstudiante, inscripcion);
+        return new ResponseEntity<>(inscripcion, HttpStatus.OK);
     }
 
 

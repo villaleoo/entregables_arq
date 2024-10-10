@@ -41,4 +41,16 @@ public class CarreraController {
     public ResponseEntity<List<CarreraInscriptosDTO>> getCarrerasConEstudiantesInscriptos() {
         return new ResponseEntity<>(carreraService.getCarrerasConEstudiantesInscriptos(), HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteCarrera(@PathVariable Long id) {
+        carreraService.deleteCarrera(id);
+        return new ResponseEntity<>("Carrera eliminada exitosamente", HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<CarreraDTO> updateCarrera(@PathVariable Long id, @RequestBody CarreraDTO carrera) {
+        carreraService.updateCarrera(id, carrera);
+        return new ResponseEntity<>(carrera, HttpStatus.OK);
+    }
 }

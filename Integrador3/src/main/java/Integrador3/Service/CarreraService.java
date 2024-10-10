@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import Integrador3.DTO.CarreraDTO;
 import Integrador3.DTO.CarreraInscriptosDTO;
 import Integrador3.Entities.Carrera;
-import Integrador3.Repository.ICarreraRepository;
+import Integrador3.Repository.CarreraRepository;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 public class CarreraService {
 
     @Autowired
-    private ICarreraRepository carreraRepository;
+    private CarreraRepository carreraRepository;
 
     public void addCarrera(CarreraDTO carrera) {
         Carrera newCarrera = new Carrera();
@@ -38,6 +38,17 @@ public class CarreraService {
             res.add(new CarreraDTO(c.getNombreCarrera()));
 
         return res;
+    }
+
+    public void deleteCarrera(Long id) {
+        carreraRepository.deleteById(id);
+    }
+
+    public CarreraDTO updateCarrera(Long id, CarreraDTO carrera) {
+        Carrera newCarrera = carreraRepository.findById(id).orElse(null);
+        newCarrera.setNombreCarrera(carrera.getNombreCarrera());
+        carreraRepository.save(newCarrera);
+        return carrera;
     }
 
     public List<CarreraInscriptosDTO> getCarrerasConEstudiantesInscriptos() {

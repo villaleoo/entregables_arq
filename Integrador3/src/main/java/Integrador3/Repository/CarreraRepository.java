@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ICarreraRepository extends JpaRepository<Carrera, Long> {
+public interface CarreraRepository extends JpaRepository<Carrera, Long> {
 
     @Query("SELECT new Integrador3.DTO.CarreraInscriptosDTO (c.nombreCarrera, COUNT(i.carrera) ) " +
             "FROM Inscripcion i " +

@@ -44,7 +44,7 @@ public class EstudianteController {
     }
 
     @GetMapping("/nroLibreta/{nroLibreta}")
-        public ResponseEntity<EstudianteDTO> getEstudianteByNroLibreta(@PathVariable int nroLibreta) {
+    public ResponseEntity<EstudianteDTO> getEstudianteByNroLibreta(@PathVariable int nroLibreta) {
         return new ResponseEntity<>(estudianteService.getEstudianteByNroLibreta(nroLibreta), HttpStatus.OK);
     }
 
@@ -56,5 +56,17 @@ public class EstudianteController {
     @GetMapping("/carrera/{carrera}/ciudad/{ciudad}")
     public ResponseEntity<List<EstudianteCarreraDTO>> getEstudiantesByCarreraAndCiudad(@PathVariable String carrera, @PathVariable String ciudad) {
         return new ResponseEntity<>(estudianteService.getEstudiantesByCarreraAndCiudad(carrera, ciudad), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteEstudiante(@PathVariable Long id) {
+        estudianteService.deleteEstudiante(id);
+        return new ResponseEntity<>("Estudiante eliminado exitosamente", HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<EstudianteDTO> updateEstudiante(@PathVariable Long id, @RequestBody EstudianteDTO estudiante) {
+        estudianteService.updateEstudiante(id, estudiante);
+        return new ResponseEntity<>(estudiante, HttpStatus.OK);
     }
 }
