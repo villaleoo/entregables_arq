@@ -15,7 +15,6 @@ public class InscripcionDao {
         this.proyecto = pr;
     }
 
-
     public void inscribirEstudiante(Integer id_estudiante, Integer id_carrera, Integer inicio, Integer graduacion) {
         try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.proyecto);
@@ -28,7 +27,6 @@ public class InscripcionDao {
 
             em.getTransaction().commit();
             em.close();
-            emf.close();
             System.out.println("Se inscribio el estudiante a la carrera exitosamente");
         } catch (Exception e) {
             System.out.println("Algo salio mal "+e);
@@ -37,7 +35,20 @@ public class InscripcionDao {
 
 
     public void borrar(int id) {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.proyecto);
+            EntityManager em = emf.createEntityManager();
+            em.getTransaction().begin();
+            Inscripcion i = em.find(Inscripcion.class, id);
+            em.remove(i);
 
+            em.getTransaction().commit();
+            em.close();
+            emf.close();
+            System.out.println("Se ha borrado al estudiante de la carrera exitosamente");
+        } catch (Exception e) {
+            System.out.println("Algo salio mal "+e);
+        }
     }
 
 
