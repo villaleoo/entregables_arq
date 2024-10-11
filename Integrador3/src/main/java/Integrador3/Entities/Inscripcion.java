@@ -21,8 +21,8 @@ public class Inscripcion {
     private Carrera carrera;
 
     @ManyToOne
-    @MapsId("idEstudiante")
-    @JoinColumn(name = "idEstudiante", referencedColumnName = "idEstudiante")
+    @MapsId("documento")
+    @JoinColumn(name = "documento", referencedColumnName = "documento")
     private Estudiante estudiante;
 
     @Transient
@@ -35,7 +35,7 @@ public class Inscripcion {
     private LocalDate fechaGraduacion;
 
     public Inscripcion(Carrera carrera, Estudiante estudiante) {
-        this.id = new InscripcionID(carrera.getIdCarrera(), estudiante.getIdEstudiante());
+        this.id = new InscripcionID(carrera.getIdCarrera(), (long) estudiante.getDocumento());
         this.carrera = carrera;
         this.estudiante = estudiante;
         this.fechaInscripcion = LocalDate.now();
@@ -44,9 +44,15 @@ public class Inscripcion {
     }
 
     public Inscripcion(Carrera carrera, Estudiante estudiante, LocalDate fechaInscripcion, LocalDate fechaGraduacion) {
-        this.id = new InscripcionID(carrera.getIdCarrera(), estudiante.getIdEstudiante());
+        this.id = new InscripcionID(carrera.getIdCarrera(), (long) estudiante.getDocumento());
         this.carrera = carrera;
         this.estudiante = estudiante;
+        this.fechaInscripcion = fechaInscripcion;
+        this.fechaGraduacion = fechaGraduacion;
+    }
+
+    public Inscripcion(Long idCarrrera, Long dniEstudiante, LocalDate fechaInscripcion, LocalDate fechaGraduacion) {
+        this.id = new InscripcionID(idCarrrera, dniEstudiante);
         this.fechaInscripcion = fechaInscripcion;
         this.fechaGraduacion = fechaGraduacion;
     }

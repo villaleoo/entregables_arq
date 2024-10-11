@@ -15,13 +15,13 @@ import java.time.LocalDate;
 @Service
 public class InscripcionDTO {
     private Long idCarrera;
-    private Long idEstudiante;
+    private Long documentoEstudiante;
     private LocalDate fechaInscripcion;
     private LocalDate fechaGraduacion;
 
     public InscripcionDTO(Long idCarrera, Long idEstudiante) {
         this.idCarrera = idCarrera;
-        this.idEstudiante = idEstudiante;
+        this.documentoEstudiante = documentoEstudiante;
     }
 
     public InscripcionDTO(LocalDate fechaInscripcion, LocalDate fechaGraduacion) {

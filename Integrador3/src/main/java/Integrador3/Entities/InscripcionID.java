@@ -10,6 +10,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InscripcionID implements Serializable {
-    private Long idEstudiante;
+    private Long documento;
     private Long idCarrera;
 }

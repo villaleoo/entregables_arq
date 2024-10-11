@@ -13,8 +13,7 @@ import java.util.List;
 public class Estudiante {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idEstudiante;
+    private Long documento;
 
     @Column
     private String nombre;
@@ -28,19 +27,16 @@ public class Estudiante {
     @Column
     private String genero;
 
-    @Column(unique=true)
-    private int documento;
-
     @Column
     private String ciudad;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private int nroLibreta;
 
     @OneToMany(mappedBy = "estudiante")
     private List<Inscripcion> carreras;
 
-    public Estudiante(String nombre, String apellido, int edad, String genero, int documento, String ciudad, int nroLibreta) {
+    public Estudiante(Long documento, String nombre, String apellido, int edad, String genero, String ciudad, int nroLibreta) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
@@ -59,14 +55,13 @@ public class Estudiante {
     @Override
     public boolean equals(Object o) {
         Estudiante otro = (Estudiante) o;
-        return this.getIdEstudiante()==otro.getIdEstudiante() && this.documento==otro.getDocumento() && this.nroLibreta==otro.getNroLibreta();
+        return this.documento == otro.getDocumento() && this.nroLibreta == otro.getNroLibreta();
     }
 
 
     @Override
     public String toString() {
         return "Estudiante{" +
-                "idEstudiante=" + idEstudiante +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", edad=" + edad +

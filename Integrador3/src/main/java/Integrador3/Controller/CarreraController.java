@@ -1,5 +1,6 @@
 package Integrador3.Controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,12 @@ public class CarreraController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createCarrera(@RequestBody CarreraDTO carrera) {
-        carreraService.addCarrera(carrera);
-        return new ResponseEntity<>("Carrera creada exitosamente", HttpStatus.CREATED);
+        try {
+            carreraService.addCarrera(carrera);
+            return new ResponseEntity<>("Carrera creada exitosamente", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error, ingresaste mal el nombre de una columna " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{id}")
@@ -44,13 +49,21 @@ public class CarreraController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCarrera(@PathVariable Long id) {
-        carreraService.deleteCarrera(id);
-        return new ResponseEntity<>("Carrera eliminada exitosamente", HttpStatus.OK);
+        try {
+            carreraService.deleteCarrera(id);
+            return new ResponseEntity<>("Carrera eliminada exitosamente", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("La carrera con id: " + id + " no existe.", HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<CarreraDTO> updateCarrera(@PathVariable Long id, @RequestBody CarreraDTO carrera) {
-        carreraService.updateCarrera(id, carrera);
-        return new ResponseEntity<>(carrera, HttpStatus.OK);
+        try {
+            carreraService.updateCarrera(id, carrera);
+            return new ResponseEntity<>(carrera, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

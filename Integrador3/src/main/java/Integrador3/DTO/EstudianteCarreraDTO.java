@@ -9,12 +9,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter @Setter
 public class EstudianteCarreraDTO {
-    private Long idEstudiante;
+    private Long documento;
     private String nombre;
     private String apellido;
     private int edad;
     private String genero;
-    private int documento;
     private String ciudad;
     private int nroLibreta;
     private Long idCarrera;
@@ -22,12 +21,9 @@ public class EstudianteCarreraDTO {
 
 
 
-
-
     @Override
     public String toString() {
         return "EstudianteCarreraDTO{" +
-                "idEstudiante=" + idEstudiante +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", edad=" + edad +

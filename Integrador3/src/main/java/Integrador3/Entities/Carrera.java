@@ -16,7 +16,7 @@ public class Carrera implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCarrera;
 
-    @Column
+    @Column(nullable = false)
     private String nombreCarrera;
 
     public  Carrera(String nombreCarrera) {

@@ -1,6 +1,7 @@
 package Integrador3.Service;
 
 import Integrador3.DTO.CarreraDTO;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import Integrador3.DTO.InscripcionDTO;
@@ -30,10 +31,10 @@ public class InscripcionService {
 
     public void addInscripcion(InscripcionDTO inscripcion) {
         Carrera carrera = carreraRepository.findById(inscripcion.getIdCarrera()).orElse(null);
-        Estudiante estudiante = estudianteRepository.findById(inscripcion.getIdEstudiante()).orElse(null);
+        Estudiante estudiante = estudianteRepository.findById((long) inscripcion.getDocumentoEstudiante()).orElse(null);
 
         Inscripcion newInscripcion = new Inscripcion(carrera, estudiante);
-        newInscripcion.setId(new InscripcionID(inscripcion.getIdCarrera(), inscripcion.getIdEstudiante()));
+        newInscripcion.setId(new InscripcionID(inscripcion.getIdCarrera(), (long) inscripcion.getDocumentoEstudiante()));
         inscripcionRepository.save(newInscripcion);
     }
 
@@ -42,17 +43,19 @@ public class InscripcionService {
     }
 
     public void deleteInscripcion(Long idCarrera, Long idEstudiante) {
+        if (getInscripcionById(idCarrera, idEstudiante) == null)
+            throw new EntityNotFoundException("Inscripcion no encontrada con idCarrera: " + idCarrera + " , idEstudiante:" + idEstudiante);
         inscripcionRepository.deleteById(idCarrera, idEstudiante);
     }
 
+    //DEBUGEAR DESP
     public InscripcionDTO updateInscripcion(Long idCarrera, Long idEstudiante, InscripcionDTO inscripcion) {
         InscripcionDTO newInscripcion = inscripcionRepository.findById(idCarrera, idEstudiante);
-
         if (newInscripcion != null) {
-            inscripcionRepository.update(inscripcion.getIdCarrera(), inscripcion.getIdEstudiante(), inscripcion.getFechaInscripcion(), inscripcion.getFechaGraduacion());
+            inscripcionRepository.update(inscripcion.getIdCarrera(), (long) inscripcion.getDocumentoEstudiante(), inscripcion.getFechaInscripcion(), inscripcion.getFechaGraduacion());
             return inscripcion;
         }
-        return null;
+        throw new EntityNotFoundException("Inscripcion no encontrada con idCarrera: " + idCarrera + " , idEstudiante:" + idEstudiante);
     }
 
     public List<InscripcionDTO> getAllInscripciones() {
@@ -60,7 +63,7 @@ public class InscripcionService {
         List<InscripcionDTO> res = new LinkedList<>();
 
         for (Inscripcion i : inscripciones)
-            res.add(new InscripcionDTO(i.getCarrera().getIdCarrera(), i.getEstudiante().getIdEstudiante(), i.getFechaInscripcion(), i.getFechaGraduacion()));
+            res.add(new InscripcionDTO(i.getCarrera().getIdCarrera(), i.getEstudiante().getDocumento(), i.getFechaInscripcion(), i.getFechaGraduacion()));
 
         return res;
     }

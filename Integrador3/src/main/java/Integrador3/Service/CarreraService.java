@@ -1,6 +1,8 @@
 package Integrador3.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import Integrador3.DTO.CarreraDTO;
 import Integrador3.DTO.CarreraInscriptosDTO;
@@ -24,7 +26,6 @@ public class CarreraService {
 
     public CarreraDTO getCarreraById(Long id) {
         Carrera carrera = carreraRepository.findById(id).orElse(null);
-
         if (carrera != null)
             return new CarreraDTO(carrera.getNombreCarrera());
         return null;
@@ -40,11 +41,16 @@ public class CarreraService {
         return res;
     }
 
+
     public void deleteCarrera(Long id) {
+        if (!carreraRepository.existsById(id))
+            throw new EntityNotFoundException("Carrera no encontrada con id: " + id);
         carreraRepository.deleteById(id);
     }
 
     public CarreraDTO updateCarrera(Long id, CarreraDTO carrera) {
+        if(!carreraRepository.existsById(id))
+            throw new EntityNotFoundException("Carrera no encontrada con id: " + id);
         Carrera newCarrera = carreraRepository.findById(id).orElse(null);
         newCarrera.setNombreCarrera(carrera.getNombreCarrera());
         carreraRepository.save(newCarrera);

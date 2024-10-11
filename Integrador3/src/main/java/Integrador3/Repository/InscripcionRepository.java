@@ -22,19 +22,19 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
             "ORDER BY YEAR(i.fechaInscripcion), c.nombreCarrera DESC ")
     List<ReporteDTO> getReporte();
 
-    @Query("SELECT new Integrador3.DTO.InscripcionDTO(i.carrera.idCarrera, i.estudiante.idEstudiante, i.fechaInscripcion, i.fechaGraduacion)  " +
-            "FROM Inscripcion i WHERE i.carrera.idCarrera =:idCarrera AND i.estudiante.idEstudiante =:idEstudiante ")
+    @Query("SELECT new Integrador3.DTO.InscripcionDTO(i.carrera.idCarrera, i.estudiante.documento, i.fechaInscripcion, i.fechaGraduacion)  " +
+            "FROM Inscripcion i WHERE i.carrera.idCarrera =:idCarrera AND i.estudiante.documento =:idEstudiante ")
     InscripcionDTO findById(Long idCarrera, Long idEstudiante);
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Inscripcion  i WHERE i.carrera.idCarrera =:idCarrera AND i.estudiante.idEstudiante = :idEstudiante")
+    @Query("DELETE FROM Inscripcion  i WHERE i.carrera.idCarrera =:idCarrera AND i.estudiante.documento = :idEstudiante")
     void deleteById(Long idCarrera, Long idEstudiante);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Inscripcion i SET i.carrera.idCarrera =:idCarrera, i.estudiante.idEstudiante =:idEstudiante," +
+    @Query("UPDATE Inscripcion i SET i.carrera.idCarrera =:idCarrera, i.estudiante.documento =:idEstudiante," +
             " i.fechaInscripcion = :fechaInscripcion, i.fechaGraduacion = :fechaGraduacion" +
-            " WHERE i.carrera.idCarrera = :idCarrera AND i.estudiante.idEstudiante = :idEstudiante")
+            " WHERE i.carrera.idCarrera = :idCarrera AND i.estudiante.documento = :idEstudiante")
     void update(Long idCarrera, Long idEstudiante, LocalDate fechaInscripcion, LocalDate fechaGraduacion);
 }
