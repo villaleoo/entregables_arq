@@ -22,8 +22,14 @@ public class InscripcionController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createInscrpcion(@RequestBody InscripcionDTO inscripcion) {
-        inscripcionService.addInscripcion(inscripcion);
-        return new ResponseEntity<>("Inscripcion creada exitosamente", HttpStatus.CREATED);
+        try {
+            inscripcionService.addInscripcion(inscripcion);
+            return new ResponseEntity<>("Inscripcion creada exitosamente", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error, ya existe la inscripción con idCarrera: " +
+                    inscripcion.getIdCarrera() + " y estudiante: " + inscripcion.getDocumentoEstudiante(), HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @GetMapping("/idCarrera/{idCarrera}/dniEstudiante/{idEstudiante}")

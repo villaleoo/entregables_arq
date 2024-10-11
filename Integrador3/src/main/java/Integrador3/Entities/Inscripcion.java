@@ -49,6 +49,7 @@ public class Inscripcion {
         this.estudiante = estudiante;
         this.fechaInscripcion = fechaInscripcion;
         this.fechaGraduacion = fechaGraduacion;
+        this.setAntiguedadEnCarrera();
     }
 
     public Inscripcion(Long idCarrrera, Long dniEstudiante, LocalDate fechaInscripcion, LocalDate fechaGraduacion) {

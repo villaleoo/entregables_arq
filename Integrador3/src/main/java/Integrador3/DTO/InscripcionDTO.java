@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -22,6 +21,14 @@ public class InscripcionDTO {
     public InscripcionDTO(Long idCarrera, Long idEstudiante) {
         this.idCarrera = idCarrera;
         this.documentoEstudiante = documentoEstudiante;
+
+    }
+
+    public InscripcionDTO(Long idCarrera, Long documentoEstudiante, LocalDate fechaInscripcion, LocalDate fechaGraduacion) {
+        this.idCarrera = idCarrera;
+        this.documentoEstudiante = documentoEstudiante;
+        this.fechaInscripcion = fechaInscripcion;
+        this.fechaGraduacion = fechaGraduacion;
     }
 
     public InscripcionDTO(LocalDate fechaInscripcion, LocalDate fechaGraduacion) {
