@@ -13,14 +13,14 @@ import Integrador3.Service.InscripcionService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/inscripcion")
+@RequestMapping("/inscripciones")
 public class InscripcionController {
 
     @Autowired
     private InscripcionService inscripcionService;
 
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<String> createInscrpcion(@RequestBody InscripcionDTO inscripcion) {
         try {
             inscripcionService.addInscripcion(inscripcion);
@@ -41,12 +41,12 @@ public class InscripcionController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public ResponseEntity<List<InscripcionDTO>> getAllInscripciones() {
         return new ResponseEntity<>(inscripcionService.getAllInscripciones(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/idCarrera/{idCarrera}/dniEstudiante/{idEstudiante}")
+    @DeleteMapping("/idCarrera/{idCarrera}/dniEstudiante/{idEstudiante}")
     public ResponseEntity<String> deleteInscripcion(@PathVariable Long idCarrera, @PathVariable Long idEstudiante) {
         try {
             inscripcionService.deleteInscripcion(idCarrera, idEstudiante);
@@ -56,7 +56,7 @@ public class InscripcionController {
         }
     }
 
-    @PutMapping("/update/idCarrera/{idCarrera}/dniEstudiante/{idEstudiante}")
+    @PutMapping("/idCarrera/{idCarrera}/dniEstudiante/{idEstudiante}")
     public ResponseEntity<InscripcionDTO> updateInscripcion(@PathVariable Long idCarrera, @PathVariable Long idEstudiante, @RequestBody InscripcionDTO inscripcion) {
         try {
             inscripcionService.updateInscripcion(idCarrera, idEstudiante, inscripcion);

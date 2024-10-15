@@ -13,13 +13,13 @@ import Integrador3.Service.EstudianteService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/estudiante")
+@RequestMapping("/estudiantes")
 public class EstudianteController {
 
     @Autowired
     private EstudianteService estudianteService;
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<String> createEstudiante(@RequestBody EstudianteDTO estudiante) {
         try {
             estudianteService.addEstudiante(estudiante);
@@ -38,7 +38,7 @@ public class EstudianteController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public ResponseEntity<List<EstudianteDTO>> getAllEstudiantes() {
         return new ResponseEntity<>(estudianteService.getAllEstudiantes(), HttpStatus.OK);
     }
@@ -71,7 +71,7 @@ public class EstudianteController {
         return new ResponseEntity<>(estudianteService.getEstudiantesByCarreraAndCiudad(carrera, ciudad), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEstudiante(@PathVariable Long id) {
         try {
             estudianteService.deleteEstudiante(id);
@@ -81,7 +81,7 @@ public class EstudianteController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<EstudianteDTO> updateEstudiante(@PathVariable Long id, @RequestBody EstudianteDTO estudiante) {
         try {
             estudianteService.updateEstudiante(id, estudiante);

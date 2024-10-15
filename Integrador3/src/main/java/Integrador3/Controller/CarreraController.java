@@ -12,13 +12,13 @@ import Integrador3.Service.CarreraService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/carrera")
+@RequestMapping("/carreras")
 public class CarreraController {
 
     @Autowired
     private CarreraService carreraService;
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<String> createCarrera(@RequestBody CarreraDTO carrera) {
         try {
             carreraService.addCarrera(carrera);
@@ -37,7 +37,7 @@ public class CarreraController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public ResponseEntity<List<CarreraDTO>> getAllCarreras() {
         return new ResponseEntity<>(carreraService.getAllCarreras(), HttpStatus.OK);
     }
@@ -47,7 +47,7 @@ public class CarreraController {
         return new ResponseEntity<>(carreraService.getCarrerasConEstudiantesInscriptos(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCarrera(@PathVariable Long id) {
         try {
             carreraService.deleteCarrera(id);
@@ -57,7 +57,7 @@ public class CarreraController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<CarreraDTO> updateCarrera(@PathVariable Long id, @RequestBody CarreraDTO carrera) {
         try {
             carreraService.updateCarrera(id, carrera);
