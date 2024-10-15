@@ -1,5 +1,7 @@
 package com.arqui.entregable3.controller;
 
+import com.arqui.entregable3.model.DTO.CarreraDTO;
+import com.arqui.entregable3.model.DTO.ReporteDTO;
 import com.arqui.entregable3.model.Entities.Carrera;
 import com.arqui.entregable3.service.CarreraService;
 
@@ -24,10 +26,14 @@ public class CarreraController {
     public Carrera addCarrera(@RequestBody Carrera c) {
     return service.addCarrera(c);
     }
-    /* 
+
     @GetMapping
     public Iterable<CarreraDTO> getCarreras() {
         return service.getCarreras();
     }
-*/
+
+    @GetMapping("reporte")
+    public Iterable<ReporteDTO> getReporte(){
+        return service.getReporte();
+    }
 }

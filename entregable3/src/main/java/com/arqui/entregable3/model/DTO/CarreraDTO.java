@@ -1,25 +1,30 @@
 package com.arqui.entregable3.model.DTO;
 
 
-
 public class CarreraDTO {
-    private int id_carrera;
     private String titulo;
-    
+    private long cantidadInscripciones;
 
     public CarreraDTO() {}
 
-    public CarreraDTO(int id_carrera, String titulo) {
-        this.id_carrera = id_carrera;
+    public CarreraDTO(String titulo, long cantidadInscripciones) {
         this.titulo = titulo;
-    }
-
-    public int getId_carrera() {
-        return id_carrera;
+        this.cantidadInscripciones = cantidadInscripciones;
     }
 
     public String getTitulo() {
         return titulo;
     }
 
+    public long getCantidadInscripciones() {
+        return cantidadInscripciones;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public void setCantidadInscripciones(long cantidadInscripciones) {
+        this.cantidadInscripciones = cantidadInscripciones;
+    }
 }
