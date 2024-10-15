@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 @RequestMapping("carreras")
 public class CarreraController {
@@ -22,18 +21,19 @@ public class CarreraController {
     public CarreraController(CarreraService service) {
         this.service = service;
     }
-    @PostMapping("/add")
-    public Carrera addCarrera(@RequestBody Carrera c) {
-    return service.addCarrera(c);
-    }
 
     @GetMapping
     public Iterable<CarreraDTO> getCarreras() {
         return service.getCarreras();
     }
 
+    @PostMapping("/add")
+    public Carrera addCarrera(@RequestBody Carrera c) {
+        return service.addCarrera(c);
+    }
+
     @GetMapping("reporte")
-    public Iterable<ReporteDTO> getReporte(){
+    public Iterable<ReporteDTO> getReporte() {
         return service.getReporte();
     }
 }

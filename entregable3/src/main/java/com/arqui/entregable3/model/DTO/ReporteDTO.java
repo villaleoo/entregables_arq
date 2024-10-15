@@ -1,36 +1,35 @@
 package com.arqui.entregable3.model.DTO;
 
-import java.time.LocalDate;
-import java.util.List;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class ReporteDTO {
-    @Getter
-    private Integer id;
-    @Getter
-    private String nombre;
-    @Getter
-    private Long id_estudiante;
-    @Getter
-    @Setter
-    private LocalDate inicio, graduacion;
-    @Getter
-    @Setter
-    private List<EstudianteDTO> inscriptos;
-    @Getter
-    @Setter
-    private List<EstudianteDTO> egresados;
 
-    public ReporteDTO() {
-        super();
+@NoArgsConstructor
+@Getter
+@Setter
+public class ReporteDTO {
+    private Long idCarrera;
+    private String nombreCarrera;
+    private Long totalInscriptos; 
+    private Long totalEgresados;  
+
+    
+    public ReporteDTO(Long idCarrera, String nombreCarrera, Long totalInscriptos, Long totalEgresados) {
+        this.idCarrera = idCarrera;
+        this.nombreCarrera = nombreCarrera;
+        this.totalInscriptos = totalInscriptos;
+        this.totalEgresados = totalEgresados;
     }
 
-    public ReporteDTO(String nombre, Long id_estudiante, LocalDate inicio, LocalDate graduacion) {
-        this.nombre = nombre;
-        this.id_estudiante = id_estudiante;
-        this.inicio = inicio;
-        this.graduacion = graduacion;
+    @Override
+    public String toString() {
+        return "ReporteDTO{" +
+                "idCarrera=" + idCarrera +
+                ", nombreCarrera='" + nombreCarrera + '\'' +
+                ", totalInscriptos=" + totalInscriptos +
+                ", totalEgresados=" + totalEgresados +
+                '}';
     }
 }

@@ -21,7 +21,6 @@ public class InscripcionController {
         this.service = service;
     }
 
-    
     @GetMapping
     public Iterable<Inscripcion> traerInscripciones() {
         return service.getInscripciones();

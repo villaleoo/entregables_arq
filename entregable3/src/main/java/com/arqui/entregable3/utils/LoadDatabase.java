@@ -24,24 +24,22 @@ class LoadDatabase {
     CommandLineRunner initDataBase(EstudianteRepository estudianteRepository, CarreraRepository carreraRepository,
             InscripcionRepository inscripcionRepository) {
         return args -> {
+            /* 
             // Crear el estudiante
-            /*Estudiante estudiante1 = new Estudiante("Esteban", "Orellano", LocalDate.of(2002, 11, 24), Genero.MASCULINO,
+            Estudiante estudiante1 = new Estudiante("Esteban", "Orellano", LocalDate.of(2002, 11, 24), Genero.MASCULINO,
                     421422, "Rauch", "asdasdsa2");
-            
+
             // Guardar el estudiante en la base de datos
             log.info("Preloading " + estudianteRepository.save(estudiante1));
-            */
+
             // Crear la carrera
             Carrera carrera1 = new Carrera("produccion");
             log.info("Preloading " + carreraRepository.save(carrera1));
 
             // Crear la inscripción
-            /* 
             Inscripcion insc = new Inscripcion(estudiante1, carrera1);
             log.info("Preloading " + inscripcionRepository.save(insc));
             */
         };
-    }
+    }     
 }
-
-

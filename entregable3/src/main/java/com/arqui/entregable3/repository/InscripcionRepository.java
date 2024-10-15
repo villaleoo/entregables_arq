@@ -11,6 +11,4 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
     
     @Query("SELECT i FROM Inscripcion i")
     List<Inscripcion> getInscripciones();
-
-    
 }

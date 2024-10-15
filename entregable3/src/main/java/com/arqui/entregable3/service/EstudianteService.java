@@ -17,11 +17,11 @@ public class EstudianteService {
         this.repo = repo;
     }
 
-    public Iterable<EstudianteDTO> getPersonsByNumLibreta(String num_libreta) {
+    public Iterable<EstudianteDTO> getEstudiantesByNumLibreta(String num_libreta) {
         return repo.findAllByNumLibreta(num_libreta);
     }
 
-    public Iterable<EstudianteDTO> getPersonsByGenero(Genero genero) {
+    public Iterable<EstudianteDTO> getEstudiantesByGenero(Genero genero) {
         return repo.findAllByGenero(genero);
     }
 
@@ -37,7 +37,7 @@ public class EstudianteService {
         return repo.findById(id);
     }
 
-    public Iterable<EstudianteDTO> getPersonsByCarreraAndCiudad(String carrera, String ciudad) {
+    public Iterable<EstudianteDTO> getEstudiantesByCarreraAndCiudad(String carrera, String ciudad) {
         return repo.findAllByCarreraAndCiudad(carrera, ciudad);
 
     }
