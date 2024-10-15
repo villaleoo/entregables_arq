@@ -22,7 +22,7 @@ public class EstudianteService {
     private EstudianteRepository estudianteRepository;
 
 
-    public void addEstudiante(EstudianteDTO estudiante) {
+    public void add(EstudianteDTO estudiante) {
         if (estudianteRepository.existsById((long) estudiante.getDocumento()))
             throw new DuplicateKeyException("Ya existe un estudiante con el documento que estás intentando ingresar" + estudiante.getDocumento());
 
@@ -37,7 +37,7 @@ public class EstudianteService {
         estudianteRepository.save(newEstudiante);
     }
 
-    public EstudianteDTO getEstudianteById(Long id) {
+    public EstudianteDTO getById(Long id) {
         Estudiante estudiante = estudianteRepository.findById(id).orElse(null);
         if (estudiante != null)
             return new EstudianteDTO(estudiante.getDocumento(), estudiante.getNombre(), estudiante.getApellido(), estudiante.getEdad(),
@@ -45,7 +45,7 @@ public class EstudianteService {
         return null;
     }
 
-    public List<EstudianteDTO> getAllEstudiantes() {
+    public List<EstudianteDTO> getAll() {
         List<Estudiante> estudiantes = estudianteRepository.findAll();
         List<EstudianteDTO> res = new LinkedList<>();
 
@@ -75,13 +75,13 @@ public class EstudianteService {
         return estudianteRepository.getEstudiantesByCarreraAndCiudad(carrera, ciudad);
     }
 
-    public void deleteEstudiante(Long id) {
+    public void delete(Long id) {
         if (!estudianteRepository.existsById(id))
             throw new EntityNotFoundException("Estudiante no encontrado con id: " + id);
         estudianteRepository.deleteById(id);
     }
 
-    public EstudianteDTO updateEstudiante(Long id, EstudianteDTO estudiante) {
+    public EstudianteDTO update(Long id, EstudianteDTO estudiante) {
         if (!estudianteRepository.existsById(id))
             throw new EntityNotFoundException("Estudiante no encontrado con id: " + id);
         Estudiante newEstudiante = estudianteRepository.findById(id).orElse(null);

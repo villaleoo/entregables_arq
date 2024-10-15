@@ -21,9 +21,9 @@ public class InscripcionController {
 
 
     @PostMapping("")
-    public ResponseEntity<String> createInscrpcion(@RequestBody InscripcionDTO inscripcion) {
+    public ResponseEntity<String> add(@RequestBody InscripcionDTO inscripcion) {
         try {
-            inscripcionService.addInscripcion(inscripcion);
+            inscripcionService.add(inscripcion);
             return new ResponseEntity<>("Inscripcion creada exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Error, ya existe la inscripción con idCarrera: " +
@@ -33,8 +33,8 @@ public class InscripcionController {
     }
 
     @GetMapping("/idCarrera/{idCarrera}/dniEstudiante/{idEstudiante}")
-    public ResponseEntity<InscripcionDTO> getInscripcionById(@PathVariable Long idCarrera, @PathVariable Long idEstudiante) {
-        InscripcionDTO inscripcion = inscripcionService.getInscripcionById(idCarrera, idEstudiante);
+    public ResponseEntity<InscripcionDTO> getById(@PathVariable Long idCarrera, @PathVariable Long idEstudiante) {
+        InscripcionDTO inscripcion = inscripcionService.getById(idCarrera, idEstudiante);
         if (inscripcion != null)
             return new ResponseEntity<>(inscripcion, HttpStatus.OK);
 
@@ -42,14 +42,14 @@ public class InscripcionController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<InscripcionDTO>> getAllInscripciones() {
-        return new ResponseEntity<>(inscripcionService.getAllInscripciones(), HttpStatus.OK);
+    public ResponseEntity<List<InscripcionDTO>> getAll() {
+        return new ResponseEntity<>(inscripcionService.getAll(), HttpStatus.OK);
     }
 
     @DeleteMapping("/idCarrera/{idCarrera}/dniEstudiante/{idEstudiante}")
-    public ResponseEntity<String> deleteInscripcion(@PathVariable Long idCarrera, @PathVariable Long idEstudiante) {
+    public ResponseEntity<String> delete(@PathVariable Long idCarrera, @PathVariable Long idEstudiante) {
         try {
-            inscripcionService.deleteInscripcion(idCarrera, idEstudiante);
+            inscripcionService.delete(idCarrera, idEstudiante);
             return new ResponseEntity<>("Inscripcion eliminada exitosamente", HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>("Inscripcion no encontrada con idCarrera: " + idCarrera + " , idEstudiante:" + idEstudiante, HttpStatus.NOT_FOUND);
@@ -57,9 +57,9 @@ public class InscripcionController {
     }
 
     @PutMapping("/idCarrera/{idCarrera}/dniEstudiante/{idEstudiante}")
-    public ResponseEntity<InscripcionDTO> updateInscripcion(@PathVariable Long idCarrera, @PathVariable Long idEstudiante, @RequestBody InscripcionDTO inscripcion) {
+    public ResponseEntity<InscripcionDTO> update(@PathVariable Long idCarrera, @PathVariable Long idEstudiante, @RequestBody InscripcionDTO inscripcion) {
         try {
-            inscripcionService.updateInscripcion(idCarrera, idEstudiante, inscripcion);
+            inscripcionService.update(idCarrera, idEstudiante, inscripcion);
             return new ResponseEntity<>(inscripcion, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

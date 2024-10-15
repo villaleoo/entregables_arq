@@ -21,9 +21,9 @@ public class EstudianteController {
     private EstudianteService estudianteService;
 
     @PostMapping("")
-    public ResponseEntity<String> createEstudiante(@RequestBody EstudianteDTO estudiante) {
+    public ResponseEntity<String> add(@RequestBody EstudianteDTO estudiante) {
         try {
-            estudianteService.addEstudiante(estudiante);
+            estudianteService.add(estudiante);
             return new ResponseEntity<>("Estudiante creado exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Error." + e.getMessage(), HttpStatus.CONFLICT);
@@ -31,8 +31,8 @@ public class EstudianteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EstudianteDTO> getEstudianteById(@PathVariable Long id) {
-        EstudianteDTO estudiante = estudianteService.getEstudianteById(id);
+    public ResponseEntity<EstudianteDTO> getById(@PathVariable Long id) {
+        EstudianteDTO estudiante = estudianteService.getById(id);
         if (estudiante != null)
             return new ResponseEntity<>(estudiante, HttpStatus.OK);
 
@@ -40,8 +40,8 @@ public class EstudianteController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<EstudianteDTO>> getAllEstudiantes() {
-        return new ResponseEntity<>(estudianteService.getAllEstudiantes(), HttpStatus.OK);
+    public ResponseEntity<List<EstudianteDTO>> getAll() {
+        return new ResponseEntity<>(estudianteService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/orderby/{criterio}")
@@ -73,9 +73,9 @@ public class EstudianteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEstudiante(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         try {
-            estudianteService.deleteEstudiante(id);
+            estudianteService.delete(id);
             return new ResponseEntity<>("Estudiante eliminado exitosamente", HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>("El estudiante con id: " + id + " no existe.", HttpStatus.NOT_FOUND);
@@ -83,9 +83,9 @@ public class EstudianteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EstudianteDTO> updateEstudiante(@PathVariable Long id, @RequestBody EstudianteDTO estudiante) {
+    public ResponseEntity<EstudianteDTO> update(@PathVariable Long id, @RequestBody EstudianteDTO estudiante) {
         try {
-            estudianteService.updateEstudiante(id, estudiante);
+            estudianteService.update(id, estudiante);
             return new ResponseEntity<>(estudiante, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

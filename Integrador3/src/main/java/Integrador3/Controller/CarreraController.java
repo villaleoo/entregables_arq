@@ -19,9 +19,9 @@ public class CarreraController {
     private CarreraService carreraService;
 
     @PostMapping("")
-    public ResponseEntity<String> createCarrera(@RequestBody CarreraDTO carrera) {
+    public ResponseEntity<String> add(@RequestBody CarreraDTO carrera) {
         try {
-            carreraService.addCarrera(carrera);
+            carreraService.add(carrera);
             return new ResponseEntity<>("Carrera creada exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Error, ingresaste mal el nombre de una columna " + e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -29,8 +29,8 @@ public class CarreraController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CarreraDTO> getCarreraById(@PathVariable Long id) {
-        CarreraDTO carrera = carreraService.getCarreraById(id);
+    public ResponseEntity<CarreraDTO> getById(@PathVariable Long id) {
+        CarreraDTO carrera = carreraService.getById(id);
         if (carrera != null)
             return new ResponseEntity<>(carrera, HttpStatus.OK);
 
@@ -38,8 +38,8 @@ public class CarreraController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<CarreraDTO>> getAllCarreras() {
-        return new ResponseEntity<>(carreraService.getAllCarreras(), HttpStatus.OK);
+    public ResponseEntity<List<CarreraDTO>> getAll() {
+        return new ResponseEntity<>(carreraService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/inscriptos")
@@ -48,9 +48,9 @@ public class CarreraController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCarrera(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         try {
-            carreraService.deleteCarrera(id);
+            carreraService.delete(id);
             return new ResponseEntity<>("Carrera eliminada exitosamente", HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>("La carrera con id: " + id + " no existe.", HttpStatus.NOT_FOUND);
@@ -58,9 +58,9 @@ public class CarreraController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CarreraDTO> updateCarrera(@PathVariable Long id, @RequestBody CarreraDTO carrera) {
+    public ResponseEntity<CarreraDTO> update(@PathVariable Long id, @RequestBody CarreraDTO carrera) {
         try {
-            carreraService.updateCarrera(id, carrera);
+            carreraService.update(id, carrera);
             return new ResponseEntity<>(carrera, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

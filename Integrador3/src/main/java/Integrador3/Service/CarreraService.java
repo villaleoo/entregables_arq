@@ -18,20 +18,20 @@ public class CarreraService {
     @Autowired
     private CarreraRepository carreraRepository;
 
-    public void addCarrera(CarreraDTO carrera) {
+    public void add(CarreraDTO carrera) {
         Carrera newCarrera = new Carrera();
         newCarrera.setNombreCarrera(carrera.getNombreCarrera());
         carreraRepository.save(newCarrera);
     }
 
-    public CarreraDTO getCarreraById(Long id) {
+    public CarreraDTO getById(Long id) {
         Carrera carrera = carreraRepository.findById(id).orElse(null);
         if (carrera != null)
             return new CarreraDTO(carrera.getNombreCarrera());
         return null;
     }
 
-    public List<CarreraDTO> getAllCarreras() {
+    public List<CarreraDTO> getAll() {
         List<Carrera> carreras = carreraRepository.findAll();
         List<CarreraDTO> res = new LinkedList<>();
 
@@ -42,13 +42,13 @@ public class CarreraService {
     }
 
 
-    public void deleteCarrera(Long id) {
+    public void delete(Long id) {
         if (!carreraRepository.existsById(id))
             throw new EntityNotFoundException("Carrera no encontrada con id: " + id);
         carreraRepository.deleteById(id);
     }
 
-    public CarreraDTO updateCarrera(Long id, CarreraDTO carrera) {
+    public CarreraDTO update(Long id, CarreraDTO carrera) {
         if(!carreraRepository.existsById(id))
             throw new EntityNotFoundException("Carrera no encontrada con id: " + id);
         Carrera newCarrera = carreraRepository.findById(id).orElse(null);

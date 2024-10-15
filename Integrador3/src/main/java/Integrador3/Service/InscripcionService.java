@@ -29,7 +29,7 @@ public class InscripcionService {
     @Autowired
     private EstudianteRepository estudianteRepository;
 
-    public void addInscripcion(InscripcionDTO inscripcion) {
+    public void add(InscripcionDTO inscripcion) {
         Carrera carrera = carreraRepository.findById(inscripcion.getIdCarrera()).orElse(null);
         Estudiante estudiante = estudianteRepository.findById((long) inscripcion.getDocumentoEstudiante()).orElse(null);
 
@@ -38,18 +38,18 @@ public class InscripcionService {
         inscripcionRepository.save(newInscripcion);
     }
 
-    public InscripcionDTO getInscripcionById(Long idCarrera, Long idEstudiante) {
+    public InscripcionDTO getById(Long idCarrera, Long idEstudiante) {
         return inscripcionRepository.findById(idCarrera, idEstudiante);
     }
 
-    public void deleteInscripcion(Long idCarrera, Long idEstudiante) {
-        if (getInscripcionById(idCarrera, idEstudiante) == null)
+    public void delete(Long idCarrera, Long idEstudiante) {
+        if (getById(idCarrera, idEstudiante) == null)
             throw new EntityNotFoundException("Inscripcion no encontrada con idCarrera: " + idCarrera + " , idEstudiante:" + idEstudiante);
         inscripcionRepository.deleteById(idCarrera, idEstudiante);
     }
 
     //DEBUGEAR DESP
-    public InscripcionDTO updateInscripcion(Long idCarrera, Long idEstudiante, InscripcionDTO inscripcion) {
+    public InscripcionDTO update(Long idCarrera, Long idEstudiante, InscripcionDTO inscripcion) {
         InscripcionDTO newInscripcion = inscripcionRepository.findById(idCarrera, idEstudiante);
         if (newInscripcion != null) {
             inscripcionRepository.update(inscripcion.getIdCarrera(), (long) inscripcion.getDocumentoEstudiante(), inscripcion.getFechaInscripcion(), inscripcion.getFechaGraduacion());
@@ -58,7 +58,7 @@ public class InscripcionService {
         throw new EntityNotFoundException("Inscripcion no encontrada con idCarrera: " + idCarrera + " , idEstudiante:" + idEstudiante);
     }
 
-    public List<InscripcionDTO> getAllInscripciones() {
+    public List<InscripcionDTO> getAll() {
         List<Inscripcion> inscripciones = inscripcionRepository.findAll();
         List<InscripcionDTO> res = new LinkedList<>();
 
