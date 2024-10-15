@@ -1,0 +1,514 @@
+{
+	"info": {
+		"_postman_id": "c0dd2e18-56df-4af4-9854-c1d88c98ca79",
+		"name": "Integrador3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24214034"
+	},
+	"item": [
+		{
+			"name": "CreateCarrera",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombreCarrera\": \"Holaneta\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/carrera/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"carrera",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateEstudiante",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"documento\": 1212,\r\n    \"nombre\": \"Joaquin\",\r\n    \"apellido\": \"Gonzalez\",\r\n    \"edad\": 22,\r\n    \"genero\": \"Masculino\",\r\n    \"ciudad\": \"Buenos Aires\",\r\n    \"nroLibreta\": 123\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/estudiante/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"estudiante",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateInscripcion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idCarrera\": 1,\r\n    \"documentoEstudiante\": 16768994,\r\n    \"fechaInscripcion\": \"2020-01-01\",\r\n    \"fechaGraduacion\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/inscripcion/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"inscripcion",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllInscripcion",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/inscripcion/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"inscripcion",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllICarrera",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/carrera/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"carrera",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllEstudiante",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/estudiante/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"estudiante",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetByIdInscripcion",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/inscripcion/idCarrera/13/dniEstudiante/11",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"inscripcion",
+						"idCarrera",
+						"13",
+						"dniEstudiante",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetByIdCarrera",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/carrera/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"carrera",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetByIdEstudiante",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/estudiante/16",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"estudiante",
+						"16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEstudianteOrderByCriterio",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/estudiante/orderby/ciudad",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"estudiante",
+						"orderby",
+						"ciudad"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEstudianteByNroLibreta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/estudiante/nroLibreta/51171",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"estudiante",
+						"nroLibreta",
+						"51171"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEstudianteOrderByGenero",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/estudiante/genero/male",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"estudiante",
+						"genero",
+						"male"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEstudiantesByCarreraAndCiudad",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/estudiante/carrera/TUDAI/ciudad/Rauch",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"estudiante",
+						"carrera",
+						"TUDAI",
+						"ciudad",
+						"Rauch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCarrerasConInscriptos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/carrera/inscriptos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"carrera",
+						"inscriptos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetInscripcionReporte",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/inscripcion/reporte",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"inscripcion",
+						"reporte"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateEstudiante",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"nombre\": \"Juan\",\r\n    \"apellido\": \"Gonzalez\",\r\n    \"edad\": 22,\r\n    \"genero\": \"Masculino\",\r\n    \"documento\": 87684462,\r\n    \"ciudad\": \"Buenos Aires\",\r\n    \"nroLibreta\": 11\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/estudiante/update/87684462",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"estudiante",
+						"update",
+						"87684462"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateCarrera",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombreCarrera\" : \"Ciencias de la computacion\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/carrera/update/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"carrera",
+						"update",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateInscripcion",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idCarrera\":9,\r\n    \"documentoEstudiante\": 71704970,\r\n    \"fechaInscripcion\" : \"2015-10-11\",\r\n    \"fechaGraduacion\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/inscripcion/update/idCarrera/9/dniEstudiante/71704970",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"inscripcion",
+						"update",
+						"idCarrera",
+						"9",
+						"dniEstudiante",
+						"71704970"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteEstudiante",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/estudiante/delete/1212",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"estudiante",
+						"delete",
+						"1212"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteCarrera",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/carrera/delete/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"carrera",
+						"delete",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteInscripcion",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/inscripcion/delete/idCarrera/12/dniEstudiante/99497767",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"inscripcion",
+						"delete",
+						"idCarrera",
+						"12",
+						"dniEstudiante",
+						"99497767"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
