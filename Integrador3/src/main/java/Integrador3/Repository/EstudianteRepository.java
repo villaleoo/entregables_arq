@@ -1,5 +1,6 @@
 package Integrador3.Repository;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import Integrador3.DTO.EstudianteCarreraDTO;
@@ -13,11 +14,10 @@ import java.util.List;
 public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
 
 
-   /*
-   Opción descartada ya que JPQL no permite variables dinamicas en el ORDER BY.
-   @Query("SELECT new Integrador3.DTO.EstudianteDTO (e.nombre, e.apellido, e.edad,e.genero, e.documento, e.ciudad, e.nroLibreta)  " +
-            "  FROM Estudiante e ORDER BY :criterio ")
-    List<EstudianteDTO> getEstudiantesOrderedBy(String criterio);*/
+
+   @Query("SELECT new Integrador3.DTO.EstudianteDTO (e.documento,e.nombre, e.apellido, e.edad,e.genero, e.ciudad, e.nroLibreta)  " +
+            "  FROM Estudiante e")
+    List<EstudianteDTO> getEstudiantesOrderedBy(Sort sort);
 
     @Query("SELECT new Integrador3.DTO.EstudianteDTO ( e.documento,e.nombre, e.apellido, e.edad,e.genero, e.ciudad, e.nroLibreta)" +
             " FROM Estudiante e WHERE e.nroLibreta = :nroLibreta")

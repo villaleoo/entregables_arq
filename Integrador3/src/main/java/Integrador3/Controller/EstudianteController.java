@@ -2,6 +2,7 @@ package Integrador3.Controller;
 
 
 import jakarta.persistence.EntityNotFoundException;
+import org.hibernate.query.sqm.PathElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class EstudianteController {
 
     @GetMapping("/orderby/{criterio}")
     public ResponseEntity<List<EstudianteDTO>> getEstudiantesOrderedBy(@PathVariable String criterio) {
-        return new ResponseEntity<>(estudianteService.getEstudiantesOrderedBy(criterio), HttpStatus.OK);
+            return new ResponseEntity<>(estudianteService.getEstudiantesOrderedBy(criterio), HttpStatus.OK);
     }
 
     @GetMapping("/nroLibreta/{nroLibreta}")

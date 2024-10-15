@@ -6,6 +6,7 @@ import Integrador3.Entities.Carrera;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import Integrador3.DTO.EstudianteCarreraDTO;
 import Integrador3.DTO.EstudianteDTO;
@@ -56,48 +57,7 @@ public class EstudianteService {
     }
 
     public List<EstudianteDTO> getEstudiantesOrderedBy(String criterio) {
-        boolean encontrado = Arrays.stream(EstudianteDTO.class.getDeclaredFields())
-                .anyMatch(campo -> campo.getName().equals(criterio));
-        if (encontrado) {
-            List<Estudiante> estudiantes = estudianteRepository.findAll();
-            List<EstudianteDTO> res = new LinkedList<>();
-
-            Comparator<Estudiante> comparator;
-            switch (criterio) {
-                case "nombre":
-                    comparator = Comparator.comparing(Estudiante::getNombre);
-                    break;
-                case "apellido":
-                    comparator = Comparator.comparing(Estudiante::getApellido);
-                    break;
-                case "edad":
-                    comparator = Comparator.comparing(Estudiante::getEdad);
-                    break;
-                case "genero":
-                    comparator = Comparator.comparing(Estudiante::getGenero);
-                    break;
-                case "documento":
-                    comparator = Comparator.comparing(Estudiante::getDocumento);
-                    break;
-                case "ciudad":
-                    comparator = Comparator.comparing(Estudiante::getCiudad);
-                    break;
-                case "nroLibreta":
-                    comparator = Comparator.comparing(Estudiante::getNroLibreta);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Criterio no válido: " + criterio);
-            }
-
-            estudiantes.sort(comparator);
-            for (Estudiante e : estudiantes) {
-                EstudianteDTO aux = new EstudianteDTO(e.getDocumento(), e.getNombre(), e.getApellido(), e.getEdad(), e.getGenero(), e.getCiudad(), e.getNroLibreta());
-                res.add(aux);
-            }
-            return res;
-        }
-
-        throw new IllegalArgumentException("Criterio no válido: " + criterio);
+        return estudianteRepository.getEstudiantesOrderedBy(Sort.by(criterio));
     }
 
     public EstudianteDTO getEstudianteByNroLibreta(int nroLibreta) {
