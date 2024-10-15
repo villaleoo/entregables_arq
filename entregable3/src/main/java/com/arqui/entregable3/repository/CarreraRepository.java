@@ -1,15 +1,14 @@
 package com.arqui.entregable3.repository;
 
-import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import com.arqui.entregable3.model.Entities.Carrera;
 
-
 public interface CarreraRepository extends JpaRepository<Carrera, Integer> {
 
-    @Query("SELECT c FROM Carrera c LEFT JOIN c.inscripciones i GROUP BY c.id_carrera ORDER BY COUNT(i) DESC")
-    List<Carrera> findAllOrderedByInscriptos();
+    /* 
+    @Query("SELECT new com.arqui.entregable3.model.DTO.CarreraDTO(c.titulo, COUNT(i.carrera.id_carrera)) FROM Carrera c JOIN Inscripcion i ON c.id_carrera = i.carrera.id_carrera GROUP BY c.titulo HAVING COUNT(i.carrera.id_carrera) > 0 ORDER BY COUNT(i.carrera.id_carrera) DESC")
+    List<CarreraDTO> getCarreras();
+*/
 }

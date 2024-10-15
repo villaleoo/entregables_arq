@@ -4,8 +4,9 @@ import com.arqui.entregable3.utils.enums.Genero;
 
 import java.time.LocalDate;
 
+
 public class EstudianteDTO {
-    private int id_persona;
+    private Long id_persona;
     private String nombre;
     private String apellido;
     private LocalDate fecha_nacimiento;
@@ -13,13 +14,12 @@ public class EstudianteDTO {
     private int dni;
     private String ciudad_residencia;
     private String num_libreta;
-    private int cant_carreras_inscriptas;
 
     public EstudianteDTO() {
         super();
     }
 
-    public int getId_persona() {
+    public Long getId_persona() {
         return id_persona;
     }
 
@@ -51,12 +51,8 @@ public class EstudianteDTO {
         return num_libreta;
     }
 
-    public int getCant_carreras_inscriptas() {
-        return cant_carreras_inscriptas;
-    }
-
-    public EstudianteDTO(int id_persona, String nombre, String apellido, LocalDate fecha_nacimiento,
-            Genero genero, int dni, String ciudad_residencia, String num_libreta, int cant_carreras_inscriptas) {
+    public EstudianteDTO(Long id_persona, String nombre, String apellido, LocalDate fecha_nacimiento, Genero genero,
+            int dni, String ciudad_residencia, String num_libreta) {
         this.id_persona = id_persona;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -65,6 +61,5 @@ public class EstudianteDTO {
         this.dni = dni;
         this.ciudad_residencia = ciudad_residencia;
         this.num_libreta = num_libreta;
-        this.cant_carreras_inscriptas = cant_carreras_inscriptas;
     }
 }
