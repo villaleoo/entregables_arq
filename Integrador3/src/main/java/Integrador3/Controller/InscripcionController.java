@@ -26,7 +26,7 @@ public class InscripcionController {
             inscripcionService.add(inscripcion);
             return new ResponseEntity<>("Inscripcion creada exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>("Error, ya existe la inscripción con idCarrera: " +
+            return new ResponseEntity<>("Error al insertar la inscripción con idCarrera: " +
                     inscripcion.getIdCarrera() + " y estudiante: " + inscripcion.getDocumentoEstudiante(), HttpStatus.BAD_REQUEST);
 
         }

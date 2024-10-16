@@ -64,7 +64,7 @@ public class EstudianteService {
         EstudianteDTO est = estudianteRepository.getEstudianteByNroLibreta(nroLibreta);
         if (est != null)
             return est;
-        else throw new EntityNotFoundException("Estudiante no encontrado con nro librreta: " + nroLibreta);
+        else throw new EntityNotFoundException("Estudiante no encontrado con nro libreta: " + nroLibreta);
     }
 
     public List<EstudianteDTO> getEstudiantesByGenero(String genero) {

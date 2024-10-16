@@ -33,7 +33,7 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
 
     @Modifying
     @Transactional
-    @Query("UPDATE Inscripcion i SET i.carrera.idCarrera =:idCarrera, i.estudiante.documento =:idEstudiante," +
+    @Query("UPDATE Inscripcion i SET" +
             " i.fechaInscripcion = :fechaInscripcion, i.fechaGraduacion = :fechaGraduacion" +
             " WHERE i.carrera.idCarrera = :idCarrera AND i.estudiante.documento = :idEstudiante")
     void update(Long idCarrera, Long idEstudiante, LocalDate fechaInscripcion, LocalDate fechaGraduacion);
