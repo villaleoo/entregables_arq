@@ -1,0 +1,10 @@
+version: "3"
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - "password=${MYSQL_ROOT_PASSWORD}"
+    ports:
+      - "3306:3306"
