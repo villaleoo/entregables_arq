@@ -48,7 +48,6 @@ public class InscripcionService {
         inscripcionRepository.deleteById(idCarrera, idEstudiante);
     }
 
-    //DEBUGEAR DESP
     public InscripcionDTO update(Long idCarrera, Long idEstudiante, InscripcionDTO inscripcion) {
         InscripcionDTO newInscripcion = inscripcionRepository.findById(idCarrera, idEstudiante);
         if (newInscripcion != null) {

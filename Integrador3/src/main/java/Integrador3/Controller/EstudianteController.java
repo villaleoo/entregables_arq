@@ -1,6 +1,7 @@
 package Integrador3.Controller;
 
 
+import Integrador3.DTO.EstudianteSearchDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.query.sqm.PathElementException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,30 +47,16 @@ public class EstudianteController {
 
     @GetMapping("/orderby/{criterio}")
     public ResponseEntity<List<EstudianteDTO>> getEstudiantesOrderedBy(@PathVariable String criterio) {
-            return new ResponseEntity<>(estudianteService.getEstudiantesOrderedBy(criterio), HttpStatus.OK);
+        return new ResponseEntity<>(estudianteService.getEstudiantesOrderedBy(criterio), HttpStatus.OK);
     }
 
-    @GetMapping("/nroLibreta/{nroLibreta}")
-    public ResponseEntity<EstudianteDTO> getEstudianteByNroLibreta(@PathVariable int nroLibreta) {
+    @GetMapping("/search")
+    public ResponseEntity<List<EstudianteDTO>> getEstudiantesByAttribute(EstudianteSearchDTO request) {
         try {
-            return new ResponseEntity<>(estudianteService.getEstudianteByNroLibreta(nroLibreta), HttpStatus.OK);
+            return new ResponseEntity<>(estudianteService.getEstudiantesBy(request), HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
-
-    @GetMapping("/genero/{genero}")
-    public ResponseEntity<List<EstudianteDTO>> getEstudiantesByGenero(@PathVariable String genero) {
-        try {
-            return new ResponseEntity<>(estudianteService.getEstudiantesByGenero(genero), HttpStatus.OK);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @GetMapping("/carrera/{carrera}/ciudad/{ciudad}")
-    public ResponseEntity<List<EstudianteCarreraDTO>> getEstudiantesByCarreraAndCiudad(@PathVariable String carrera, @PathVariable String ciudad) {
-        return new ResponseEntity<>(estudianteService.getEstudiantesByCarreraAndCiudad(carrera, ciudad), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

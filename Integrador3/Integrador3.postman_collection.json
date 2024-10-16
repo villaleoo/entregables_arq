@@ -232,12 +232,12 @@
 			"response": []
 		},
 		{
-			"name": "GetEstudianteByNroLibreta",
+			"name": "GetEstudianteByAttribute",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/estudiantes/nroLibreta/48092",
+					"raw": "http://localhost:8080/estudiantes/search?nroLibreta=61607&ciudad=Melekeok Village",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -245,29 +245,17 @@
 					"port": "8080",
 					"path": [
 						"estudiantes",
-						"nroLibreta",
-						"48092"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetEstudianteOrderByGenero",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/estudiantes/genero/male",
-					"protocol": "http",
-					"host": [
-						"localhost"
+						"search"
 					],
-					"port": "8080",
-					"path": [
-						"estudiantes",
-						"genero",
-						"male"
+					"query": [
+						{
+							"key": "nroLibreta",
+							"value": "61607"
+						},
+						{
+							"key": "ciudad",
+							"value": "Melekeok Village"
+						}
 					]
 				}
 			},
@@ -279,7 +267,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/estudiantes/carrera/TUDAI/ciudad/Rauch",
+					"raw": "http://localhost:8080/estudiantes/search?ciudad=Rauch&idCarrera=1&nombreCarrera=TUDAI",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -287,10 +275,21 @@
 					"port": "8080",
 					"path": [
 						"estudiantes",
-						"carrera",
-						"TUDAI",
-						"ciudad",
-						"Rauch"
+						"search"
+					],
+					"query": [
+						{
+							"key": "ciudad",
+							"value": "Rauch"
+						},
+						{
+							"key": "idCarrera",
+							"value": "1"
+						},
+						{
+							"key": "nombreCarrera",
+							"value": "TUDAI"
+						}
 					]
 				}
 			},

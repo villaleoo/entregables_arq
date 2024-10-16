@@ -1,15 +1,12 @@
 package Integrador3.Service;
 
-import Integrador3.DTO.CarreraDTO;
-import Integrador3.DTO.CarreraInscriptosDTO;
+import Integrador3.DTO.*;
 import Integrador3.Entities.Carrera;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import Integrador3.DTO.EstudianteCarreraDTO;
-import Integrador3.DTO.EstudianteDTO;
 import Integrador3.Entities.Estudiante;
 import Integrador3.Repository.EstudianteRepository;
 
@@ -59,20 +56,9 @@ public class EstudianteService {
     public List<EstudianteDTO> getEstudiantesOrderedBy(String criterio) {
         return estudianteRepository.getEstudiantesOrderedBy(Sort.by(criterio));
     }
-
-    public EstudianteDTO getEstudianteByNroLibreta(int nroLibreta) {
-        EstudianteDTO est = estudianteRepository.getEstudianteByNroLibreta(nroLibreta);
-        if (est != null)
-            return est;
-        else throw new EntityNotFoundException("Estudiante no encontrado con nro libreta: " + nroLibreta);
-    }
-
-    public List<EstudianteDTO> getEstudiantesByGenero(String genero) {
-        return estudianteRepository.getEstudiantesByGenero(genero);
-    }
-
-    public List<EstudianteCarreraDTO> getEstudiantesByCarreraAndCiudad(String carrera, String ciudad) {
-        return estudianteRepository.getEstudiantesByCarreraAndCiudad(carrera, ciudad);
+    public List<EstudianteDTO> getEstudiantesBy(EstudianteSearchDTO request) {
+        return estudianteRepository.getEstudiantesBy(request.getDocumento(), request.getNombre(), request.getApellido()
+                , request.getEdad(), request.getGenero(), request.getCiudad(), request.getNroLibreta(), request.getIdCarrera(), request.getNombreCarrera());
     }
 
     public void delete(Long id) {
