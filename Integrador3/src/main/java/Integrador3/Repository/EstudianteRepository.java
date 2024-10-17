@@ -1,5 +1,7 @@
 package Integrador3.Repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +16,7 @@ import java.util.List;
 public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
     @Query("SELECT new Integrador3.DTO.EstudianteDTO (e.documento,e.nombre, e.apellido, e.edad,e.genero, e.ciudad, e.nroLibreta)  " +
             "  FROM Estudiante e")
-    List<EstudianteDTO> getEstudiantesOrderedBy(Sort sort);
+    Page<EstudianteDTO> getEstudiantesOrderedBy(Pageable pageable);
 
     @Query("SELECT new Integrador3.DTO.EstudianteDTO (e.documento,e.nombre, e.apellido, e.edad,e.genero,  e.ciudad, e.nroLibreta)" +
             "FROM Estudiante e " +

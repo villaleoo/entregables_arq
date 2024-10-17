@@ -5,6 +5,9 @@ import Integrador3.Entities.Carrera;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import Integrador3.Entities.Estudiante;
@@ -42,20 +45,21 @@ public class EstudianteService {
         return null;
     }
 
-    public List<EstudianteDTO> getAll() {
-        List<Estudiante> estudiantes = estudianteRepository.findAll();
+    public Page<EstudianteDTO> getAll(Pageable pageable) {
+        Page<Estudiante> estudiantes = estudianteRepository.findAll(pageable);
         List<EstudianteDTO> res = new LinkedList<>();
 
         for (Estudiante c : estudiantes)
             res.add(new EstudianteDTO(c.getDocumento(), c.getNombre(), c.getApellido(), c.getEdad(),
                     c.getGenero(), c.getCiudad(), c.getNroLibreta()));
 
-        return res;
+        return new PageImpl<>(res, pageable, estudiantes.getTotalElements());
     }
 
-    public List<EstudianteDTO> getEstudiantesOrderedBy(String criterio) {
-        return estudianteRepository.getEstudiantesOrderedBy(Sort.by(criterio));
+    public Page<EstudianteDTO> getEstudiantesOrderedBy(Pageable pageable) {
+        return estudianteRepository.getEstudiantesOrderedBy(pageable);
     }
+
     public List<EstudianteDTO> getEstudiantesBy(EstudianteSearchDTO request) {
         return estudianteRepository.getEstudiantesBy(request.getDocumento(), request.getNombre(), request.getApellido()
                 , request.getEdad(), request.getGenero(), request.getCiudad(), request.getNroLibreta(), request.getIdCarrera(), request.getNombreCarrera());

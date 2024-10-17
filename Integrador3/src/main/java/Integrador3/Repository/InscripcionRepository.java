@@ -1,6 +1,8 @@
 package Integrador3.Repository;
 
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +22,7 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
             "JOIN i.carrera c " +
             "GROUP BY  i.carrera, YEAR(i.fechaInscripcion)" +
             "ORDER BY YEAR(i.fechaInscripcion), c.nombreCarrera DESC ")
-    List<ReporteDTO> getReporte();
+    Page<ReporteDTO> getReporte(Pageable pageable);
 
     @Query("SELECT new Integrador3.DTO.InscripcionDTO(i.carrera.idCarrera, i.estudiante.documento, i.fechaInscripcion, i.fechaGraduacion)  " +
             "FROM Inscripcion i WHERE i.carrera.idCarrera =:idCarrera AND i.estudiante.documento =:idEstudiante ")

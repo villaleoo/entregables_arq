@@ -3,6 +3,9 @@ package Integrador3.Service;
 import Integrador3.DTO.CarreraDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import Integrador3.DTO.InscripcionDTO;
 import Integrador3.DTO.ReporteDTO;
@@ -57,18 +60,17 @@ public class InscripcionService {
         throw new EntityNotFoundException("Inscripcion no encontrada con idCarrera: " + idCarrera + " , idEstudiante:" + idEstudiante);
     }
 
-    public List<InscripcionDTO> getAll() {
-        List<Inscripcion> inscripciones = inscripcionRepository.findAll();
+    public Page<InscripcionDTO> getAll(Pageable pageable) {
+        Page<Inscripcion> inscripciones = inscripcionRepository.findAll(pageable);
         List<InscripcionDTO> res = new LinkedList<>();
 
         for (Inscripcion i : inscripciones)
             res.add(new InscripcionDTO(i.getCarrera().getIdCarrera(), i.getEstudiante().getDocumento(), i.getFechaInscripcion(), i.getFechaGraduacion()));
 
-        return res;
+        return new PageImpl<>(res, pageable, inscripciones.getTotalElements());
     }
 
-    public List<ReporteDTO> getReporte() {
-        List<ReporteDTO> lista = inscripcionRepository.getReporte();
-        return lista;
+    public Page<ReporteDTO> getReporte(Pageable pageable) {
+        return inscripcionRepository.getReporte(pageable);
     }
 }

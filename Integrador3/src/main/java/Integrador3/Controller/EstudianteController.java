@@ -3,12 +3,14 @@ package Integrador3.Controller;
 
 import Integrador3.DTO.EstudianteSearchDTO;
 import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.query.sqm.PathElementException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import Integrador3.DTO.EstudianteCarreraDTO;
 import Integrador3.DTO.EstudianteDTO;
 import Integrador3.Service.EstudianteService;
 
@@ -41,13 +43,28 @@ public class EstudianteController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<EstudianteDTO>> getAll() {
-        return new ResponseEntity<>(estudianteService.getAll(), HttpStatus.OK);
+    public ResponseEntity<Page<EstudianteDTO>> getAll(@RequestParam(defaultValue = "0") Integer page,
+                                                      @RequestParam(defaultValue = "10") Integer size,
+                                                      @RequestParam(defaultValue = "edad, asc") String[] sort) {
+
+
+        Sort.Direction direction = Sort.Direction.fromString(sort[1]);
+        Sort.Order order = new Sort.Order(direction, sort[0]);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+
+        return new ResponseEntity<>(estudianteService.getAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping("/orderby/{criterio}")
-    public ResponseEntity<List<EstudianteDTO>> getEstudiantesOrderedBy(@PathVariable String criterio) {
-        return new ResponseEntity<>(estudianteService.getEstudiantesOrderedBy(criterio), HttpStatus.OK);
+    @GetMapping("/orderby")
+    public ResponseEntity<Page<EstudianteDTO>> getEstudiantesOrderedBy(@RequestParam(defaultValue = "0") Integer page,
+                                                                       @RequestParam(defaultValue = "10") Integer size,
+                                                                       @RequestParam(defaultValue = "nombre, asc") String[] sort) {
+
+        Sort.Direction direction = Sort.Direction.fromString(sort[1]);
+        Sort.Order order = new Sort.Order(direction, sort[0]);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+
+        return new ResponseEntity<>(estudianteService.getEstudiantesOrderedBy(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/search")

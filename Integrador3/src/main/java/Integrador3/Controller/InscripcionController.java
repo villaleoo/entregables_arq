@@ -3,6 +3,10 @@ package Integrador3.Controller;
 import Integrador3.DTO.CarreraDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +46,14 @@ public class InscripcionController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<InscripcionDTO>> getAll() {
-        return new ResponseEntity<>(inscripcionService.getAll(), HttpStatus.OK);
+    public ResponseEntity<Page<InscripcionDTO>> getAll(@RequestParam(defaultValue = "0") Integer page,
+                                                       @RequestParam(defaultValue = "10") Integer size,
+                                                       @RequestParam(defaultValue = "id, asc") String[] sort) {
+        Sort.Direction direction = Sort.Direction.fromString(sort[1]);
+        Sort.Order order = new Sort.Order(direction, sort[0]);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+
+        return new ResponseEntity<>(inscripcionService.getAll(pageable), HttpStatus.OK);
     }
 
     @DeleteMapping("/idCarrera/{idCarrera}/dniEstudiante/{idEstudiante}")
@@ -68,8 +78,13 @@ public class InscripcionController {
 
 
     @GetMapping("/reporte")
-    public ResponseEntity<List<ReporteDTO>> getReporte() {
-        return new ResponseEntity<>(inscripcionService.getReporte(), HttpStatus.OK);
+    public ResponseEntity<Page<ReporteDTO>> getReporte(@RequestParam(defaultValue = "0") Integer page,
+                                                       @RequestParam(defaultValue = "10") Integer size,
+                                                       @RequestParam(defaultValue = "i.carrera.nombreCarrera, desc") String[] sort) {
+        Sort.Direction direction = Sort.Direction.fromString(sort[1]);
+        Sort.Order order = new Sort.Order(direction, sort[0]);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+        return new ResponseEntity<>(inscripcionService.getReporte(pageable), HttpStatus.OK);
     }
 
 }
