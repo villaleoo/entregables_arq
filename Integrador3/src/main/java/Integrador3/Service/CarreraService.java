@@ -3,6 +3,9 @@ package Integrador3.Service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import Integrador3.DTO.CarreraDTO;
 import Integrador3.DTO.CarreraInscriptosDTO;
@@ -31,14 +34,14 @@ public class CarreraService {
         return null;
     }
 
-    public List<CarreraDTO> getAll() {
-        List<Carrera> carreras = carreraRepository.findAll();
+    public Page<CarreraDTO> getAll(Pageable pageable) {
+        Page<Carrera> carreras = carreraRepository.findAll(pageable);
         List<CarreraDTO> res = new LinkedList<>();
 
         for (Carrera c : carreras)
             res.add(new CarreraDTO(c.getNombreCarrera()));
 
-        return res;
+        return new PageImpl<>(res, pageable, carreras.getTotalElements());
     }
 
 
@@ -49,7 +52,7 @@ public class CarreraService {
     }
 
     public CarreraDTO update(Long id, CarreraDTO carrera) {
-        if(!carreraRepository.existsById(id))
+        if (!carreraRepository.existsById(id))
             throw new EntityNotFoundException("Carrera no encontrada con id: " + id);
         Carrera newCarrera = carreraRepository.findById(id).orElse(null);
         newCarrera.setNombreCarrera(carrera.getNombreCarrera());
@@ -57,7 +60,7 @@ public class CarreraService {
         return carrera;
     }
 
-    public List<CarreraInscriptosDTO> getCarrerasConEstudiantesInscriptos() {
-        return carreraRepository.getCarrerasConEstudiantesInscriptos();
+    public Page<CarreraInscriptosDTO> getCarrerasConEstudiantesInscriptos(Pageable pageable) {
+        return carreraRepository.getCarrerasConEstudiantesInscriptos(pageable);
     }
 }

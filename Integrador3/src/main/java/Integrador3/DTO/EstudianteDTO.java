@@ -13,8 +13,8 @@ public class EstudianteDTO {
     private Long documento;
     private String nombre;
     private String apellido;
-    private int edad;
+    private Integer edad;
     private String genero;
     private String ciudad;
-    private int nroLibreta;
+    private Integer nroLibreta;
 }

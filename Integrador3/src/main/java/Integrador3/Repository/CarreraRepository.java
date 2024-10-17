@@ -1,5 +1,7 @@
 package Integrador3.Repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import Integrador3.DTO.CarreraInscriptosDTO;
@@ -16,5 +18,5 @@ public interface CarreraRepository extends JpaRepository<Carrera, Long> {
             "JOIN i.carrera c " +
             "GROUP BY (c.nombreCarrera) " +
             "ORDER BY COUNT(i.carrera) DESC")
-    List<CarreraInscriptosDTO> getCarrerasConEstudiantesInscriptos();
+    Page<CarreraInscriptosDTO> getCarrerasConEstudiantesInscriptos(Pageable pageable);
 }
