@@ -56,9 +56,9 @@ public class EstudianteService {
         return new PageImpl<>(res, pageable, estudiantes.getTotalElements());
     }
 
-    public Page<EstudianteDTO> getEstudiantesOrderedBy(Pageable pageable) {
+    /*public Page<EstudianteDTO> getEstudiantesOrderedBy(Pageable pageable) {
         return estudianteRepository.getEstudiantesOrderedBy(pageable);
-    }
+    }*/
 
     public List<EstudianteDTO> getEstudiantesByAttribute(EstudianteSearchDTO request) {
         return estudianteRepository.getEstudiantesByAttribute(request.getDocumento(), request.getNombre(), request.getApellido()

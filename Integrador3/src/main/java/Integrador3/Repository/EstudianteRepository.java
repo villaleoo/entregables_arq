@@ -14,9 +14,9 @@ import java.util.List;
 
 @Repository
 public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
-    @Query("SELECT new Integrador3.DTO.EstudianteDTO (e.documento,e.nombre, e.apellido, e.edad,e.genero, e.ciudad, e.nroLibreta)  " +
-            "  FROM Estudiante e")
-    Page<EstudianteDTO> getEstudiantesOrderedBy(Pageable pageable);
+    /*@Query("SELECT new Integrador3.DTO.EstudianteDTO (e.documento,e.nombre, e.apellido, e.edad,e.genero, e.ciudad, e.nroLibreta)  " +
+            "FROM Estudiante e")
+    Page<EstudianteDTO> getEstudiantesOrderedBy(Pageable pageable);*/
 
     @Query("SELECT new Integrador3.DTO.EstudianteDTO (e.documento,e.nombre, e.apellido, e.edad,e.genero,  e.ciudad, e.nroLibreta)" +
             "FROM Estudiante e " +

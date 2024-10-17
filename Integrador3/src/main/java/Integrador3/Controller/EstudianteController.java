@@ -55,7 +55,7 @@ public class EstudianteController {
         return new ResponseEntity<>(estudianteService.getAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping("/orderby")
+    /*@GetMapping("/orderby")
     public ResponseEntity<Page<EstudianteDTO>> getEstudiantesOrderedBy(@RequestParam(defaultValue = "0") Integer page,
                                                                        @RequestParam(defaultValue = "10") Integer size,
                                                                        @RequestParam(defaultValue = "nombre, asc") String[] sort) {
@@ -65,7 +65,7 @@ public class EstudianteController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(order));
 
         return new ResponseEntity<>(estudianteService.getEstudiantesOrderedBy(pageable), HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping("/search")
     public ResponseEntity<List<EstudianteDTO>> getEstudiantesByAttribute(EstudianteSearchDTO request) {
