@@ -216,28 +216,19 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/estudiantes/orderby?page=1&size=10&sort=nombre,asc",
+					"raw": "http://localhost:8080/estudiantes?sort=nombre,desc",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"estudiantes",
-						"orderby"
+						"estudiantes"
 					],
 					"query": [
 						{
-							"key": "page",
-							"value": "1"
-						},
-						{
-							"key": "size",
-							"value": "10"
-						},
-						{
 							"key": "sort",
-							"value": "nombre,asc"
+							"value": "nombre,desc"
 						}
 					]
 				}
@@ -250,7 +241,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/estudiantes/search?nroLibreta=61607&ciudad=Melekeok Village",
+					"raw": "http://localhost:8080/estudiantes/search?documento=29588318&nroLibreta=19844&ciudad=Magetlegar",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -262,12 +253,16 @@
 					],
 					"query": [
 						{
+							"key": "documento",
+							"value": "29588318"
+						},
+						{
 							"key": "nroLibreta",
-							"value": "61607"
+							"value": "19844"
 						},
 						{
 							"key": "ciudad",
-							"value": "Melekeok Village"
+							"value": "Magetlegar"
 						}
 					]
 				}
