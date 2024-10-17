@@ -60,8 +60,8 @@ public class EstudianteService {
         return estudianteRepository.getEstudiantesOrderedBy(pageable);
     }
 
-    public List<EstudianteDTO> getEstudiantesBy(EstudianteSearchDTO request) {
-        return estudianteRepository.getEstudiantesBy(request.getDocumento(), request.getNombre(), request.getApellido()
+    public List<EstudianteDTO> getEstudiantesByAttribute(EstudianteSearchDTO request) {
+        return estudianteRepository.getEstudiantesByAttribute(request.getDocumento(), request.getNombre(), request.getApellido()
                 , request.getEdad(), request.getGenero(), request.getCiudad(), request.getNroLibreta(), request.getIdCarrera(), request.getNombreCarrera());
     }
 

@@ -70,7 +70,7 @@ public class EstudianteController {
     @GetMapping("/search")
     public ResponseEntity<List<EstudianteDTO>> getEstudiantesByAttribute(EstudianteSearchDTO request) {
         try {
-            return new ResponseEntity<>(estudianteService.getEstudiantesBy(request), HttpStatus.OK);
+            return new ResponseEntity<>(estudianteService.getEstudiantesByAttribute(request), HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

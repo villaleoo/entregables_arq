@@ -216,7 +216,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/estudiantes/orderby/edad",
+					"raw": "http://localhost:8080/estudiantes/orderby?page=1&size=10&sort=nombre,asc",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -224,8 +224,21 @@
 					"port": "8080",
 					"path": [
 						"estudiantes",
-						"orderby",
-						"edad"
+						"orderby"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "sort",
+							"value": "nombre,asc"
+						}
 					]
 				}
 			},

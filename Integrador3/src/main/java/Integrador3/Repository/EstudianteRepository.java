@@ -31,6 +31,6 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
             "AND (:idCarrera IS NULL OR c.carrera.idCarrera = :idCarrera)" +
             "AND (:nombreCarrera IS NULL OR c.carrera.nombreCarrera = :nombreCarrera)"
     )
-    List<EstudianteDTO> getEstudiantesBy(Long documento, String nombre, String apellido, Integer edad, String genero, String ciudad, Integer nroLibreta,
+    List<EstudianteDTO> getEstudiantesByAttribute(Long documento, String nombre, String apellido, Integer edad, String genero, String ciudad, Integer nroLibreta,
                                          Long idCarrera, String nombreCarrera);
 }
