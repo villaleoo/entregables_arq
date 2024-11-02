@@ -1,0 +1,9 @@
+package Usuario_servicio.Repository;
+
+import Usuario_servicio.Entity.Cuenta;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CuentaRepository extends JpaRepository<Cuenta, Integer> {
+}
