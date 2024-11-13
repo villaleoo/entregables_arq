@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.awt.*;
 import java.time.LocalDate;
 
 @Entity
@@ -30,20 +31,17 @@ public class Usuario {
     @JoinColumn(name = "id_cuenta")
     private Cuenta account;
 
+
     public Usuario() {}
 
 
-    public Usuario(String name, String surname, String phone, String email, LocalDate registrationDate, Rol role,Cuenta account) {
+    public Usuario(String name, String surname, String phone, String email, LocalDate registrationDate, Rol role) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
         this.email = email;
         this.registrationDate = registrationDate;
         this.role=role;
-    }
-
-    public Usuario(String name, String surname, String phone, String email,Rol role,Cuenta account) {
-        this(name,surname,phone,email,LocalDate.now(),role,account);
     }
 
     @Override

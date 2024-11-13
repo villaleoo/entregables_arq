@@ -19,15 +19,18 @@ public class Parada {
     private String name;
     @Column(name="direccion")
     private String adress;
-    @Column(name="ubicacion")
-    private Point location;
+    @Column(name="ubicacion_x")
+    private double x;
+    @Column(name="ubicacion_y")
+    private double y;
 
     public Parada() {}
 
     public Parada(String name, String adress, Point location) {
         this.name = name;
         this.adress = adress;
-        this.location = location;
+        this.x = location.getX();
+        this.y= location.getY();
     }
 
     @Override
@@ -36,7 +39,6 @@ public class Parada {
                 "id_stop=" + id_stop +
                 ", name='" + name + '\'' +
                 ", adress='" + adress + '\'' +
-                ", location=" + location +
                 '}';
     }
 }

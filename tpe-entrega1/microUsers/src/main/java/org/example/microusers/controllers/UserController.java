@@ -1,8 +1,8 @@
 package org.example.microusers.controllers;
 
-import org.example.microusers.DTO.NewPersonalCompanyDTO;
-import org.example.microusers.DTO.ClientWithAccountDTO;
-import org.example.microusers.DTO.UserVisibleDataDTO;
+import org.example.microusers.DTO.personalCompany.NewPersonalCompanyDTO;
+import org.example.microusers.DTO.client.NewClientDTO;
+import org.example.microusers.DTO.client.ClientVisibleDataDTO;
 import org.example.microusers.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ public class UserController {
     private UserService service;
 
     @PostMapping("")
-    public ResponseEntity<?> createUser(@RequestBody ClientWithAccountDTO newClient){
+    public ResponseEntity<?> createClient(@RequestBody NewClientDTO newClient){
         try{
             return new ResponseEntity<>(this.service.saveClient(newClient), HttpStatus.CREATED);
         }catch (Exception e){
@@ -46,11 +46,12 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<?> getAll(){
         try{
-            return new ResponseEntity<>(this.service.findAllProtected(), HttpStatus.OK);
+            return new ResponseEntity<>(this.service.findAll(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>("Error: "+e.getMessage(),HttpStatus.CONFLICT);
         }
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){
         try{
@@ -61,7 +62,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id,@RequestBody UserVisibleDataDTO user){
+    public ResponseEntity<?> updateUser(@PathVariable Long id,@RequestBody ClientVisibleDataDTO user){
         try{
             return new ResponseEntity<>(this.service.update(id,user), HttpStatus.OK);
         }catch (Exception e){

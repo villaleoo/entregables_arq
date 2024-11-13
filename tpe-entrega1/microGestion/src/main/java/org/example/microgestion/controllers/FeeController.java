@@ -1,6 +1,6 @@
 package org.example.microgestion.controllers;
 
-import org.example.microgestion.DTO.FeeDTO;
+import org.example.microgestion.DTO.fees.FeeDTO;
 import org.example.microgestion.services.FeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package org.example.microgestion.controllers;
 
-import org.example.microgestion.DTO.InitTravelDTO;
-import org.example.microgestion.DTO.externals.NewKmsMonoDTO;
+import org.example.microgestion.DTO.travels.InitTravelDTO;
+import org.example.microgestion.DTO.externals.monopatin.KmsOnMonoTravelingDTO;
 import org.example.microgestion.services.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +42,7 @@ public class TravelController {
             return  new ResponseEntity<>("Error: "+e.getMessage(),HttpStatus.CONFLICT);
         }
     }
+
     @GetMapping("/informe/facturado")
     public ResponseEntity<?> getTotalBilledPerMonth(@RequestParam Integer mesInicial, @RequestParam Integer mesFinal, @RequestParam(required = false) Integer anio){
         try{
@@ -60,8 +61,46 @@ public class TravelController {
         }
     }
 
-    @PutMapping("/{id}/debitar")
-    ResponseEntity<?> updateKmsAndDebitMoney(@PathVariable Long id, @RequestBody NewKmsMonoDTO kms){
+
+    @GetMapping("/acumulado")
+    public ResponseEntity<?> getDetailsTravelsMonopatin(@RequestParam String monopatin){
+        try{
+            return new ResponseEntity<>(this.service.findTravelsDetailsOfMono(monopatin),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Error: "+e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    @PutMapping("/finalizar/{id}")
+    public ResponseEntity<?> endTravel(@PathVariable Long id){
+        try{
+            return new ResponseEntity<>(this.service.endTravel(id),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Error: "+e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    @PutMapping("/pausa/{id}")
+    public ResponseEntity<?> pauseTravel(@PathVariable Long id){
+        try{
+            return new ResponseEntity<>(this.service.pauseTravel(id),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Error: "+e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    @PutMapping("/reanudar/{id}")
+    public ResponseEntity<?> unPauseTravel(@PathVariable Long id){
+        try{
+            return new ResponseEntity<>(this.service.unPauseTravel(id),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Error: "+e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+
+    @PutMapping("/{id}/total-kilometros")
+    ResponseEntity<?> updateTotalKmsInTravel(@PathVariable Long id, @RequestBody KmsOnMonoTravelingDTO kms){
         try{
             return new ResponseEntity<>(this.service.updateKmsAndDebitMoney(id,kms),HttpStatus.OK);
         }catch (Exception e){

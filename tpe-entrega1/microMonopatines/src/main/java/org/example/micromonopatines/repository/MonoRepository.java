@@ -14,11 +14,14 @@ public interface MonoRepository extends MongoRepository<Monopatin,String> {
     @Query(value = "{}",fields = "{'_id': 0}")
     List<MonoDTO> findAllProtected();
 
-    // Contar los monopatines disponibles
+
     @Query("{ 'disponible': true }")
     List<Monopatin> countAvailable();
 
-    // Contar los monopatines no disponibles
+
     @Query("{ 'disponible': false }")
     List<Monopatin> countNotAvailable();
+
+    @Query("{ 'stop_assign.id_stop': ?0, 'isAvailable': true }")
+    List<Monopatin> findAllInStopAndAvailable(Long id);
 }

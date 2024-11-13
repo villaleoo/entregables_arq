@@ -1,14 +1,15 @@
 package org.example.microusers.services;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.example.microusers.DTO.AccountDTO;
-import org.example.microusers.DTO.ResponseDebitDTO;
+import org.example.microusers.DTO.clientAccount.ClientAccountDTO;
+import org.example.microusers.DTO.clientAccount.RechargeDTO;
+import org.example.microusers.DTO.clientAccount.UpdateAccountDTO;
+import org.example.microusers.DTO.payments.DebitDetailDTO;
 import org.example.microusers.model.Cuenta;
 import org.example.microusers.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,11 +25,11 @@ public class AccountService {
     }
 
 
-    public AccountDTO findById(Long id){
+    public ClientAccountDTO findById(Long id){
         return this.repository.findByIdProtected(id);
     }
 
-    public AccountDTO save(AccountDTO entity){
+    public ClientAccountDTO save(ClientAccountDTO entity){
         Cuenta newAccount = new Cuenta(entity.getDischargeDate(),entity.getBalance(),entity.getId_mercadoPago(),
                 entity.getNameAccount(),entity.isAvailable());
         this.repository.save(newAccount);
@@ -36,7 +37,7 @@ public class AccountService {
         return entity;
     }
 
-    public AccountDTO disable(Long id){
+    public ClientAccountDTO disable(Long id){
         Optional<Cuenta> res = this.repository.findById(id);
 
         if(res.isPresent()){
@@ -44,20 +45,19 @@ public class AccountService {
             c.setAvailable(false);
             this.repository.save(c);
 
-            return new AccountDTO(c.getNameAccount(),c.getDischargeDate(),c.getBalance(),c.getId_mercadoPago(),c.isAvailable());
+            return new ClientAccountDTO(c.getNameAccount(),c.getDischargeDate(),c.getBalance(),c.getId_mercadoPago(),c.isAvailable());
         }
 
         throw new EntityNotFoundException("No se pudo encontrar cuenta con id: "+id);
     }
 
-    public AccountDTO update(Long id, AccountDTO entity){
+    public UpdateAccountDTO update(Long id, UpdateAccountDTO entity){
         Optional<Cuenta> c = this.repository.findById(id);
 
         if(c.isPresent()){
             Cuenta update= c.get();
             update.setBalance(entity.getBalance());
             update.setNameAccount(entity.getNameAccount());
-            update.setDischargeDate(entity.getDischargeDate());
             update.setId_mercadoPago(entity.getId_mercadoPago());
             update.setAvailable(entity.isAvailable());
 
@@ -70,27 +70,46 @@ public class AccountService {
     }
 
 
-    public AccountDTO delete(Long id){
+    public ClientAccountDTO delete(Long id){
         Optional<Cuenta> c = this.repository.findById(id);
-
         if(c.isPresent()){
             Cuenta delete=c.get();
             this.repository.delete(delete);
 
-            return new AccountDTO(delete.getNameAccount(), delete.getDischargeDate(),delete.getBalance(), delete.getId_mercadoPago(), delete.isAvailable());
+            return new ClientAccountDTO(delete.getNameAccount(), delete.getDischargeDate(),delete.getBalance(), delete.getId_mercadoPago(), delete.isAvailable());
         }
 
         throw new EntityNotFoundException("No se encontro cuenta con id: "+id);
     }
 
-    public ResponseDebitDTO debitCredit(Long id, ResponseDebitDTO total){
-        Optional<Cuenta> res = this.repository.findById(id);
+    public UpdateAccountDTO recharge(Long id, RechargeDTO rec){
+        Optional<Cuenta> res =this.repository.findById(id);
+        System.out.println(this.repository.findById(id));
 
+        if(res.isPresent()){
+            Cuenta c = res.get();
+            c.setBalance(c.getBalance()+rec.getAmount());
+            this.repository.save(c);
+
+            return new UpdateAccountDTO(c.getNameAccount(),c.getBalance(),c.getId_mercadoPago(),c.isAvailable());
+        }
+
+        throw new EntityNotFoundException("No se encontro cuenta con id:"+id);
+    }
+
+
+
+    public DebitDetailDTO debitCredit(Long id, DebitDetailDTO total){
+        Optional<Cuenta> res = this.repository.findById(id);
+        System.out.println(total);
         if(res.isPresent()){
             Cuenta c = res.get();
             int newTotal=(int) Math.round(c.getBalance()-total.getTotalDebit());
             if(newTotal < 0){
-                throw new EntityNotFoundException("No se pudo cobrar el total por falta de saldo.");
+                int desc=Math.abs((int) Math.round(c.getBalance()-total.getTotalDebit()));
+                c.setBalance(0);
+                this.repository.save(c);
+                throw new EntityNotFoundException("No se pudo cobrar el total por falta de saldo. Se descontaron: "+desc);
             }
             c.setBalance(newTotal);
             this.repository.save(c);

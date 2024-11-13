@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseDebitDTO {
-    private double amountKms;
+    private String description;
     private double totalDebit;
 }
 

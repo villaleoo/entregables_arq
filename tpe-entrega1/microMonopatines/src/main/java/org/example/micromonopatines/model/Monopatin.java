@@ -4,7 +4,7 @@ package org.example.micromonopatines.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.example.micromonopatines.DTO.StopDTO;
+import org.example.micromonopatines.DTO.externals.StopDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;

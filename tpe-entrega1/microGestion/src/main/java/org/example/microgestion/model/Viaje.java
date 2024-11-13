@@ -7,6 +7,7 @@ import lombok.Setter;
 
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,22 +30,24 @@ public class Viaje {
     private Date date_init;
     @Column(name = "fecha_final")
     private Date date_end;
-    @Column(name = "kms_mono_inicio")
-    private double kms_monopatin_init;
+    @Column(name = "kms_recorridos")
+    private double kms;
     @Column(name = "estado")
     private boolean state;
     @Column(name = "total_pagado")
     private double total_pay;
     @Column(name = "esta_en_pausa")
     private boolean isPause;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="id_tarifa")
     private Tarifa fee;
+    @OneToMany(mappedBy = "travel")
+    private List<PausasViaje> pauses;
 
 
     public Viaje(){}
 
-    public Viaje(Long id_user, Long id_account, String id_monopatin, Long id_stop_init, Long id_stop_end, Date date_init, Date date_end, double kms_monopatin_init, boolean state, double total_pay,boolean isPause,Tarifa fee) {
+    public Viaje(Long id_user, Long id_account, String id_monopatin, Long id_stop_init, Long id_stop_end, Date date_init, Date date_end, boolean state, double total_pay,boolean isPause,Tarifa fee,double kms) {
         this.id_user = id_user;
         this.id_account = id_account;
         this.id_monopatin = id_monopatin;
@@ -52,12 +55,11 @@ public class Viaje {
         this.id_stop_end = id_stop_end;
         this.date_init = date_init;
         this.date_end = date_end;
-        this.kms_monopatin_init=kms_monopatin_init;
         this.state=state;
         this.total_pay=total_pay;
         this.isPause=isPause;
         this.fee=fee;
-
+        this.kms=kms;
     }
 
 

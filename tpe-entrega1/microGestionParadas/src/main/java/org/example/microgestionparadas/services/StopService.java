@@ -1,12 +1,19 @@
 package org.example.microgestionparadas.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
-import org.example.microgestionparadas.DTO.StopDTO;
+import org.example.microgestionparadas.DTO.*;
+import org.example.microgestionparadas.feignClient.MonoClient;
 import org.example.microgestionparadas.model.Parada;
 import org.example.microgestionparadas.repository.StopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +23,10 @@ public class StopService {
     @Autowired
     StopRepository repository;
 
-    public StopDTO save(StopDTO stop){
+    @Autowired
+    MonoClient monoClient;
+
+    public VisibleDataStopDTO save(VisibleDataStopDTO stop){
         Parada p = new Parada(stop.getName(),stop.getAdress(),stop.getLocation());
         this.repository.save(p);
 
@@ -27,23 +37,26 @@ public class StopService {
         return this.repository.findAll();
     }
 
-    public Parada findById(Long id){
+    public StopDTO findById(Long id){
         Optional<Parada> res = this.repository.findById(id);
 
         if(res.isPresent()){
-            return res.get();
+            Parada p =res.get();
+            Point location = new Point((int)p.getX(),(int)p.getY());
+            return new StopDTO(p.getId_stop(),p.getName(),p.getAdress(),location);
         }
         throw new EntityNotFoundException("No se encontro parada con id: "+id);
     }
 
-    public StopDTO update(Long id, StopDTO stop){
+    public VisibleDataStopDTO update(Long id, VisibleDataStopDTO stop){
         Optional<Parada> p = this.repository.findById(id);
 
         if(p.isPresent()){
             Parada update = p.get();
             update.setName(stop.getName());
             update.setAdress(stop.getAdress());
-            update.setLocation(stop.getLocation());
+            update.setY(stop.getLocation().getY());
+            update.setX(stop.getLocation().getX());
 
             this.repository.save(update);
 
@@ -53,16 +66,56 @@ public class StopService {
         throw new EntityNotFoundException("No se encontro parada con id: "+id);
     }
 
-    public StopDTO delete (Long id){
+    public VisibleDataStopDTO delete (Long id){
         Optional<Parada> p = this.repository.findById(id);
 
         if(p.isPresent()){
             Parada delete = p.get();
             this.repository.delete(delete);
+            Point location = new Point((int)delete.getX(),(int) delete.getY());
 
-            return new StopDTO(delete.getName(), delete.getAdress(), delete.getLocation());
+            return new VisibleDataStopDTO(delete.getName(), delete.getAdress(), location);
         }
 
         throw new EntityNotFoundException("No se encontro parada con id: "+id);
+    }
+
+    public ArrayList<StopAvailabilityDTO> findMostNear(Integer x,Integer y){
+        Pageable pageRequest = PageRequest.of(0, 5);
+        List<Parada> res = this.repository.findTopMostNear(x, y,pageRequest );
+
+        if(!res.isEmpty()){
+            return getReportAvailability(res);
+        }else{
+            return  new ArrayList<>();
+        }
+
+    }
+
+    private ArrayList<StopAvailabilityDTO> getReportAvailability(List<Parada> list){
+        ArrayList<StopAvailabilityDTO> res =new ArrayList<>();
+
+        for(Parada p :list){
+            System.out.println(p.getId_stop());
+            Integer qMonopatines=this.findQuantityAvailableMonopatines(p.getId_stop());
+            Point location = new Point((int)p.getX(),(int)p.getY());
+            res.add(new StopAvailabilityDTO(p.getName(),p.getAdress(),location,qMonopatines));
+        }
+
+        return res;
+    }
+
+    private Integer findQuantityAvailableMonopatines(Long idStop){
+        ResponseEntity<?> res = this.monoClient.getAllInStop(idStop);
+
+        if(res.getStatusCode().is2xxSuccessful() && res.getBody() !=null){
+            ObjectMapper objectMapper = new ObjectMapper();
+            List list =objectMapper.convertValue(res.getBody(), List.class);
+
+            return list.size();
+        }
+
+        throw new EntityNotFoundException("Error al obtener los monopatines disponibles en parada.");
+
     }
 }

@@ -1,6 +1,7 @@
 package org.example.micromonopatines.controllers;
 
-import org.example.micromonopatines.DTO.LocationDTO;
+
+import org.example.micromonopatines.DTO.location.LocationDTO;
 import org.example.micromonopatines.DTO.MonoDTO;
 import org.example.micromonopatines.DTO.UpdateMonoDTO;
 import org.example.micromonopatines.services.MonoService;
@@ -24,6 +25,7 @@ public class MonoController {
             return new ResponseEntity<>("Error: "+ e.getMessage(), HttpStatus.CONFLICT);
         }
     }
+
     @GetMapping("")
     public ResponseEntity<?> getAll(){
         try{
@@ -32,6 +34,7 @@ public class MonoController {
             return new ResponseEntity<>("Error: "+ e.getMessage(), HttpStatus.CONFLICT);
         }
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable String id){
         try{
@@ -40,6 +43,7 @@ public class MonoController {
             return new ResponseEntity<>("Error: "+ e.getMessage(), HttpStatus.CONFLICT);
         }
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateMono(@PathVariable String id, @RequestBody UpdateMonoDTO mono){
         try{
@@ -49,13 +53,14 @@ public class MonoController {
         }
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> createMono(@PathVariable String id){
+    public ResponseEntity<?> deleteMono(@PathVariable String id){
         try{
             return  new ResponseEntity<>(this.service.delete(id),HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>("Error: "+ e.getMessage(), HttpStatus.CONFLICT);
         }
     }
+
 
     @GetMapping("/mas-viajes")
     public ResponseEntity<?> getOrderByTravelAndYear(@RequestParam Integer anio, @RequestParam Integer minViaje){
@@ -66,11 +71,28 @@ public class MonoController {
         }
     }
 
-
     @GetMapping("/disponibilidad")
     public ResponseEntity<?> getAvailableReport(){
         try{
             return new ResponseEntity<>(this.service.findAvailableReport(),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Error: "+ e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    @GetMapping("/en-parada")
+    public ResponseEntity<?> getAllInStop(@RequestParam Long idParada){
+        try{
+            return new ResponseEntity<>(this.service.findAvailableInStop(idParada),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Error: "+ e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    @GetMapping("/utilizacion/{id}")
+    public ResponseEntity<?> getUsageReport(@PathVariable String id,@RequestParam(required = false) Boolean conPausas){
+        try{
+            return new ResponseEntity<>(this.service.generateUsageReport(id,conPausas),HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>("Error: "+ e.getMessage(), HttpStatus.CONFLICT);
         }

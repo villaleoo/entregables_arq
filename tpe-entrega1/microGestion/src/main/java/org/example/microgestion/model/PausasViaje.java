@@ -14,7 +14,7 @@ public class PausasViaje {
     @Column(name="id_pausa")
     private Long id_pause;
     @ManyToOne
-    @JoinColumn(name="id_viaje")
+    @JoinColumn(name="id_viaje", nullable = false)
     private Viaje travel;
     @Column(name="hora_inicio")
     private Date date_init_pause;
@@ -32,5 +32,14 @@ public class PausasViaje {
         this.minPause = minPause;
     }
 
-
+    @Override
+    public String toString() {
+        return "PausasViaje{" +
+                "id_pause=" + id_pause +
+                ", travel=" + travel +
+                ", date_init_pause=" + date_init_pause +
+                ", date_end_pause=" + date_end_pause +
+                ", minPause=" + minPause +
+                '}';
+    }
 }

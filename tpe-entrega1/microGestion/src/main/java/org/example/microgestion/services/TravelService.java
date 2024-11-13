@@ -4,9 +4,18 @@ package org.example.microgestion.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.persistence.EntityNotFoundException;
-import org.example.microgestion.DTO.*;
-import org.example.microgestion.DTO.externals.*;
-import org.example.microgestion.exceptions.FeeNotFoundException;
+import org.example.microgestion.DTO.externals.monopatin.UpdateMonoDTO;
+import org.example.microgestion.DTO.pauses.PauseDTO;
+import org.example.microgestion.DTO.travels.*;
+import org.example.microgestion.DTO.externals.account.UsuarioDTO;
+import org.example.microgestion.DTO.externals.monopatin.MonopatinDTO;
+import org.example.microgestion.DTO.externals.monopatin.KmsOnMonoTravelingDTO;
+import org.example.microgestion.DTO.externals.monopatin.ReportTravelsMonoDTO;
+import org.example.microgestion.DTO.externals.stops.StopDTO;
+import org.example.microgestion.DTO.pauses.PauseResponseDTO;
+import org.example.microgestion.DTO.payments.ResponseDebitDTO;
+import org.example.microgestion.DTO.reports.ReportMonopatinesDTO;
+import org.example.microgestion.DTO.reports.ReportTotalBilledDTO;
 import org.example.microgestion.exceptions.NotFoundEntityException;
 import org.example.microgestion.feingClient.MonoClient;
 import org.example.microgestion.feingClient.StopClient;
@@ -24,10 +33,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TravelService {
@@ -49,21 +55,20 @@ public class TravelService {
 
 
     public CreateTravelDTO initTravel(InitTravelDTO travel){
-        StopDTO stopInit=this.getStop(travel.getId_stop_init());
         StopDTO stopEnd=this.getStop(travel.getId_stop_end());
         MonopatinDTO mono= this.getMono(travel.getId_monopatin());
+        StopDTO stopInit=this.getStop(mono.getStop_assign().getId_stop());
         UsuarioDTO user = this.getUser(travel.getId_user());
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
         boolean isActiveAccount = user.getAccount().isAvailable();
         Optional<Tarifa> res =this.feesRepository.findTopByDateBefore(Date.from(zonedDateTime.toInstant()));
 
 
-        if(isActiveAccount && res.isPresent()){
+        if(isActiveAccount && res.isPresent() && !Objects.equals(mono.getStop_assign().getId_stop(), stopEnd.getId_stop())){
             Tarifa fee = res.get();
 
             Viaje newTravel=new Viaje(user.getId_user(),user.getAccount().getId_account(), mono.getId_monopatin(),
-                    stopInit.getId_stop(),stopEnd.getId_stop(), Date.from(zonedDateTime.toInstant()),
-                    null,mono.getKms(),true,0.0,false,null);
+                    stopInit.getId_stop(),stopEnd.getId_stop(), Date.from(zonedDateTime.toInstant()),null,true,0,false,fee,0);
 
             newTravel.setFee(fee);
             this.repository.save(newTravel);
@@ -71,6 +76,13 @@ public class TravelService {
             return new CreateTravelDTO(newTravel.getId_travel(), newTravel.getDate_init());
         }
 
+        if(Objects.equals(mono.getStop_assign().getId_stop(), stopEnd.getId_stop())){
+            throw new RuntimeException("La parada donde esta el monopatin y la de destino son las mismas.");
+        }
+
+        if(res.isEmpty()){
+            throw new RuntimeException("No hay tarifa válida.");
+        }
 
         throw new EntityNotFoundException("La cuenta con id: "+user.getAccount().getId_account()+" no esta habilitada.");
 
@@ -94,7 +106,7 @@ public class TravelService {
         throw new NotFoundEntityException("No se pudo encontrar la lista de monopatines.");
     }
 
-    public ReportTotalBilledDTO findTotalBilled (Integer monthInit,Integer monthEnd,Integer year){
+    public ReportTotalBilledDTO findTotalBilled (Integer monthInit, Integer monthEnd, Integer year){
         Calendar c1 = Calendar.getInstance();
         Calendar c2 =Calendar.getInstance();
         Integer auxYear=year;
@@ -122,8 +134,9 @@ public class TravelService {
         throw new NotFoundEntityException("No se pudo generar el reporte de facturacion entre rango de meses.");
     }
 
-    public List<Viaje> findAll(){
-        return this.repository.findAll();
+    public List<TravelDTO> findAll(){
+
+        return this.repository.findAllProtected();
     }
 
     public CloseTravelDTO endTravel(Long id){
@@ -131,21 +144,26 @@ public class TravelService {
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
         if(res.isPresent()){
             Viaje travel= res.get();
+            StopDTO p =this.getStop(travel.getId_stop_end());
+
+            this.monoClient.update(travel.getId_monopatin(),new UpdateMonoDTO(true,p));
+
             travel.setDate_end(Date.from(zonedDateTime.toInstant()));
             travel.setState(false);
+
             this.repository.save(travel);
-            return new CloseTravelDTO(travel.getId_travel(),travel.getTotal_pay(),travel.getDate_end());
+
+            return new CloseTravelDTO(travel.getId_travel(),travel.getTotal_pay(),travel.getKms() ,travel.getDate_end());
         }
 
         throw new NotFoundEntityException("No se pudo encontrar viaje con id: "+id);
     }
 
-    public PauseDTO pauseTravel(Long id){
+    public PauseResponseDTO pauseTravel(Long id){
         Optional<Viaje> res =this.repository.findById(id);
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
 
-
-        if(res.isPresent()){
+        if(res.isPresent() && !res.get().isPause()){
             Viaje travel= res.get();
             PausasViaje pause =new PausasViaje();
             pause.setDate_init_pause(Date.from(zonedDateTime.toInstant()));
@@ -159,43 +177,64 @@ public class TravelService {
 
             this.repository.save(travel);
 
-            return new PauseDTO(id, Date.from(zonedDateTime.toInstant()));
+            return new PauseResponseDTO(id, Date.from(zonedDateTime.toInstant()));
+        }
+        if(res.get().isPause()){
+            throw new RuntimeException("El viaje ya esta en pausa.");
         }
 
         throw new NotFoundEntityException("No se pudo encontrar viaje con id: "+id);
     }
 
-    public ResponseDebitDTO resumeTravel(Long id){
+    public ResponseDebitDTO unPauseTravel(Long id){
         Optional<Viaje> res =this.repository.findById(id);
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
 
 
-        if(res.isPresent() && res.get().isPause()){
-            PausasViaje pause = this.pauseRepository.findFirstByIdAndPausaIsNull(id);
-            Integer pauseMinutes =this.getMinutesPause(pause.getDate_init_pause(),pause.getDate_end_pause());
+        if(res.isPresent() && res.get().isPause() ){
+            Viaje travel= res.get();
+            PausasViaje pause = this.findFirstNull(travel.getPauses());
+            UsuarioDTO user = this.getUser(travel.getId_user());
+            Integer pauseMinutes = this.getMinutesPause(pause.getDate_init_pause(),Date.from(zonedDateTime.toInstant()));
 
             pause.setDate_end_pause(Date.from(zonedDateTime.toInstant()));
             pause.setMinPause(pauseMinutes);
 
             this.pauseRepository.save(pause);
 
-            Viaje travel= res.get();
-            UsuarioDTO user = this.getUser(travel.getId_user());
 
             double addFee= travel.getFee().getAdditionalFee();
             double totalPay=pause.getMinPause() * addFee;
 
             travel.setPause(false);
-
-            travel.setTotal_pay(travel.getTotal_pay()+ totalPay );
+            travel.setTotal_pay(travel.getTotal_pay()+totalPay);
 
             this.repository.save(travel);
 
-            this.debitMoneyOfAccount(user.getAccount().getId_account(),totalPay,"Debito por pausa en monopatin de "+pauseMinutes+" minutos.");
+            return this.debitMoneyOfAccount(user.getAccount().getId_account(),totalPay,"Debito por pausa en monopatin de "+pauseMinutes+" minutos.");
 
         }
 
+        if(!res.get().isPause()){
+            throw new RuntimeException("El viaje no esta en pausa.");
+        }
+
         throw new NotFoundEntityException("No se pudo encontrar viaje con id: "+id);
+
+    }
+
+    private PausasViaje findFirstNull(List<PausasViaje> pauses){
+
+        for(int i =0; i<pauses.size();i++){
+            PausasViaje p1=pauses.get(i);
+
+            if(p1.getDate_end_pause() == null){
+                return p1;
+            }
+
+        }
+
+        return null;
     }
 
 
@@ -211,16 +250,30 @@ public class TravelService {
         return null;
     }
 
-    public ResponseDebitDTO updateKmsAndDebitMoney(Long id, NewKmsMonoDTO kmsMono){
+
+
+    public ReportTravelsMonoDTO findTravelsDetailsOfMono(String idMono){
+        Optional<ReportTravelsMonoDTO> res = this.repository.findDetailsTravelsOfMonopatin(idMono);
+
+        if(res.isPresent()){
+
+            return res.get();
+        }
+
+        throw new EntityNotFoundException("No hay monopatines con id: "+idMono);
+    }
+
+
+    public ResponseDebitDTO updateKmsAndDebitMoney(Long id, KmsOnMonoTravelingDTO distanceTraveled){
         Optional<Viaje> res = this.repository.findById(id);
 
         if(res.isPresent()){
             Viaje v = res.get();
-            double kmsDistance = kmsMono.getNewKmsMono() - v.getKms_monopatin_init();
+            double kmsDistance =distanceTraveled.getDistanceTraveledInKms();
             double total= kmsDistance*v.getFee().getNormalFee();
 
-            v.setKms_monopatin_init(kmsMono.getNewKmsMono());
             v.setTotal_pay(v.getTotal_pay()+total);
+            v.setKms(v.getKms()+kmsDistance);
 
             this.repository.save(v);
 
@@ -251,32 +304,13 @@ public class TravelService {
         return (int) differenceInMinutes;
     }
 
-    private double getUltimateAdditionalFee(Date date){
-        Optional<Tarifa> t = this.feesRepository.findTopByDateBefore(date);
 
-        if(t.isPresent()){
-            Tarifa fee=t.get();
-            return fee.getAdditionalFee();
-        }
-        throw new FeeNotFoundException("No se encontro tarifa valida para el viaje.");
-    }
-
-    private double getUltimateNormalFee(Date date){
-        Optional<Tarifa> t = this.feesRepository.findTopByDateBefore(date);
-
-        if(t.isPresent()){
-            Tarifa fee=t.get();
-            return fee.getNormalFee();
-        }
-        throw new FeeNotFoundException("No se encontro tarifa valida para el viaje.");
-    }
 
     private UsuarioDTO getUser(Long id){
         ResponseEntity<?> resUser= this.userClient.getById(id);
 
         if(resUser.getStatusCode().is2xxSuccessful() && resUser.getBody()!=null){
             ObjectMapper objectMapper = new ObjectMapper();
-            System.out.println(resUser.getBody());
             ObjectNode node = objectMapper.convertValue(resUser.getBody(), ObjectNode.class);
             node.remove("role");
 

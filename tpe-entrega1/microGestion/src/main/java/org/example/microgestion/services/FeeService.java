@@ -1,7 +1,7 @@
 package org.example.microgestion.services;
 
 
-import org.example.microgestion.DTO.FeeDTO;
+import org.example.microgestion.DTO.fees.FeeDTO;
 import org.example.microgestion.exceptions.FeeNotFoundException;
 import org.example.microgestion.model.Tarifa;
 import org.example.microgestion.repository.FeeRepository;

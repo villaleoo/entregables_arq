@@ -6,6 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.micromonopatines.DTO.*;
 import org.example.micromonopatines.DTO.externals.IdTravelDTO;
 import org.example.micromonopatines.DTO.externals.ResponseDebitDTO;
+import org.example.micromonopatines.DTO.externals.StopDTO;
+import org.example.micromonopatines.DTO.externals.TotalTravelsDTO;
+import org.example.micromonopatines.DTO.kms.DistanceTraveledDTO;
+import org.example.micromonopatines.DTO.location.LocationDTO;
+import org.example.micromonopatines.DTO.reports.*;
 import org.example.micromonopatines.exceptions.MonopatinNotFoundException;
 import org.example.micromonopatines.exceptions.NotFoundEntityException;
 import org.example.micromonopatines.exceptions.ParadaNotFoundException;
@@ -16,11 +21,10 @@ import org.example.micromonopatines.repository.MonoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -34,10 +38,7 @@ public class MonoService {
     TravelClient travelClient;
 
     public MonoDTO save(MonoDTO mono){
-
-        System.out.println(mono);
         ResponseEntity<?> res = this.stopClient.findById(mono.getId_stop());
-
 
         if(res.getStatusCode().is2xxSuccessful() && res.getBody() !=null){
             ObjectMapper objectMapper = new ObjectMapper();
@@ -113,47 +114,56 @@ public class MonoService {
         return new AvailableDTO((long) available.size(),(long) notAvailable.size());
     }
 
-    public Object updateLocationInTravel(String id, LocationDTO location){
-        Optional<Monopatin> result = this.repository.findById(id);
-        String idTravelActive=this.getIdTravelActiveOfMono(id);
 
-        if(result.isPresent() && idTravelActive != null){
-            Monopatin m = result.get();
-            double distance = calculateDistance(m.getLocation(), location.getLocation());
+    public List<Monopatin> findAvailableInStop(Long id){
+        List<Monopatin> res = this.repository.findAllInStopAndAvailable(id);
+        ArrayList<Monopatin> results=new ArrayList<>();
 
-            if(distance >= 1.0){
-                double currentKms=m.getKms()+distance;                  /*el nuevo kilometraje es lo que tenia+la distancia que hizo en kms*/
-                m.setLocation(location.getLocation());                  /*actualiza la ubicacion del monopatin*/
-                m.setKms(currentKms);                                   /*le agrega los kms hechos->simulados*/
-                this.repository.save(m);
+        if(!res.isEmpty()){
 
-
-                return this.updateKmsAndDebitMoney(idTravelActive,currentKms);             /*le avisa al ticket de viaje activo sus nuevos kms*/
-
-            }else{
-                return new AlreadyUpdateKmsDTO(m.getLocation(),m.getKms()); /*si la distancia es de menos de 1km no se modifica la ubicacion (es muy pequeña)*/
+            for(Monopatin mono: res){
+                if(this.getIdTravelActiveOfMono(mono.getId_monopatin()) == null){
+                    results.add(mono);
+                }
             }
 
         }
-        if(idTravelActive == null){
-            throw new NotFoundEntityException("No se encontro viaje activo para monopatin: "+id);
+
+        return results;
+    }
+
+    public Object generateUsageReport(String id,Boolean includePause){
+        TotalTravelsDTO res=this.getDetailsTravels(id);
+        Optional<Monopatin> m = this.repository.findById(id);
+
+        if(m.isPresent()){
+            Monopatin mono=m.get();
+            if(res==null){
+                return new NotUsageDTO(id,(long)mono.getKms(),"El monopatin no tiene viajes efectuados.");
+            }
+            if(includePause==null){
+                return new ReportUsageDTO(id,(long)mono.getKms(),res.getTotal_travels());
+            }
+            return new ReportUsagePauseDTO(id,(long)mono.getKms(),res.getTotal_travels(),res.getTotal_min_pause());
         }
 
-        throw new MonopatinNotFoundException("No se encontro monopatin con id: "+id);
+        throw new MonopatinNotFoundException("No se econtro monopatin con id: "+id);
     }
 
 
-    private ResponseDebitDTO updateKmsAndDebitMoney(String idTravel, double currentKms){
-        ResponseEntity<?> res = this.travelClient.updateKmsAndDebitMoney(idTravel,new NewKmsDTO(currentKms));
+    private TotalTravelsDTO getDetailsTravels(String id){
+        ResponseEntity<?> res = this.travelClient.getDetailsTravelsMonopatin(id);
 
-        if(res.getStatusCode().is2xxSuccessful() && res.getBody() != null){
+        if(res.getStatusCode().is2xxSuccessful() && res.getBody()!=null){
             ObjectMapper objectMapper = new ObjectMapper();
-
-            return objectMapper.convertValue(res.getBody(), ResponseDebitDTO.class);
-
+            return objectMapper.convertValue(res.getBody(), TotalTravelsDTO.class);
         }
-        throw new NotFoundEntityException("Fallo al actualizar kilometraje en el ticket de viaje.");
+
+        return null;
     }
+
+
+
 
     private String getIdTravelActiveOfMono(String id){
         ResponseEntity<?> res = this.travelClient.getIdTravelInProgressOfMonopatin(id);
@@ -167,28 +177,65 @@ public class MonoService {
         return null;
     }
 
-    private double calculateDistance(Point point1, Point point2) {
-        final double EARTH_RADIUS = 6371.0;
 
-        // Convertir las coordenadas de grados a radianes
-        double lat1 = Math.toRadians(point1.getY()); // Asegúrate de que esto es latitud
-        double lon1 = Math.toRadians(point1.getX()); // Y longitud
-        double lat2 = Math.toRadians(point2.getY()); // Asegúrate de que esto es latitud
-        double lon2 = Math.toRadians(point2.getX()); // Y longitud
+    public Object updateLocationInTravel(String id, LocationDTO location){
+        Optional<Monopatin> result = this.repository.findById(id);
+        String idTravelActive=this.getIdTravelActiveOfMono(id);
 
-        // Diferencias entre latitudes y longitudes
-        double dLat = lat2 - lat1;
-        double dLon = lon2 - lon1;
+        if(result.isPresent() && idTravelActive != null){
+            Monopatin m = result.get();
+            double distanceInKms = calculateDistance(m.getLocation(), location.getLocation());
 
-        // Fórmula de Haversine
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(lat1) * Math.cos(lat2)
-                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        // Distancia en kilómetros
-        double distance = EARTH_RADIUS * c;
+            double currentKms=m.getKms()+distanceInKms;                  /*el nuevo kilometraje es lo que tenia+la distancia que hizo en kms*/
+            m.setLocation(location.getLocation());                  /*actualiza la ubicacion del monopatin*/
+            m.setKms(currentKms);                                   /*le agrega los kms hechos->simulados*/
+            this.repository.save(m);
 
-        return distance/20;
+
+            return this.updateKmsAndDebitMoney(idTravelActive,distanceInKms);             /*le avisa al ticket de viaje activo sus nuevos kms*/
+
+
+
+
+        }
+        if(idTravelActive == null){
+          throw new NotFoundEntityException("No se encontro viaje activo para monopatin: "+id);
+        }
+
+        throw new MonopatinNotFoundException("No se encontro monopatin con id: "+id);
+
+    }
+
+
+    private ResponseDebitDTO updateKmsAndDebitMoney(String idTravel, double distanceTraveled){
+        ResponseEntity<?> res = this.travelClient.updateTotalKmsInTravel(idTravel,new DistanceTraveledDTO(distanceTraveled));
+
+        if(res.getStatusCode().is2xxSuccessful() && res.getBody() != null){
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            return objectMapper.convertValue(res.getBody(), ResponseDebitDTO.class);
+
+        }
+        throw new NotFoundEntityException("Fallo al actualizar kilometraje en el ticket de viaje.");
+    }
+
+
+    private double calculateDistance(Point currentPos, Point newPos) {
+        final double SIMULATE_INCREMENT_KMS = 0.5;
+        /*esto quiere decir que cuando se avanza en 1 de x o de y el monopatin recorre 0,5kms*/
+
+        double x1 = currentPos.getX();
+        double y1 = currentPos.getY();
+        double x2 = newPos.getX();
+        double y2 = newPos.getY();
+
+
+        double dx = Math.abs(x1-x2);
+        double dy = Math.abs(y1-y2);
+
+
+
+        return (dx+dy)*SIMULATE_INCREMENT_KMS;
     }
 }
