@@ -27,13 +27,22 @@ public interface MonopatinRepository extends JpaRepository<Monopatin, Long> {
             "    ELSE true " +
             "END " +
             "WHERE m.id = :id")
-    void updateDisponibilidad(@Param("id") Long id);
+    void setEnMantenimiento(@Param("id") Long id);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Monopatin m SET " +
+            "m.disponible = CASE " +
+            "    WHEN m.disponible = true THEN false " +
+            "    ELSE true END " +
+            "WHERE m.id = :id")
+    void setDisponibilidad(@Param("id") Long id);
 
     @Query("SELECT new MicroservicioMonopatin.DTO.MonopatinDTO(m.patenteMonopatin, m.disponible, m.enMantenimiento) " +
             "FROM Monopatin m " +
             "WHERE (:patenteMonopatin IS NULL OR m.patenteMonopatin = :patenteMonopatin)" +
             "AND (:disponible IS NULL OR m.disponible = :disponible)" +
-            "AND (:enMantenimiento IS NULL OR m.enMantenimiento = :enMantenimiento)" )
+            "AND (:enMantenimiento IS NULL OR m.enMantenimiento = :enMantenimiento)")
     List<MonopatinDTO> getMonopatinesByAttribute(String patenteMonopatin,
                                                  Boolean disponible,
                                                  Boolean enMantenimiento);

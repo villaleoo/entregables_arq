@@ -110,8 +110,8 @@ public class MonopatinController {
 
     @GetMapping("/reporte/disponibles")
     public ResponseEntity<ReportePorDisponibilidadDTO> getMonopatinByDisponibilidad(@RequestParam(defaultValue = "0") Integer page,
-                                                                            @RequestParam(defaultValue = "10") Integer size,
-                                                                            String[] sort) {
+                                                                                    @RequestParam(defaultValue = "10") Integer size,
+                                                                                    String[] sort) {
         Pageable pageable = PageRequest.of(page, size);
         List<MonopatinDisponibleDTO> enOperacion = monopatinService.getMonopatinByDisponibilidad();
         List<MonopatinDisponibleDTO> enMantenimiento = monopatinService.getMonopatinByEnMantenimiento();
@@ -120,6 +120,25 @@ public class MonopatinController {
         return new ResponseEntity<>(reporte, HttpStatus.OK);
     }
 
+    @PutMapping("/mantenimiento/{id}")
+    public ResponseEntity<String> setEnMantenimiento(@PathVariable Long id) {
+        try {
+            monopatinService.setEnMantenimiento(id);
+            return new ResponseEntity<>("Mantenimiento actualizado", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/disponibilidad/{id}")
+    public ResponseEntity<?> setDisponibilidad(@PathVariable Long id) {
+        try {
+            monopatinService.setDisponibilidad(id);
+            return new ResponseEntity<>("Disponibilidad actualizada", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 }

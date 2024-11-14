@@ -105,6 +105,11 @@ public class ViajeService {
         ParadaDTO paradaFin = monopatinFeignClient.getParadaById(initViajeDTO.getIdParadaFin());
         Tarifa tarifa = tarifaRepository.getTarifaNormalMasCercanaAHoy(Date.from(Instant.now())).get(0);
 
+        if (!monopatin.getDisponible())
+            throw new RuntimeException("El monopatin elegido no esta disponible.");
+
+        if (monopatin.getEnMantenimiento())
+            throw new RuntimeException("El monopatin elegido esta en mantenimiento.");
 
         if (paradaInicio.equals(paradaFin))
             throw new RuntimeException("Elegiste parada origen y destino iguales.");
@@ -116,9 +121,11 @@ public class ViajeService {
             throw new RuntimeException("La cuenta seleccionada no esta habilitada. " + cuenta);
 
         if (cuenta.getHabilitada() && cuenta.getCredito() > 0 && monopatin.getDisponible() && !monopatin.getEnMantenimiento()) {
+
             Viaje viaje = new Viaje(initViajeDTO.getIdUsuario(), initViajeDTO.getIdCuenta(), initViajeDTO.getIdMonopatin(),
                     initViajeDTO.getIdParadaInicio(), initViajeDTO.getIdParadaFin(), tarifa);
             viajeRepository.save(viaje);
+            monopatinFeignClient.setDisponibilidad(initViajeDTO.getIdMonopatin());
         }
     }
 
@@ -155,8 +162,8 @@ public class ViajeService {
         if (!limiteExcedido)
             viaje.setPrecio(viaje.getTarifa().getTarifa() * viaje.getTiempo());
 
+        monopatinFeignClient.setDisponibilidad(viaje.getIdMonopatin());
         viajeRepository.save(viaje);
-
         return new ViajeDTO(viaje);
     }
 

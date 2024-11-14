@@ -87,4 +87,18 @@ public class MonopatinService {
     public List<MonopatinDisponibleDTO> getMonopatinByEnMantenimiento() {
         return monopatinRepository.getMonopatinByEnMantenimiento();
     }
+
+    public Monopatin setEnMantenimiento(Long id) {
+        Monopatin m = monopatinRepository.findById(id).orElse(null);
+        if (m != null)
+            monopatinRepository.setEnMantenimiento(id);
+        throw new EntityNotFoundException("No se encontro monopatin  con id: " + id);
+    }
+
+    public void setDisponibilidad(Long id) {
+        Monopatin m = monopatinRepository.findById(id).orElse(null);
+        if (m == null)
+            throw new EntityNotFoundException("No se encontro monopatin  con id: " + id);
+        monopatinRepository.setDisponibilidad(id);
+    }
 }
