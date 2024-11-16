@@ -21,7 +21,19 @@ public class Usuario {
     private String nombre;
     @Setter
     private String apellido;
+    @ManyToOne
+    @JoinColumn(name="id_cuenta")
+    private Cuenta cuenta;
     public Usuario(){}
+    public Usuario(Integer id, String user, Integer tel, String mail, String nombre, String apellido, Cuenta c) {
+        this.id = id;
+        this.nombre_usuario = user;
+        this.nro_celular = tel;
+        this.email = mail;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.cuenta = c;
+    }
     public Usuario(Integer id, String user, Integer tel, String mail, String nombre, String apellido) {
         this.id = id;
         this.nombre_usuario = user;
@@ -30,4 +42,5 @@ public class Usuario {
         this.nombre = nombre;
         this.apellido = apellido;
     }
+
 }

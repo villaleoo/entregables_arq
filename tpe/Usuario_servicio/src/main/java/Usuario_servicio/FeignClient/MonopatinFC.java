@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "monopatin_servicio", url = "http://localhost:8080/monopatines")
 public interface MonopatinFC {
 
-    @PostMapping
+    @PostMapping("/admin/nuevo")
     ResponseEntity<String> nuevo(@RequestBody Monopatin m);
 
 

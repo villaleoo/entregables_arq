@@ -1,6 +1,5 @@
 package Estacion_servicio.Dto;
 
-import Monopatin_servicio.Entity.Monopatin;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -9,13 +8,13 @@ import java.util.List;
 public class ParadaDTO {
     private Integer id;
     private String ciudad;
-    private String direccion;
-    private List<Monopatin> monopatines;
+    private Integer x;
+    private Integer y;
 
-    public ParadaDTO(Integer id, String ciudad, String direccion) {
+    public ParadaDTO(Integer id, String ciudad, Integer x, Integer y) {
         this.id = id;
         this.ciudad = ciudad;
-        this.direccion = direccion;
-        this.monopatines = new ArrayList<>();
+        this.x = x;
+        this.y = y;
     }
 }

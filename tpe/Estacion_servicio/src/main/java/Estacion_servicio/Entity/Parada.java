@@ -1,6 +1,6 @@
 package Estacion_servicio.Entity;
 
-import Monopatin_servicio.Entity.Monopatin;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -19,16 +19,16 @@ public class Parada {
     @Setter
     private String ciudad;
     @Setter
-    private String direccion;
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Monopatin> monopatines;
+    private Integer coordenada_x;
+    @Setter
+    private Integer coordenada_y;
     public Parada() {}
 
-    public Parada(Integer id, String ciudad, String direccion) {
+    public Parada(Integer id, String ciudad, Integer x, Integer y) {
         this.id = id;
         this.ciudad = ciudad;
-        this.direccion = direccion;
-        this.monopatines = new ArrayList<>();
+        this.coordenada_x = x;
+        this.coordenada_y = y;
     }
 
 }

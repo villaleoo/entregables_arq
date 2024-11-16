@@ -15,15 +15,18 @@ public class Parada {
     @Setter
     private String ciudad;
     @Setter
-    private String direccion;
+    private Integer coordenada_x;
+    @Setter
+    private Integer coordenada_y;
     @OneToMany(fetch = FetchType.LAZY)
     private List<Monopatin> monopatines;
     public Parada() {}
 
-    public Parada(Integer id, String ciudad, String direccion) {
+    public Parada(Integer id, String ciudad, Integer x, Integer y) {
         this.id = id;
         this.ciudad = ciudad;
-        this.direccion = direccion;
+        this.coordenada_x = x;
+        this.coordenada_y = y;
         this.monopatines = new ArrayList<>();
     }
 

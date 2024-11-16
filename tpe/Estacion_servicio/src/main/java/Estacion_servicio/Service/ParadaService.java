@@ -18,7 +18,7 @@ public class ParadaService {
         List<Parada> lista = repo.findAll();
         List<ParadaDTO> rsp = new ArrayList<>();
         for(Parada p : lista) {
-            rsp.add(new ParadaDTO(p.getId(), p.getCiudad(), p.getDireccion()));
+            rsp.add(new ParadaDTO(p.getId(), p.getCiudad(), p.getCoordenada_x(), p.getCoordenada_y()));
         }
         return rsp;
     }
@@ -26,7 +26,7 @@ public class ParadaService {
     public ParadaDTO listarUna(Integer id) {
         Parada p = repo.findById(id).orElse(null);
         if(p != null) {
-            return new ParadaDTO(p.getId(), p.getCiudad(), p.getDireccion());
+            return new ParadaDTO(p.getId(), p.getCiudad(), p.getCoordenada_x(), p.getCoordenada_y());
         }
         return null;
     }

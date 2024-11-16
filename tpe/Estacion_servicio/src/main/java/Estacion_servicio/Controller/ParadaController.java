@@ -15,7 +15,7 @@ import java.util.List;
 public class ParadaController {
     @Autowired
     private ParadaService service;
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<ParadaDTO>> listarTodos() {
         return ResponseEntity.ok(this.service.listarTodas());
     }
@@ -23,7 +23,7 @@ public class ParadaController {
     public ResponseEntity<ParadaDTO> listarUno(@PathVariable Integer id) {
         return ResponseEntity.ok(this.service.listarUna(id));
     }
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<String> nuevo(@RequestBody Parada m) {
         try {
             service.registrar(m);
