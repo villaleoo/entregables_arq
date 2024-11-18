@@ -1,0 +1,20 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: db-auth
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Permite contraseña vacía
+      MYSQL_ROOT_PASSWORD: ""  # Esto asegura que no haya contraseña
+      MYSQL_DATABASE: db_auth
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - springboot-network
+
+volumes:
+  db_data:
+
+networks:
+  springboot-network:

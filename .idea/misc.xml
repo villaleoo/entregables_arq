@@ -8,7 +8,15 @@
         <option value="$PROJECT_DIR$/entregable1/pom.xml" />
         <option value="$PROJECT_DIR$/integrador1/pom.xml" />
         <option value="$PROJECT_DIR$/entregable2/pom.xml" />
+        <option value="$PROJECT_DIR$/entregable3/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/entregable1/pom.xml" />
+        <option value="$PROJECT_DIR$/entregable2/pom.xml" />
+        <option value="$PROJECT_DIR$/entregable3/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="corretto-21" project-jdk-type="JavaSDK">
