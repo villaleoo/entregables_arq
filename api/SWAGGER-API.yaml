@@ -1,0 +1,1502 @@
+openapi: 3.0.0
+info:
+  title: Docs Api Monopatines
+  description: Utilizacion de api de uso y gestion de app de monopatines
+  version: "2.0"
+servers:
+- url: https://virtserver.swaggerhub.com/LEOPOLDOVILLAO14/tpe-arquitecturas/2.0
+  description: SwaggerHub API Auto Mocking
+- url: http://localhost:8080
+  description: Swagger
+tags:
+- name: Auth
+  description: Necesario utilizarlo para poder acceder a todos los endpoints prosiguientes
+- name: Cuentas
+  description: Acceso a las cuentas de usuarios de todos los roles.
+- name: Usuarios
+  description: Acceso a los usuarios-cliente.
+- name: Monopatines
+  description: Acceso a los monopatines y sus informes.
+- name: Paradas
+  description: Acceso a las paradas de los monopatines.
+- name: Viajes
+  description: Acceso a los registros de viajes y sus informes.
+- name: Tarifas
+  description: Acceso a las tarifas utilizadas en los viajes.
+paths:
+  /auth/admin:
+    post:
+      tags:
+      - Auth
+      summary: Crear una cuenta de rol admin.
+      description: Registrar una cuenta con rol ADMIN. Ideal para acceder a todos los endpoint de la API.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPersonalAccountDTO'
+        required: true
+      responses:
+        "201":
+          $ref: '#/components/responses/AuthRegisterResponse'
+  /auth/mantenimiento:
+    post:
+      tags:
+      - Auth
+      summary: Crear una cuenta de rol mantenimiento.
+      description: Registrar una cuenta con rol MANTENIMIENTO. Ideal para marcar monopatines como "en mantenimiento" y acceder a reportes del area de mantenimiento.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPersonalAccountDTO'
+        required: true
+      responses:
+        "201":
+          $ref: '#/components/responses/AuthRegisterResponse'
+  /auth/cliente:
+    post:
+      tags:
+      - Auth
+      summary: Crear una cuenta de rol cliente.
+      description: "Registrar una cuenta con rol CLIENTE. Es el rol mas restringido, se pueden crear viajes, crear usuarios, recargar saldo de cuentas y ver paradas con monopatines disponibles cercanas."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewClientAccountDTO'
+        required: true
+      responses:
+        "201":
+          $ref: '#/components/responses/AuthRegisterResponse'
+  /auth/login:
+    post:
+      tags:
+      - Auth
+      summary: Autenticarse con una cuenta ya registrada.
+      description: Proporciona un token JWT que otorga permisos de acuerdo al Rol de la cuenta con la que se autentica. Este token debe ser utilizado en todos los endpoints siguientes.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDTO'
+        required: true
+      responses:
+        "200":
+          $ref: '#/components/responses/AuthSuccessResponse'
+  /cuentas/:
+    get:
+      tags:
+      - Cuentas
+      summary: Obtiene la lista de todas las cuentas.
+      description: Ideal para listar todas las cuentas de todos los roles.
+      responses:
+        "200":
+          description: Lista de cuentas obtenida con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountDTO'
+  /cuentas/{id}:
+    get:
+      tags:
+      - Cuentas
+      summary: "Obtiene la cuenta asociada al {id}."
+      description: Ideal para ver detalles especificos de una cuenta en particular.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id de la cuenta a buscar.
+      responses:
+        "200":
+          description: Cuenta obtenida con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuenta'
+    delete:
+      tags:
+      - Cuentas
+      summary: "Elimina la cuenta asociada al {id}."
+      description: Ideal para eliminar una cuenta.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id de la cuenta a eliminar.
+      responses:
+        "200":
+          description: Cuenta eliminada con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAccountDTO'
+  /cuentas/inhabilitar/{id}:
+    put:
+      tags:
+      - Cuentas
+      summary: "Inhabilita para hacer viajes a la cuenta asociada al {id}."
+      description: Ideal para no permitir viajar a cuentas con movimientos sospechosos.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id de la cuenta a deshabilitar.
+      responses:
+        "200":
+          description: Cuenta deshabilitada con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisableAccountDTO'
+  /cuentas/recargar/{id}:
+    put:
+      tags:
+      - Cuentas
+      summary: "Recarga saldo a la cuenta asociada al {id}."
+      description: Ideal para cargar salgo y poder hacer viajes.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id de la cuenta a acreditar.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RechargeDTO'
+        required: true
+      responses:
+        "200":
+          description: Cuenta recargada con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRechargeDTO'
+  /usuarios/:
+    get:
+      tags:
+      - Usuarios
+      summary: Obtiene la lista de todos los usuarios-cliente.
+      description: Ideal para listar todos los usuarios.
+      responses:
+        "200":
+          description: Lista de usuarios obtenida con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+    post:
+      tags:
+      - Usuarios
+      summary: Crea un usuario asociado a una cuenta con rol cliente.
+      description: Ideal para asociar varios usuarios a una cuenta.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUserDTO'
+        required: true
+      responses:
+        "201":
+          description: Usuario creado con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+  /usuarios/{id}:
+    get:
+      tags:
+      - Usuarios
+      summary: "Obtiene un usuario asociado a su {id}."
+      description: Ideal para ver detalles de un usuario en partricular.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id del usuario a buscar.
+      responses:
+        "200":
+          description: Usuario obtenido con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+    put:
+      tags:
+      - Usuarios
+      summary: "Modifica un usuario asociado a su {id}."
+      description: Ideal para modificar propiedades de un usuario en partricular.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id del usuario a modificar.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserVisibleDataDTO'
+        required: true
+      responses:
+        "200":
+          description: Usuario modificado con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserVisibleDataDTO'
+    delete:
+      tags:
+      - Usuarios
+      summary: "Elimina un usuario asociado a su {id}."
+      description: Ideal para eliminar un usuario en partricular.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id del usuario a eliminar.
+      responses:
+        "200":
+          description: Usuario eliminado con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserVisibleDataDTO'
+  /monopatines/:
+    get:
+      tags:
+      - Monopatines
+      summary: Obtiene la lista de todos los monopatines creados.
+      description: Ideal para listar todos los monopatines.
+      responses:
+        "200":
+          description: Lista de monopatines obtenida con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Monopatin'
+    post:
+      tags:
+      - Monopatines
+      summary: Crea un monopatin disponible para viajar.
+      description: "Ideal para crear monopatines, asignarlos a paradas para que puedan hacer viajes."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonoDTO'
+        required: true
+      responses:
+        "201":
+          description: Monopatin creado con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonoDTO'
+  /monopatines/{id}:
+    get:
+      tags:
+      - Monopatines
+      summary: "Obtiene un monopatin asociado a su {id}."
+      description: Ideal para ver detalles de un monopatin en particular.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: Id del monopatin a buscar.
+      responses:
+        "200":
+          description: Monopatin obtenido con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Monopatin'
+    put:
+      tags:
+      - Monopatines
+      summary: "Modifica un monopatin asociado a su {id}."
+      description: Ideal para modificar propiedades de un monopatin en particular.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: Id del monopatin a modificar.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMonoDTO'
+        required: true
+      responses:
+        "200":
+          description: Monopatin modificado con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateMonoDTO'
+    delete:
+      tags:
+      - Monopatines
+      summary: "Elimina un monopatin asociado a su {id}."
+      description: Ideal para eliminar un monopatin en particular.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: Id del monopatin a eliminar.
+      responses:
+        "200":
+          description: Monopatin eliminado con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Monopatin'
+  /monopatines/mas-viajes:
+    get:
+      tags:
+      - Monopatines
+      summary: Informe de monopatines por año y cantidad de viajes.
+      description: Obtiene una lista que muestra el id de cada monopatin y el total de viajes en el año pasado por parametro. Se puede establecer mostrar los monopatines cuya cantidad de viajes sea mayor a el parametro 'minViaje'.
+      parameters:
+      - name: anio
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          description: Año en el cual se desea saber la cantidad de viajes de los monopatines.
+      - name: minViaje
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          description: Minimo de viajes que deben tener los monopatines para incluirse en el listado.
+      responses:
+        "200":
+          description: Informe de viajes por año y minimo de viajes obtenido con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReportTravelInYearDTO'
+  /monopatines/disponibilidad:
+    get:
+      tags:
+      - Monopatines
+      summary: Informe de monopatines total de disponibles vs. total de no disponibles.
+      description: Muestra la cantidad de monopatines disponibles y la cantidad de monopatines no disponibles actualmente.
+      responses:
+        "200":
+          description: Informe de monopatines disponibles vs. no disponibles obtenido con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableDTO'
+  /monopatines/utilizacion/{id}:
+    get:
+      tags:
+      - Monopatines
+      summary: "Informe que muestra total de viajes, tiempo viajado, tiempo en pausa del monopatin asociado al {id}."
+      description: "Util para mostrar cuantos viajes hizo un monopatin, el tiempo total que estuvo viajando y opcionalmente el tiempo total que estuvo en pausa."
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: Id del monopatin solicitado.
+      - name: conPausas
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          description: Indica true si requiere el tiempo total de pausas.
+      responses:
+        "200":
+          description: Informe generado con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+  /monopatines/disponibilidad/{id}:
+    put:
+      tags:
+      - Monopatines
+      summary: "Alterna la disponibilidad del monopatin asociado a su {id}."
+      description: "Util para cambiar la disponibilidad de un monopatin en particular. Si el monopatin esta DISPONIBLE , lo cambia a NO DISPONIBLE. Si el monopatin esta en NO DISPONIBLE, lo cambia a DISPONIBLE."
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: Id del monopatin a actualizar la disponibilidad.
+      responses:
+        "200":
+          description: Disponibilidad del monopatin actualizada con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateMonoDTO'
+  /monopatines/ubicacion/{id}:
+    put:
+      tags:
+      - Monopatines
+      summary: "Actualiza la ubicacion del monopatin que está en viaje asociado a su {id}."
+      description: Util para actualizar la ubicacion cuando un monopatin se mueve en un viaje de un lado a otro o de una parada a otra.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: Id del monopatin a actualizar ubicacion.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ubicacion_id_body'
+        required: true
+      responses:
+        "200":
+          description: Ubicacion del monopatin actualizada con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KmsLocationDTO'
+  /paradas/:
+    get:
+      tags:
+      - Paradas
+      summary: Obtiene la lista de todas las paradas creadas.
+      description: Util para listar todas las paradas que hay al momento.
+      responses:
+        "200":
+          description: Paradas obtenidas con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StopDTO'
+    post:
+      tags:
+      - Paradas
+      summary: Crea una nueva parada.
+      description: Util para crear paradas para poder hacer viajes y asignarles monopatines.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VisibleDataStopDTO'
+        required: true
+      responses:
+        "201":
+          description: Parada creada con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisibleDataStopDTO'
+  /paradas/{id}:
+    get:
+      tags:
+      - Paradas
+      summary: "Obtiene una parada asociada a su {id}."
+      description: Util para ver detalles de una parada en particular.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id de la parada a buscar.
+      responses:
+        "200":
+          description: Parada obtenida con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StopDTO'
+    put:
+      tags:
+      - Paradas
+      summary: "Modifica una parada asociada a su {id}."
+      description: Util para cambiar algun atributo de una parada en particular.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id de la parada a modificar.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VisibleDataStopDTO'
+        required: true
+      responses:
+        "200":
+          description: Parada modificada con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisibleDataStopDTO'
+    delete:
+      tags:
+      - Paradas
+      summary: "Elimina una parada asociada a su {id}."
+      description: Util para eliminar una parada.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id de la parada a eliminar.
+      responses:
+        "200":
+          description: Parada eliminada con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisibleDataStopDTO'
+  /paradas/cercanas:
+    get:
+      tags:
+      - Paradas
+      summary: Obtiene una lista de paradas cercanas a una ubicacion de X e Y.
+      description: "Util para obtener las paradas cercanas a una ubicacion (coordenadas X e Y), retorna una lista ordenada con las mas cercanas a X e Y mostradas primero. Ademas incluye la cantidad de monopatines disponibles en cada parada."
+      parameters:
+      - name: x
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          description: Ubicacion en X de un usuario.
+      - name: "y"
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          description: Ubicacion en Y de un usuario.
+      responses:
+        "200":
+          description: Lista de paradas cercanas obtenida con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StopAvailabilityDTO'
+  /viajes/:
+    get:
+      tags:
+      - Viajes
+      summary: Obtiene una lista de todos los viajes creados.
+      description: Util para listar todos los viajes realizados y en curso.
+      responses:
+        "200":
+          description: Lista de viajes obtenida con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TravelDTO'
+    post:
+      tags:
+      - Viajes
+      summary: Crea un nuevo viaje en monopatin.
+      description: Util para dar inicio a un viaje en monopatin por parte de un usuario.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitTravelDTO'
+        required: true
+      responses:
+        "201":
+          description: Viaje iniciado con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTravelDTO'
+  /viajes/pausar/{id}:
+    put:
+      tags:
+      - Viajes
+      summary: "Pone en pausa el viaje que coincide con su {id}."
+      description: Util para pausar un viaje actualmente activo.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id del viaje a poner en pausa.
+      responses:
+        "200":
+          description: Viaje puesto en pausa con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PauseResponseDTO'
+  /viajes/reanudar/{id}:
+    put:
+      tags:
+      - Viajes
+      summary: "Reanuda un viaje que coincide con el {id} y fue puesto en pausa anteriormente."
+      description: "Util para reanudar un viaje que fue puesto en pausa. Se cobrará por el tiempo desde iniciado el viaje ó desde el final de la ultima pausa hasta el momento en que se reanuda el viaje. Si pasaron mas de 15 minutos en pausa, se cambiará la tarifa activa a una adicional para el resto del viaje."
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id del viaje a reanudar.
+      responses:
+        "200":
+          description: Viaje reanudado con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContinueTravelDTO'
+  /viajes/finalizar/{id}:
+    put:
+      tags:
+      - Viajes
+      summary: "Finaliza un viaje en curso que coincide con su {id}."
+      description: "Util para finalizar un viaje que estaba siendo desarrollado. El monopatin deberá estar en la ubicacion de la parada que se marco como destino. Debita dinero acorde al tiempo que no haya sido cobrado, por ejemplo minutos de diferencia entre el final de una pausa y la hora de finalizacion Ó cobrará el total del tiempo de viaje si no se hizo pausa en ningun momento."
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id del viaje que se desea finalizar.
+      responses:
+        "200":
+          description: Viaje finalizado con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloseTravelDTO'
+  /viajes/informe/monopatines:
+    get:
+      tags:
+      - Viajes
+      summary: Mismo efecto `/monopatines/mas-viajes`.
+      description: Este endpoint aporta el mismo informe ubicado en `/monopatines/mas-viajes`.
+      parameters:
+      - name: anio
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          description: Año en el cual se desea saber la cantidad de viajes de los monopatines.
+      - name: minViaje
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          description: Minimo de viajes que deben tener los monopatines para incluirse en el listado.
+      responses:
+        "200":
+          description: Informe de viajes por año y minimo de viajes obtenido con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReportTravelInYearDTO'
+  /viajes/informe/facturado:
+    get:
+      tags:
+      - Viajes
+      summary: Informe del total facturado entre un rango de meses de un año.
+      description: "Genera un informe del total facturado de viajes en un rango de meses de un año. Recibe por parametros el numero de mes inicial, numero de mes final y opcionalmente el año. Si no se incluye el año, el analisis será sobre el corriente año."
+      parameters:
+      - name: mesInicial
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          description: Numero de mes inicial.
+      - name: mesFinal
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          description: Numero de mes final.
+      - name: anio
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          description: Numero de año de analisis.
+      responses:
+        "200":
+          description: Informe generado con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportTotalBilledDTO'
+  /tarifas/:
+    get:
+      tags:
+      - Tarifas
+      summary: Obtiene la lista de todas las tarifas creadas.
+      description: Util para enlistar las tarifas que han sido creadas y ver fechas de vigencia de todas.
+      responses:
+        "200":
+          description: Lista de tarifas obtenida con exito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tarifa'
+    post:
+      tags:
+      - Tarifas
+      summary: Crea una nueva tarifa.
+      description: "Crea una tarifa para el cobro de los viajes, posee una fecha de vigencia la cual al momento de crear un viaje, tomará la fecha anterior mas cercana a crear el viaje y será la que se utilice para el cobro del viaje."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeeDTO'
+        required: true
+      responses:
+        "201":
+          description: Tarifa creada con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeeDTO'
+  /tarifas/{id}:
+    put:
+      tags:
+      - Tarifas
+      summary: "Modifica una tarifa asociada a su {id}."
+      description: Util para modificar algun atributo de una tarifa. No recomendable cambiar la fecha de vigencia ya que podria afectar el funcionamiento del sistema.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id de la tarifa a modificar.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeeDTO'
+        required: true
+      responses:
+        "200":
+          description: Tarifa modificada con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeeDTO'
+    delete:
+      tags:
+      - Tarifas
+      summary: "Elimina una tarifa asociada a su {id}."
+      description: Util para eliminar una tarifa.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          description: Id de la tarifa a eliminar.
+      responses:
+        "200":
+          description: Tarifa eliminada con exito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarifa'
+components:
+  schemas:
+    NewPersonalAccountDTO:
+      required:
+      - email
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: pablo128
+        email:
+          type: string
+          example: pablo@gmail.com
+        password:
+          type: string
+          example: thepassword2024
+    NewClientAccountDTO:
+      required:
+      - email
+      - id_mp
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: juanfer77
+        email:
+          type: string
+          example: juanfer@gmail.com
+        password:
+          type: string
+          example: themostsecuritypass777
+        id_mp:
+          type: string
+          example: 9fe2c4e9-3bd6-4b43-9cdb-7e40e8b2a8b6
+    ResponseAccountDTO:
+      required:
+      - email
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: juanfer77
+        email:
+          type: string
+          example: juanfer@gmail.com
+    LoginDTO:
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: juanfer77
+        email:
+          type: string
+          example: juanfer@gmail.com
+    Rol:
+      type: object
+      properties:
+        id_rol:
+          type: number
+          example: 2
+        type:
+          type: string
+          example: cliente
+    Cuenta:
+      type: object
+      properties:
+        id_account:
+          type: number
+          example: 45
+        role:
+          $ref: '#/components/schemas/Rol'
+        username:
+          type: string
+          example: pepito2024
+        email:
+          type: string
+          example: pepito@gmail.com
+        password:
+          type: string
+          example: UIQWYEUQP?;2873WOEER%6$QIUWE
+        dischargeDate:
+          type: string
+          example: 2024-11-01
+        isAvailable:
+          type: boolean
+    AccountDTO:
+      type: object
+      properties:
+        role:
+          type: string
+          example: cliente
+        username:
+          type: string
+          example: pepito2024
+        email:
+          type: string
+          example: pepito@gmail.com
+        dischargeDate:
+          type: string
+          example: 2024-11-01
+        isAvailable:
+          type: boolean
+    DisableAccountDTO:
+      type: object
+      properties:
+        username:
+          type: string
+          example: juancito18
+        email:
+          type: string
+          example: juancitoperez1818@gmail.com
+        isAvailable:
+          type: boolean
+          example: false
+    RechargeDTO:
+      required:
+      - amount
+      type: object
+      properties:
+        amount:
+          type: number
+          example: 50000
+    ResponseRechargeDTO:
+      type: object
+      properties:
+        account:
+          type: number
+          example: 45
+        newAmount:
+          type: number
+          example: 51250
+    Usuario:
+      type: object
+      properties:
+        id_user:
+          type: number
+          example: 25
+        name:
+          type: string
+          example: juan
+        surname:
+          type: string
+          example: hernandez
+        phone:
+          type: string
+          example: "542494332211"
+        email:
+          type: string
+          example: juanfer@gmail.com
+        registrationDate:
+          type: string
+          example: 2024-10-05
+        id_account:
+          type: number
+          example: 45
+    UserVisibleDataDTO:
+      required:
+      - email
+      - name
+      - phone
+      - surname
+      type: object
+      properties:
+        name:
+          type: string
+          example: franco
+        surname:
+          type: string
+          example: lopez
+        phone:
+          type: string
+          example: "2494885533"
+        email:
+          type: string
+          example: flopez@gmail.com
+    NewUserDTO:
+      required:
+      - email
+      - id_account
+      - name
+      - phone
+      - surname
+      type: object
+      properties:
+        name:
+          type: string
+          example: juan
+        surname:
+          type: string
+          example: hernandez
+        phone:
+          type: string
+          example: "2494009988"
+        email:
+          type: string
+          example: juanfer@gmail.com
+        id_account:
+          type: number
+          example: 45
+    UserDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          example: juan
+        surname:
+          type: string
+          example: hernandez
+        phone:
+          type: string
+          example: "2494009988"
+        email:
+          type: string
+          example: juanfer@gmail.com
+        registrationDate:
+          type: string
+          example: 2024-11-03
+    Point:
+      type: object
+      properties:
+        x:
+          type: number
+          example: 5
+        "y":
+          type: number
+          example: 5
+    MonoDTO:
+      required:
+      - id_stop
+      - isAvailable
+      - kms
+      type: object
+      properties:
+        isAvailable:
+          type: boolean
+          example: true
+        id_stop:
+          type: number
+          description: Id de la parada la cual estara el monopatin.
+          example: 2
+        kms:
+          type: number
+          description: kilometros actuales del monopatin.
+          example: 280
+    StopDTO:
+      type: object
+      properties:
+        id_stop:
+          type: number
+          example: 2
+        name:
+          type: string
+          example: Parada zona centro
+        adress:
+          type: string
+          example: Avenida libertador 2018
+        location:
+          $ref: '#/components/schemas/Point'
+    Monopatin:
+      type: object
+      properties:
+        id_monopatin:
+          type: string
+          example: asSJDHSskjdha-23872DbCCd
+        isAvailable:
+          type: boolean
+          example: true
+        location:
+          $ref: '#/components/schemas/Point'
+        kms:
+          type: number
+          example: 280
+        stop_assign:
+          $ref: '#/components/schemas/StopDTO'
+    UpdateMonoDTO:
+      required:
+      - isAvailable
+      - stopAssign
+      type: object
+      properties:
+        isAvailable:
+          type: boolean
+          example: true
+        stopAssign:
+          $ref: '#/components/schemas/StopDTO'
+    ReportTravelInYearDTO:
+      type: object
+      properties:
+        id_monopatin:
+          type: string
+          example: ASJDHqwueySGH7262dUY=eD
+        totalTravelsInYear:
+          type: number
+          example: 50
+    AvailableDTO:
+      type: object
+      properties:
+        totalAvailable:
+          type: number
+          example: 90
+        totalNotAvailable:
+          type: number
+          example: 28
+    KmsLocationDTO:
+      type: object
+      properties:
+        newLocation:
+          $ref: '#/components/schemas/Point'
+        newKms:
+          type: number
+          example: 287
+    VisibleDataStopDTO:
+      required:
+      - adress
+      - location
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: Parada zona centro
+        adress:
+          type: string
+          example: Avenida libertador 1818
+        location:
+          $ref: '#/components/schemas/Point'
+    StopAvailabilityDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Parada zona campus universitario
+        adress:
+          type: string
+          example: Reforma universitaria 2020
+        location:
+          $ref: '#/components/schemas/Point'
+        quantityMonoAvailable:
+          type: number
+          example: 12
+    InitTravelDTO:
+      required:
+      - id_account
+      - id_monopatin
+      - id_stop_end
+      - id_user
+      type: object
+      properties:
+        id_user:
+          type: number
+          description: Id de usuario que da comienzo al viaje.
+          example: 15
+        id_account:
+          type: number
+          description: Id de cuenta asociada al usuario que da comienzo al viaje.
+          example: 2
+        id_monopatin:
+          type: string
+          description: Id del monopatin que va hacer uso el usuario.
+          example: QUWETsgE2YUEUW873=edRT
+        id_stop_end:
+          type: number
+          description: Id de la parada en la cual va a finalizar el viaje.
+          example: 2
+    ResponseDebitDTO:
+      type: object
+      properties:
+        description:
+          type: string
+          example: "Debito automatico de $[MONTO] por [MOTIVO]."
+        total_debit:
+          type: number
+          example: 500
+    CreateTravelDTO:
+      type: object
+      properties:
+        id_travel:
+          type: number
+          example: 3
+        initDate:
+          type: string
+          example: 2024-11-02
+        paymentDetail:
+          $ref: '#/components/schemas/ResponseDebitDTO'
+    Tarifa:
+      type: object
+      properties:
+        id_fee:
+          type: number
+          example: 3
+        normalFee:
+          type: number
+          example: 500
+        additionalFee:
+          type: number
+          example: 1500
+        dateValidity:
+          type: string
+          example: 2024-10-01
+    TravelDTO:
+      type: object
+      properties:
+        id_travel:
+          type: number
+          example: 3
+        id_user:
+          type: number
+          example: 18
+        id_account:
+          type: number
+          example: 2
+        id_monopatin:
+          type: string
+          example: QUWETsgE2YUEUW873=edRT
+        id_stop_init:
+          type: number
+          example: 1
+        id_stop_end:
+          type: number
+          example: 2
+        date_init:
+          type: string
+          example: 2024-10-03 15:20
+        date_end:
+          type: string
+        kmsMonoInit:
+          type: number
+          example: 287
+        kmsTraveled:
+          type: number
+          example: 15
+        time:
+          type: number
+          description: Tiempo total del viaje en minutos.
+          example: 25
+        state:
+          type: boolean
+          example: true
+        total_pay:
+          type: number
+          example: 500
+        isPause:
+          type: boolean
+          example: false
+        fee:
+          $ref: '#/components/schemas/Tarifa'
+        feeActive:
+          type: number
+          example: 500
+        quantityEndPauses:
+          type: number
+          example: 0
+    PauseResponseDTO:
+      type: object
+      properties:
+        id_travel:
+          type: number
+          example: 3
+        initPause:
+          type: string
+          example: 2024-11-03 15:35
+    ContinueTravelDTO:
+      type: object
+      properties:
+        minutesCharged:
+          type: number
+          description: Minutos cobrados (puede ser desde el inicio del viaje o desde el fin de la ultima pausa).
+          example: 20
+        totalPauseInMin:
+          type: number
+          description: Duración de la pausa que finalizó expresada en minutos.
+          example: 8
+        debitDetail:
+          $ref: '#/components/schemas/ResponseDebitDTO'
+    CloseTravelDTO:
+      type: object
+      properties:
+        id_travel:
+          type: number
+          example: 3
+        totalPay:
+          type: number
+          example: 2500
+        kmsTraveled:
+          type: number
+          example: 12
+        endDate:
+          type: string
+          example: 2024-11-03 15:55
+        debitEnd:
+          $ref: '#/components/schemas/ResponseDebitDTO'
+    ReportTotalBilledDTO:
+      type: object
+      properties:
+        monthInit:
+          type: number
+          example: 2
+        monthEnd:
+          type: number
+          example: 11
+        year:
+          type: number
+          example: 2024
+        totalInPesos:
+          type: number
+          example: 25700000
+    FeeDTO:
+      required:
+      - additionalFee
+      - dateValidity
+      - normalFee
+      type: object
+      properties:
+        normalFee:
+          type: number
+          example: 700
+        additionalFee:
+          type: number
+          example: 1000
+        dateValidity:
+          type: string
+          example: 2024-11-17
+    ReportUsageDTO:
+      type: object
+      properties:
+        id_monopatin:
+          type: string
+          example: QUWETsgE2YUEUW873=edRT
+        total_kms:
+          type: number
+          example: 467
+        total_min_traveled:
+          type: number
+          example: 37465
+        total_travels:
+          type: number
+          example: 150
+    ReportUsagePauseDTO:
+      allOf:
+      - $ref: '#/components/schemas/ReportUsageDTO'
+      - type: object
+        properties:
+          total_min_pause:
+            type: number
+            example: 180
+    inline_response_200:
+      oneOf:
+      - $ref: '#/components/schemas/ReportUsagePauseDTO'
+      - $ref: '#/components/schemas/ReportUsageDTO'
+    ubicacion_id_body:
+      required:
+      - location
+      properties:
+        location:
+          $ref: '#/components/schemas/Point'
+  responses:
+    AuthRegisterResponse:
+      description: CREATED
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseAccountDTO'
+    GenericBadRequest:
+      description: BAD REQUEST
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Datos inválidos
+    AuthSuccessResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                example: JKHGSDYEGqywtewyEFYHAV625GE26Gqwbvq?=eIU26GHDKVG;EDUIOF
+              type:
+                type: string
+                example: Bearer

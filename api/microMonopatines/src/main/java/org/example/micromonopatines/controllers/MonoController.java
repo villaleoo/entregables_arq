@@ -1,6 +1,7 @@
 package org.example.micromonopatines.controllers;
 
 
+import jakarta.validation.Valid;
 import org.example.micromonopatines.DTO.location.LocationDTO;
 import org.example.micromonopatines.DTO.MonoDTO;
 import org.example.micromonopatines.DTO.UpdateMonoDTO;
@@ -17,8 +18,8 @@ public class MonoController {
     @Autowired
     MonoService service;
 
-    @PostMapping("")
-    public ResponseEntity<?> createMono(@RequestBody MonoDTO mono){
+    @PostMapping("/")
+    public ResponseEntity<?> createMono(@Valid @RequestBody MonoDTO mono){
         try{
             return  new ResponseEntity<>(this.service.save(mono),HttpStatus.CREATED);
         }catch (Exception e){
@@ -26,7 +27,7 @@ public class MonoController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<?> getAll(){
         try{
             return  new ResponseEntity<>(this.service.findAll(),HttpStatus.OK);
@@ -45,7 +46,7 @@ public class MonoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateMono(@PathVariable String id, @RequestBody UpdateMonoDTO mono){
+    public ResponseEntity<?> updateMono(@PathVariable String id,@Valid @RequestBody UpdateMonoDTO mono){
         try{
             return  new ResponseEntity<>(this.service.update(id,mono),HttpStatus.OK);
         }catch (Exception e){
@@ -80,6 +81,7 @@ public class MonoController {
         }
     }
 
+    /*este endpoint fue creado para el microservicio de paradas, no se muestra en el uso de la API*/
     @GetMapping("/en-parada")
     public ResponseEntity<?> getAllInStop(@RequestParam Long idParada){
         try{
@@ -99,7 +101,7 @@ public class MonoController {
     }
 
     @PutMapping("/ubicacion/{id}")
-    public ResponseEntity<?> updateLocationInTravel(@PathVariable String id, @RequestBody LocationDTO location){
+    public ResponseEntity<?> updateLocationInTravel(@PathVariable String id, @Valid @RequestBody LocationDTO location){
         try{
             return  new ResponseEntity<>(this.service.updateLocationInTravel(id,location),HttpStatus.OK);
         }catch (Exception e){

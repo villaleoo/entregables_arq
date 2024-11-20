@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class ReportUsageDTO {
     private String id_monopatin;
     private Long total_kms;
+    private Long total_min_traveled;
     private Long total_travels;
 
 }

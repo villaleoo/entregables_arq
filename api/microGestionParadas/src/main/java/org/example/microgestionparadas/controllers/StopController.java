@@ -1,5 +1,6 @@
 package org.example.microgestionparadas.controllers;
 
+import jakarta.validation.Valid;
 import org.example.microgestionparadas.DTO.LocationDTO;
 import org.example.microgestionparadas.DTO.VisibleDataStopDTO;
 import org.example.microgestionparadas.services.StopService;
@@ -15,8 +16,8 @@ public class StopController {
     @Autowired
     StopService service;
 
-    @PostMapping("")
-    public ResponseEntity<?> createStop(@RequestBody VisibleDataStopDTO stop){
+    @PostMapping("/")
+    public ResponseEntity<?> createStop(@Valid @RequestBody VisibleDataStopDTO stop){
         try{
             return new ResponseEntity<>(this.service.save(stop), HttpStatus.CREATED);
         }catch (Exception e){
@@ -24,7 +25,7 @@ public class StopController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<?> getAll(){
         try{
             return new ResponseEntity<>(this.service.findAll(), HttpStatus.OK);
@@ -43,7 +44,7 @@ public class StopController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateStop(@PathVariable Long id, @RequestBody VisibleDataStopDTO stop){
+    public ResponseEntity<?> updateStop(@PathVariable Long id,@Valid @RequestBody VisibleDataStopDTO stop){
         try{
             return new ResponseEntity<>(this.service.update(id,stop), HttpStatus.OK);
         }catch (Exception e){

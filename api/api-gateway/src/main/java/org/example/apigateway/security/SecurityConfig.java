@@ -13,6 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -39,14 +42,25 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests( authz -> authz
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/viajes/**").hasAnyAuthority(Constants.client,Constants.admin)
-                        .requestMatchers(HttpMethod.GET,"/paradas/**").hasAnyAuthority(Constants.client,Constants.admin)
+
+                        .requestMatchers(HttpMethod.PUT,"/monopatines/ubicacion/{id}").authenticated()
+                        .requestMatchers(HttpMethod.PUT,"/cuentas/recargar/**").authenticated()
 
                         .requestMatchers(HttpMethod.POST,"/usuarios/**").hasAnyAuthority(Constants.client,Constants.admin)
                         .requestMatchers(HttpMethod.PUT,"/usuarios/**").hasAnyAuthority(Constants.client,Constants.admin)
 
-                        .requestMatchers(HttpMethod.GET,"/monopatines/**").hasAnyAuthority(Constants.support,Constants.admin)
-                        .requestMatchers(HttpMethod.PUT,"/monopatines/disponibilidad/**").hasAnyAuthority(Constants.support,Constants.admin)
+
+                        .requestMatchers(HttpMethod.POST,"/viajes/**").hasAnyAuthority(Constants.client,Constants.admin)
+                        .requestMatchers(HttpMethod.PUT,"/viajes/**").hasAnyAuthority(Constants.client,Constants.admin)
+
+                        .requestMatchers(HttpMethod.PUT,"/monopatines/**").hasAnyAuthority(Constants.support,Constants.admin)
+
+
+                        .requestMatchers(HttpMethod.GET,"/cuentas/**").authenticated() /*esto deberia estar prohibido para quienes no sean admin pero hay que configurar tokens entre microservicios*/
+
+                        .requestMatchers(HttpMethod.GET,"/paradas/cercanas").authenticated()
+
+
 
                         .anyRequest().hasAnyAuthority(Constants.admin)
                 )
@@ -54,4 +68,18 @@ public class SecurityConfig {
                 .addFilterBefore( new JwtFilter( this.tokenProvider ), UsernamePasswordAuthenticationFilter.class );
         return http.build();
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.addExposedHeader("Authorization");
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
 }

@@ -40,7 +40,7 @@ public class PaymentsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable UUID id){
+    public ResponseEntity<?> getByAccountAsociate(@PathVariable Long id){
         try{
             return new ResponseEntity<>(this.service.findById(id),HttpStatus.OK);
         }catch (Exception e){
@@ -59,8 +59,8 @@ public class PaymentsController {
     }
 
 
-    @PutMapping("/debitar/{id}")
-    public ResponseEntity<?> debitCreditForTravel(@PathVariable UUID id, @RequestBody DebitDetailDTO c){
+    @PutMapping("/{id}/debitar")
+    public ResponseEntity<?> debitCreditForTravel(@PathVariable Long id, @RequestBody DebitDetailDTO c){
         try{
             return new ResponseEntity<>(this.service.debitCredit(id,c),HttpStatus.OK);
         }catch (Exception e){

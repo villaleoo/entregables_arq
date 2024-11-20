@@ -1,7 +1,7 @@
 package org.example.apigateway.service;
 
-import org.example.apigateway.DTO.account.DisableAccountDTO;
-import org.example.apigateway.DTO.account.ResponseAccountDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.apigateway.DTO.account.*;
 import org.example.apigateway.feignClient.PaymentClient;
 import org.example.apigateway.model.Cuenta;
 import org.example.apigateway.repository.AccountRepository;
@@ -23,8 +23,18 @@ public class AccountService {
     PaymentClient paymentClient;
 
 
-    public List<Cuenta> findAll(){
-        return this.repository.findAll();
+    public List<AccountDTO> findAll(){
+        return this.repository.findAllProtected();
+    }
+
+    public Cuenta findById(Long id){
+        Optional<Cuenta> res =this.repository.findById(id);
+        if(res.isPresent()){
+            System.out.println(res.get());
+            return res.get();
+        }
+
+        throw new RuntimeException("No se encontro cuenta con id: "+id);
     }
 
 
@@ -51,8 +61,6 @@ public class AccountService {
 
         Cuenta c = res.get();
 
-
-
         if(Objects.equals(c.getRole().getType(), Constants.client)){
             if(this.deletePayment(id)){
                 this.repository.delete(c);
@@ -65,6 +73,18 @@ public class AccountService {
         }
 
         return new ResponseAccountDTO(c.getUsername(),c.getEmail());
+    }
+
+    public ResponseRechargeDTO recharge(Long id, RechargeDTO recharge){
+        ResponseEntity<?> res =this.paymentClient.recharge(id,recharge);
+
+        if(res.getStatusCode().is2xxSuccessful() && res.getBody() != null){
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            return objectMapper.convertValue(res.getBody(), ResponseRechargeDTO.class);
+        }
+
+        throw new RuntimeException("No se pudo recargar saldo a la cuenta "+id);
     }
 
     private boolean deletePayment(Long id){

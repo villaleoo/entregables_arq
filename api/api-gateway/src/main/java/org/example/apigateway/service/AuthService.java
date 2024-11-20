@@ -78,6 +78,8 @@ public class AuthService {
         Optional<Cuenta> c = this.repository.findByUserName(newClient.getUsername());
         Optional<Rol> r =this.roleRepository.findByType("cliente");
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
+        String uuidMp= newClient.getId_mp();
+        UUID uuid;
         if(c.isPresent()){
             return new ResponseEntity<>("El nombre de usuario ya existe, intenta con otro.", HttpStatus.BAD_REQUEST);
         }
@@ -85,6 +87,13 @@ public class AuthService {
         if(r.isEmpty()){
             return new ResponseEntity<>("No se encontro rol cliente.",HttpStatus.BAD_REQUEST);
         }
+
+        try {
+            uuid = UUID.fromString(uuidMp);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("El id de la cuenta de mercado pago no es valida. Debe ser formato UUID xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx.");
+        }
+
 
         Cuenta account = new Cuenta(newClient.getUsername(),newClient.getEmail(),passwordEncoder.encode(newClient.getPassword()),
                 Date.from(zonedDateTime.toInstant() ),true);
@@ -94,7 +103,7 @@ public class AuthService {
 
         this.repository.save(account);
 
-        this.paymentClient.addPayment(new NewPaymentDTO(newClient.getId_mp(),account.getId_account()));
+        this.paymentClient.addPayment(new NewPaymentDTO(uuid,account.getId_account()));
 
         return new ResponseEntity<>(new ResponseAccountDTO(account.getUsername(), account.getEmail()), HttpStatus.CREATED);
 
@@ -111,7 +120,13 @@ public class AuthService {
         if(res.isEmpty()){
             return new ResponseEntity<>("El usuario no encontrado, debe registrarse para iniciar sesion.", HttpStatus.BAD_REQUEST);
         }
+
         Cuenta account = res.get();
+
+        if (!passwordEncoder.matches(user.getPassword(), account.getPassword())) {
+            return new ResponseEntity<>("Contraseña incorrecta.", HttpStatus.BAD_REQUEST);
+        }
+
         List<Rol> rol = new ArrayList<>();
         rol.add(account.getRole());
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword(),rol.stream().map(role ->new SimpleGrantedAuthority(role.getType())).collect(Collectors.toList()));

@@ -1,6 +1,8 @@
 package org.example.apigateway.controller;
 
-import com.netflix.discovery.converters.Auto;
+
+import jakarta.validation.Valid;
+import org.example.apigateway.DTO.account.RechargeDTO;
 import org.example.apigateway.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,15 @@ public class AccountController {
     AccountService service;
 
 
+    @GetMapping("/{id}")
+    ResponseEntity<?> getById(@PathVariable Long id){
+        try{
+            return new ResponseEntity<>(this.service.findById(id),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Error: "+e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
     @GetMapping("/")
     ResponseEntity<?> getAll(){
         try{
@@ -25,10 +36,20 @@ public class AccountController {
     }
 
 
+
     @PutMapping("/inhabilitar/{id}")
     ResponseEntity<?> disable(@PathVariable Long id){
         try{
             return new ResponseEntity<>(this.service.disable(id),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Error: "+e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    @PutMapping("/recargar/{id}")
+    ResponseEntity<?> recharge(@PathVariable Long id, @Valid @RequestBody RechargeDTO recharge){
+        try{
+            return new ResponseEntity<>(this.service.recharge(id,recharge),HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>("Error: "+e.getMessage(), HttpStatus.CONFLICT);
         }
@@ -42,6 +63,8 @@ public class AccountController {
             return new ResponseEntity<>("Error: "+e.getMessage(), HttpStatus.CONFLICT);
         }
     }
+
+
 
 
 

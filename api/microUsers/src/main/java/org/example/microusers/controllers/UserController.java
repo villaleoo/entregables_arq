@@ -1,7 +1,8 @@
 package org.example.microusers.controllers;
 
+import jakarta.validation.Valid;
 import org.example.microusers.DTO.user.NewUserDTO;
-import org.example.microusers.DTO.user.ClientVisibleDataDTO;
+import org.example.microusers.DTO.user.UserVisibleDataDTO;
 import org.example.microusers.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,8 +16,8 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @PostMapping("")
-    public ResponseEntity<?> createClient(@RequestBody NewUserDTO newClient){
+    @PostMapping("/")
+    public ResponseEntity<?> createClient(@Valid @RequestBody NewUserDTO newClient){
         try{
             return new ResponseEntity<>(this.service.saveClient(newClient), HttpStatus.CREATED);
         }catch (Exception e){
@@ -25,7 +26,7 @@ public class UserController {
     }
 
 
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<?> getAll(){
         try{
             return new ResponseEntity<>(this.service.findAll(), HttpStatus.OK);
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id,@RequestBody ClientVisibleDataDTO user){
+    public ResponseEntity<?> updateUser(@PathVariable Long id,@Valid @RequestBody UserVisibleDataDTO user){
         try{
             return new ResponseEntity<>(this.service.update(id,user), HttpStatus.OK);
         }catch (Exception e){

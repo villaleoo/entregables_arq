@@ -36,8 +36,8 @@ public class PaymentsService {
         throw new RuntimeException("El medio de pago ingresado ya pertenece a una cuenta.");
     }
 
-    public MediosDePago findById(UUID id){
-        Optional<MediosDePago> res = this.repository.findById(id);
+    public MediosDePago findById(Long id){
+        Optional<MediosDePago> res = this.repository.findByIdAccount(id);
 
         return res.orElse(null);
 
@@ -63,8 +63,8 @@ public class PaymentsService {
 
 
 
-    public DebitDetailDTO debitCredit(UUID id, DebitDetailDTO total){
-        Optional<MediosDePago> res = this.repository.findById(id);
+    public DebitDetailDTO debitCredit(Long id, DebitDetailDTO total){
+        Optional<MediosDePago> res = this.repository.findByIdAccount(id);
 
         if(res.isEmpty()){
             throw new EntityNotFoundException("No se encontro medio de pago valido.");

@@ -96,7 +96,6 @@ public class StopService {
         ArrayList<StopAvailabilityDTO> res =new ArrayList<>();
 
         for(Parada p :list){
-            System.out.println(p.getId_stop());
             Integer qMonopatines=this.findQuantityAvailableMonopatines(p.getId_stop());
             Point location = new Point((int)p.getX(),(int)p.getY());
             res.add(new StopAvailabilityDTO(p.getName(),p.getAdress(),location,qMonopatines));

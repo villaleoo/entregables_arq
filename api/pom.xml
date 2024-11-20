@@ -35,7 +35,7 @@
         <module>api-gateway</module>
         <module>eurekaServer</module>
         <module>microGestionParadas</module>
-        <module>microGestion</module>
+        <module>microGestionViajes</module>
         <module>microUsers</module>
         <module>microMonopatines</module>
     </modules>

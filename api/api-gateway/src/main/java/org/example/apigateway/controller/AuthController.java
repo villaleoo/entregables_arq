@@ -1,6 +1,7 @@
 package org.example.apigateway.controller;
 
 import com.netflix.discovery.converters.Auto;
+import jakarta.validation.Valid;
 import org.example.apigateway.DTO.LoginDTO;
 import org.example.apigateway.DTO.typeUsers.NewClientAccountDTO;
 import org.example.apigateway.DTO.typeUsers.NewPersonalAccountDTO;
@@ -19,7 +20,7 @@ public class AuthController {
     AuthService service;
 
     @PostMapping("/admin")
-    public ResponseEntity<?> createAdmin(@RequestBody NewPersonalAccountDTO newAdmin){
+    public ResponseEntity<?> createAdmin(@Valid @RequestBody NewPersonalAccountDTO newAdmin){
         try{
             return this.service.createPersonalAccount(newAdmin, Constants.admin);
         }catch (Exception e){
@@ -28,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/mantenimiento")
-    public ResponseEntity<?> createSupport(@RequestBody NewPersonalAccountDTO newSupport){
+    public ResponseEntity<?> createSupport(@Valid @RequestBody NewPersonalAccountDTO newSupport){
         try{
             return this.service.createPersonalAccount(newSupport,Constants.support);
         }catch (Exception e){
@@ -37,16 +38,16 @@ public class AuthController {
     }
 
     @PostMapping("/cliente")
-    public ResponseEntity<?> createClient(@RequestBody NewClientAccountDTO newSupport){
+    public ResponseEntity<?> createClient(@Valid @RequestBody NewClientAccountDTO newClient){
         try{
-            return this.service.createClientAccount(newSupport);
+            return this.service.createClientAccount(newClient);
         }catch (Exception e){
             return new ResponseEntity<>("Error "+e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO login){
+    public ResponseEntity<?> login(@Valid @RequestBody LoginDTO login){
         try{
             return this.service.login(login);
         }catch (Exception e){

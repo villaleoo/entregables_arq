@@ -143,9 +143,9 @@ public class MonoService {
                 return new NotUsageDTO(id,(long)mono.getKms(),"El monopatin no tiene viajes efectuados.");
             }
             if(includePause==null){
-                return new ReportUsageDTO(id,(long)mono.getKms(),res.getTotal_travels());
+                return new ReportUsageDTO(id,(long)mono.getKms(),res.getTotal_min_traveled(),res.getTotal_travels());
             }
-            return new ReportUsagePauseDTO(id,(long)mono.getKms(),res.getTotal_travels(),res.getTotal_min_pause());
+            return new ReportUsagePauseDTO(id,(long)mono.getKms(), res.getTotal_min_traveled(), res.getTotal_travels(),res.getTotal_min_pause());
         }
 
         throw new MonopatinNotFoundException("No se econtro monopatin con id: "+id);

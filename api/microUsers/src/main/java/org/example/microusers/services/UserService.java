@@ -1,17 +1,18 @@
 package org.example.microusers.services;
 
+import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.discovery.converters.Auto;
 import jakarta.persistence.EntityNotFoundException;
 import org.example.microusers.DTO.AccountDTO;
 import org.example.microusers.DTO.user.UserDTO;
-import org.example.microusers.DTO.user.ClientVisibleDataDTO;
+import org.example.microusers.DTO.user.UserVisibleDataDTO;
 import org.example.microusers.DTO.user.NewUserDTO;
 import org.example.microusers.feignClient.AuthClient;
 import org.example.microusers.model.*;
@@ -46,7 +47,7 @@ public class UserService {
 
 
 
-    public UserDTO saveClient(NewUserDTO entity) {
+    public UserDTO saveClient(NewUserDTO entity) throws IOException {
         Long idAccount=this.getAccount(entity.getId_account());
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
 
@@ -64,7 +65,7 @@ public class UserService {
 
     }
 
-    public ClientVisibleDataDTO update(Long id, ClientVisibleDataDTO entity){
+    public UserVisibleDataDTO update(Long id, UserVisibleDataDTO entity){
         Optional<Usuario> u = this.repositoryUser.findById(id);
 
         if(u.isPresent()){
@@ -82,25 +83,32 @@ public class UserService {
     }
 
 
-    public ClientVisibleDataDTO delete(Long id) {
+    public UserVisibleDataDTO delete(Long id) {
         Optional<Usuario> u = this.repositoryUser.findById(id);
 
         if(u.isPresent()){
             Usuario user = u.get();
             this.repositoryUser.delete(user);
 
-            return new ClientVisibleDataDTO(user.getName(), user.getSurname(), user.getPhone(), user.getEmail());
+            return new UserVisibleDataDTO(user.getName(), user.getSurname(), user.getPhone(), user.getEmail());
         }
 
         throw new EntityNotFoundException("No se encontro usuario con id: "+id);
     }
 
-    private Long getAccount(Long id){
-        ResponseEntity<?> res = this.authClient.findById(id);
+    private Long getAccount(Long id) throws IOException {
+        ResponseEntity<?> res = this.authClient.getById(id);
 
         if(res.getStatusCode().is2xxSuccessful() && res.getBody()!=null){
+            System.out.println(res.getBody());
+            Map<String, Object> body = (Map<String, Object>) res.getBody();
+
+
+            body.remove("role");
+
             ObjectMapper objectMapper = new ObjectMapper();
-            AccountDTO c = objectMapper.convertValue(res.getBody(), AccountDTO.class);
+            AccountDTO c = objectMapper.convertValue(body, AccountDTO.class);
+
             return c.getId_account();
         }
 
