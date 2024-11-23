@@ -22,7 +22,7 @@
         <developer/>
     </developers>
     <modules>
-        <module>api-gateway</module>
+        <module>api_gateway</module>
         <module>eureka_service</module>
         <module>Monopatin_servicio</module>
         <module>Usuario_servicio</module>
@@ -40,10 +40,6 @@
         <spring-cloud.version>2023.0.3</spring-cloud.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.mysql</groupId>

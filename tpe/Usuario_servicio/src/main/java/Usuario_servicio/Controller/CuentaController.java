@@ -31,7 +31,7 @@ public class CuentaController {
     public ResponseEntity<List<UsuarioDTO>> getUsuariosDeCuenta(@PathVariable Integer id) {
         return ResponseEntity.ok(service.getUsuariosDeCuenta(id));
     }
-    @PostMapping("/nueva")
+    @PostMapping("")
     public ResponseEntity<String> nuevaCuenta(@RequestBody Cuenta c) {
         try {
             service.nuevaCuenta(c);

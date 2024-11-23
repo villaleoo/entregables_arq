@@ -26,7 +26,7 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDTO> getUsuario(@PathVariable Integer id) {
         return ResponseEntity.ok(service.getUsuario(id));
     }
-    @PostMapping("/nuevo")
+    @PostMapping("")
     public ResponseEntity<String> nuevoUsuario(@RequestBody Usuario u) {
         try {
             service.nuevoUsuario(u);
