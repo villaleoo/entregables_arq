@@ -3,6 +3,9 @@ package MicroservicioUsuario.Entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -14,7 +17,7 @@ import java.util.List;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
 
     @Column
     private String nombre;
@@ -28,9 +31,9 @@ public class Usuario {
     @Column
     private String email;
 
-    @OneToMany
-    private List<Cuenta> cuentas;
+    @Column
+    private Date fechaAlta= Date.from(Instant.now());
 
-    @ManyToOne
-    private Rol rol;
+    @Column(nullable = false)
+    private Long idCuenta;
 }

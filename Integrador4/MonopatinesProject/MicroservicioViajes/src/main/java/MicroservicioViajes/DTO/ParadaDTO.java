@@ -1,22 +1,31 @@
 package MicroservicioViajes.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class ParadaDTO {
     private int x;
     private int y;
     private String nombre;
     private String direccion;
+    private List<MonopatinDTO> monopatines;
     private int cantMonopatines;
+
+    public ParadaDTO(int x, int y, String nombre, String direccion) {
+        this.x = x;
+        this.y = y;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.monopatines = new ArrayList<>();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -30,4 +39,9 @@ public class ParadaDTO {
     public int hashCode() {
         return Objects.hash(x, y, nombre, direccion, cantMonopatines);
     }
+
+    public void addMonopatin(MonopatinDTO monopatinDTO) {
+        monopatines.add(monopatinDTO);
+    }
+
 }

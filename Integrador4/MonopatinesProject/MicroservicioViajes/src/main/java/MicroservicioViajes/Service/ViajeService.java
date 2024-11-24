@@ -4,13 +4,13 @@ import MicroservicioViajes.DTO.*;
 import MicroservicioViajes.Entities.Pausa;
 import MicroservicioViajes.Entities.Tarifa;
 import MicroservicioViajes.Entities.Viaje;
+import MicroservicioViajes.FeignClients.CuentaFeignClient;
 import MicroservicioViajes.FeignClients.MonopatinFeignClient;
 import MicroservicioViajes.FeignClients.UsuariosFeignClient;
 import MicroservicioViajes.Repository.PausaRepository;
 import MicroservicioViajes.Repository.TarifaRepository;
 import MicroservicioViajes.Repository.ViajeRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jdk.jfr.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,6 +22,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ViajeService {
@@ -36,6 +37,9 @@ public class ViajeService {
     @Autowired
     private UsuariosFeignClient usuariosFeignClient;
 
+
+    @Autowired
+    private CuentaFeignClient cuentaFeignClient;
 
     public void add(ViajeDTO viaje) {
         Viaje v = new Viaje(viaje);
@@ -99,38 +103,55 @@ public class ViajeService {
 
     public void iniciarViaje(IniciarViajeDTO initViajeDTO) {
         UsuarioDTO usuario = usuariosFeignClient.getUsuarioById(initViajeDTO.getIdUsuario());
-        CuentaDTO cuenta = usuariosFeignClient.getCuentaById(initViajeDTO.getIdCuenta());
+        CuentaDTO cuenta = cuentaFeignClient.getCuentaById(initViajeDTO.getIdCuenta());
+        CuentaMPDTO cuentaMP = usuariosFeignClient.getCuentaMPById(cuenta.getIdCuentaMP());
+
         MonopatinDTO monopatin = monopatinFeignClient.getMonopatinById(initViajeDTO.getIdMonopatin());
+        System.out.println(monopatin);
         ParadaDTO paradaInicio = monopatinFeignClient.getParadaById(initViajeDTO.getIdParadaInicio());
         ParadaDTO paradaFin = monopatinFeignClient.getParadaById(initViajeDTO.getIdParadaFin());
+
         Tarifa tarifa = tarifaRepository.getTarifaNormalMasCercanaAHoy(Date.from(Instant.now())).get(0);
+
+        if (!paradaInicio.getMonopatines().contains(monopatin))
+            throw new RuntimeException("Error: El monopatin elegido no se encuentra en la parada elegida.");
+
+        if (!cuenta.getHabilitada())
+            throw new RuntimeException("Error la cuenta esta deshabilitada.");
 
         if (!monopatin.getDisponible())
             throw new RuntimeException("El monopatin elegido no esta disponible.");
 
-        if (monopatin.getEnMantenimiento())
-            throw new RuntimeException("El monopatin elegido esta en mantenimiento.");
-
-        if (paradaInicio.equals(paradaFin))
+        if (paradaInicio.getNombre().equals(paradaFin.getNombre()))
             throw new RuntimeException("Elegiste parada origen y destino iguales.");
 
-        if (cuenta.getCredito() <= 0)
-            throw new RuntimeException("No tenes dinero en la cuenta seleccionada. Saldo actual: " + cuenta.getCredito());
+        if (cuentaMP.getCredito() <= 0)
+            throw new RuntimeException("No tenes dinero en la cuenta seleccionada. Saldo actual: " + cuentaMP.getCredito());
 
-        if (!cuenta.getHabilitada())
-            throw new RuntimeException("La cuenta seleccionada no esta habilitada. " + cuenta);
+        if (usuario.getIdCuenta() != initViajeDTO.getIdCuenta())
+            throw new RuntimeException("Error: el usuario seleccionado no pertenece a la cuenta seleccionada");
 
-        if (cuenta.getHabilitada() && cuenta.getCredito() > 0 && monopatin.getDisponible() && !monopatin.getEnMantenimiento()) {
+        if (!cuenta.getRoles().contains("CLIENTE"))
+            throw new RuntimeException("Error: No podés iniciar un viaje con una cuenta que no es de tipo CLIENTE.");
 
-            Viaje viaje = new Viaje(initViajeDTO.getIdUsuario(), initViajeDTO.getIdCuenta(), initViajeDTO.getIdMonopatin(),
+        if (monopatin.getDisponible() && !monopatin.getEnMantenimiento()) {
+
+            Viaje viaje = new Viaje(initViajeDTO.getIdCuenta(), initViajeDTO.getIdUsuario(), initViajeDTO.getIdMonopatin(),
                     initViajeDTO.getIdParadaInicio(), initViajeDTO.getIdParadaFin(), tarifa);
             viajeRepository.save(viaje);
             monopatinFeignClient.setDisponibilidad(initViajeDTO.getIdMonopatin());
+
+            paradaInicio.getMonopatines().remove(monopatin); //Saco monopatin de parada
+            monopatinFeignClient.updateParada(initViajeDTO.getIdParadaInicio(), paradaInicio);
         }
     }
 
     public ViajeDTO terminarViaje(Long id, TerminarViajeDTO terminarViajeDTO) {
         Viaje viaje = viajeRepository.findById(id).orElse(null);
+        assert viaje != null;
+        ParadaDTO paradaFin = monopatinFeignClient.getParadaById(viaje.getIdParadaFin());
+        MonopatinDTO monopatinDTO = monopatinFeignClient.getMonopatinById(viaje.getIdMonopatin());
+
         if (viaje.getEnPausa()) throw new RuntimeException("No podes finalizar un viaje si esta en pausa. " + viaje);
         if (viaje.getFechaFin() != null) throw new RuntimeException("El viaje ya termino. " + viaje);
 
@@ -164,6 +185,9 @@ public class ViajeService {
 
         monopatinFeignClient.setDisponibilidad(viaje.getIdMonopatin());
         viajeRepository.save(viaje);
+
+        monopatinFeignClient.addMonoAParada(viaje.getIdParadaFin(), monopatinDTO);
+
         return new ViajeDTO(viaje);
     }
 

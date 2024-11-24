@@ -31,7 +31,6 @@ public class Viaje {
     @Column
     private double tiempo;
 
-
     @Column
     private double precio;
 
@@ -39,10 +38,10 @@ public class Viaje {
     private Long idMonopatin;
 
     @Column
-    private Long idUsuario;
+    private Long idCuenta;
 
     @Column
-    private Long idCuenta;
+    private Long idUsuario;
 
     @ManyToOne
     private Tarifa tarifa;

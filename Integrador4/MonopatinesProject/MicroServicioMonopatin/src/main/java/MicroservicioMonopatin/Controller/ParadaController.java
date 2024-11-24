@@ -1,5 +1,6 @@
 package MicroservicioMonopatin.Controller;
 
+import MicroservicioMonopatin.DTO.MonopatinDTO;
 import MicroservicioMonopatin.DTO.ParadaDTO;
 import MicroservicioMonopatin.Service.ParadaService;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/paradas")
+@RequestMapping("/api/paradas")
 public class ParadaController {
     @Autowired
     private ParadaService paradaService;
@@ -75,5 +76,11 @@ public class ParadaController {
                                                               String[] sort) {
         Pageable pageable = PageRequest.of(page, size);
         return new ResponseEntity<>(paradaService.getParadasCercanas(pageable, x, y), HttpStatus.OK);
+    }
+
+    @PutMapping("/agregarMonopatin/{id}")
+    public ResponseEntity<Void> agregarMonopatinaParada(@PathVariable Long id, @RequestBody MonopatinDTO monopatinDTO) {
+        paradaService.agregarMonopatinaParada(id, monopatinDTO);
+        return ResponseEntity.ok().build();
     }
 }

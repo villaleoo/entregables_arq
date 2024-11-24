@@ -1,4 +1,4 @@
-package MicroservicioUsuario.DTO;
+package MicroservicioViajes.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter
-public class CuentaDTO {
-    private LocalDate fechaAlta;
+public class CuentaMPDTO {
+    private Long id;
     private double credito;
-    private  Boolean habilitada;
 }

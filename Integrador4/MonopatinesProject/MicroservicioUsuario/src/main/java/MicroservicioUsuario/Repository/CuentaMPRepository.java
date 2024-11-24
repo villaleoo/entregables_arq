@@ -1,8 +1,8 @@
 package MicroservicioUsuario.Repository;
 
-import MicroservicioUsuario.Entities.Rol;
+import MicroservicioUsuario.Entities.CuentaMP;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RolRepository extends JpaRepository<Rol, Long> {}
+public interface CuentaMPRepository extends JpaRepository<CuentaMP, Long> {}

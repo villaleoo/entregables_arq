@@ -38,7 +38,7 @@ public interface MonopatinRepository extends JpaRepository<Monopatin, Long> {
             "WHERE m.id = :id")
     void setDisponibilidad(@Param("id") Long id);
 
-    @Query("SELECT new MicroservicioMonopatin.DTO.MonopatinDTO(m.patenteMonopatin, m.disponible, m.enMantenimiento) " +
+    @Query("SELECT new MicroservicioMonopatin.DTO.MonopatinDTO(m.id, m.patenteMonopatin, m.disponible, m.enMantenimiento) " +
             "FROM Monopatin m " +
             "WHERE (:patenteMonopatin IS NULL OR m.patenteMonopatin = :patenteMonopatin)" +
             "AND (:disponible IS NULL OR m.disponible = :disponible)" +

@@ -1,7 +1,7 @@
 package MicroservicioUsuario.Controller;
 
-import MicroservicioUsuario.DTO.CuentaDTO;
-import MicroservicioUsuario.Service.CuentaService;
+import MicroservicioUsuario.DTO.CuentaMPDTO;
+import MicroservicioUsuario.Service.CuentaMPService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,16 +13,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/cuentas")
-public class CuentaController {
+@RequestMapping("/api/cuentasmp")
+public class CuentaMPController {
 
     @Autowired
-    private CuentaService cuentaService;
+    private CuentaMPService cuentaService;
 
     @GetMapping("")
-    public ResponseEntity<Page<CuentaDTO>> getAll(@RequestParam(defaultValue = "0") Integer page,
-                                                  @RequestParam(defaultValue = "10") Integer size,
-                                                  @RequestParam(defaultValue = "credito, asc") String[] sort) {
+    public ResponseEntity<Page<CuentaMPDTO>> getAll(@RequestParam(defaultValue = "0") Integer page,
+                                                    @RequestParam(defaultValue = "10") Integer size,
+                                                    @RequestParam(defaultValue = "credito, asc") String[] sort) {
         Sort.Direction direction = Sort.Direction.fromString(sort[1]);
         Sort.Order order = new Sort.Order(direction, sort[0]);
         Pageable pageable = PageRequest.of(page, size, Sort.by(order));
@@ -30,8 +30,8 @@ public class CuentaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CuentaDTO> getById(@PathVariable Long id) {
-        CuentaDTO cuenta = cuentaService.getById(id);
+    public ResponseEntity<CuentaMPDTO> getById(@PathVariable Long id) {
+        CuentaMPDTO cuenta = cuentaService.getById(id);
         if (cuenta != null)
             return new ResponseEntity<>(cuenta, HttpStatus.OK);
 
@@ -39,7 +39,7 @@ public class CuentaController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> add(@RequestBody CuentaDTO cuenta) {
+    public ResponseEntity<String> add(@RequestBody CuentaMPDTO cuenta) {
         try {
             cuentaService.add(cuenta);
             return new ResponseEntity<>("Cuenta creada exitosamente", HttpStatus.CREATED);
@@ -59,7 +59,7 @@ public class CuentaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CuentaDTO> update(@PathVariable Long id, @RequestBody CuentaDTO cuenta) {
+    public ResponseEntity<CuentaMPDTO> update(@PathVariable Long id, @RequestBody CuentaMPDTO cuenta) {
         try {
             cuentaService.update(id, cuenta);
             return new ResponseEntity<>(cuenta, HttpStatus.OK);

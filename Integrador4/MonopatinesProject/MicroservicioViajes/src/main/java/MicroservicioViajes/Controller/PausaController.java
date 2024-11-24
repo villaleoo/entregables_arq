@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 @RestController
-@RequestMapping("/pausas")
+@RequestMapping("/api/pausas")
 public class PausaController {
     @Autowired
     private PausaService pausaService;
@@ -21,7 +21,7 @@ public class PausaController {
     @GetMapping("")
     public ResponseEntity<Page<PausaDTO>> getAll(@RequestParam(defaultValue = "0") Integer page,
                                                  @RequestParam(defaultValue = "10") Integer size,
-                                                 @RequestParam(defaultValue = "tiempoPausa, asc") String[] sort) {
+                                                 @RequestParam(defaultValue = "tiempoTotalPausa, asc") String[] sort) {
         Sort.Direction direction = Sort.Direction.fromString(sort[1]);
         Sort.Order order = new Sort.Order(direction, sort[0]);
         Pageable pageable = PageRequest.of(page, size, Sort.by(order));

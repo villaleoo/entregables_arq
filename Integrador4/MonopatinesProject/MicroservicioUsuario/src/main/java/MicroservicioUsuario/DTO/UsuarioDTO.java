@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,4 +15,5 @@ public class UsuarioDTO {
     private String apellido;
     private String nroCelular;
     private String email;
+    private Long idCuenta;
 }

@@ -24,13 +24,14 @@ public class UsuarioService {
         u.setApellido(usuario.getApellido());
         u.setNroCelular(usuario.getNroCelular());
         u.setEmail(usuario.getEmail());
+        u.setIdCuenta(usuario.getIdCuenta());
         usuarioRepository.save(u);
     }
 
     public UsuarioDTO getById(Long id) {
         Usuario u = usuarioRepository.findById(id).orElse(null);
         if (u != null)
-            return new UsuarioDTO(u.getNombre(), u.getApellido(), u.getNroCelular(), u.getEmail());
+            return new UsuarioDTO(u.getNombre(), u.getApellido(), u.getNroCelular(), u.getEmail(), u.getIdCuenta());
         throw new EntityNotFoundException("No se encontro usuario  con id: " + id);
     }
 
@@ -39,7 +40,7 @@ public class UsuarioService {
         List<UsuarioDTO> res = new LinkedList<>();
 
         for (Usuario u : usuarios)
-            res.add(new UsuarioDTO(u.getNombre(), u.getApellido(), u.getNroCelular(), u.getEmail()));
+            res.add(new UsuarioDTO(u.getNombre(), u.getApellido(), u.getNroCelular(), u.getEmail(), u.getIdCuenta()));
 
         return new PageImpl<>(res, pageable, usuarios.getTotalElements());
     }
@@ -58,6 +59,7 @@ public class UsuarioService {
         u.setApellido(usuario.getApellido());
         u.setNroCelular(usuario.getNroCelular());
         u.setEmail(usuario.getEmail());
+        u.setIdCuenta(usuario.getIdCuenta());
         usuarioRepository.save(u);
         return u;
     }

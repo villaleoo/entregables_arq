@@ -15,11 +15,13 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class MonopatinDTO {
+    private Long id;
     private String patenteMonopatin;
     private Boolean disponible;
     private Boolean enMantenimiento;
 
     public MonopatinDTO(Monopatin monopatin) {
+        this.id=monopatin.getId();
         this.patenteMonopatin = monopatin.getPatenteMonopatin();
         this.disponible = monopatin.getDisponible();
         this.enMantenimiento = monopatin.getEnMantenimiento();

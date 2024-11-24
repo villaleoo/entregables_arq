@@ -1,17 +1,19 @@
 package MicroservicioViajes.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.LocalDate;
+import java.util.Date;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
+@ToString
 public class CuentaDTO {
-    private LocalDate fechaAlta;
-    private double credito;
-    private  Boolean habilitada;
+    private String email;
+    private Long idCuentaMP;
+    private Boolean habilitada;
+    private Date fechaAlta;
+    private Set<String> roles;
 }

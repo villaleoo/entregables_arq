@@ -1,4 +1,4 @@
-package java.MicroservicioViajes;
+package MicroservicioViajes;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

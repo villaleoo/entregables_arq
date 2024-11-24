@@ -32,4 +32,8 @@ public class Parada {
 
     @Column
     private int y;
+
+    public  void addMonopatin(Monopatin monopatin){
+        monopatines.add(monopatin);
+    }
 }

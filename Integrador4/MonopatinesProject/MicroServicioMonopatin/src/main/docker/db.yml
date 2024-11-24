@@ -1,0 +1,10 @@
+services:
+  db:
+    container_name: monopatines
+    image: mysql:8.3.0
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=monopatines
+    ports:
+      - "127.0.0.1:3305:3306"
+    command: mysqld --lower_case_table_names=1 --character_set_server=utf8mb4 --explicit_defaults_for_timestamp

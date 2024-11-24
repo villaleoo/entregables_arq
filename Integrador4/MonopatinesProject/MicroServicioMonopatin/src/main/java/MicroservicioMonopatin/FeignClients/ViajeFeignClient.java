@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "MicroservicioViajes")
 public interface ViajeFeignClient {
-    @GetMapping("viajes/reporte/KMs")
+    @GetMapping("api/viajes/reporte/KMs")
     Page<ReporteMonopatinKMsDTO> getReporteMonopatinesPorKMs(Pageable pageable);
 
-    @GetMapping("viajes/reporte/pausa")
+    @GetMapping("api/viajes/reporte/pausa")
     Page<ReporteMonopatinPausasDTO> getReporteMonopatinesMantenimiento(Pageable pageable, @RequestParam int pausa);
 
-    @GetMapping("viajes/reporte/viajesPorAnio")
+    @GetMapping("api/viajes/reporte/viajesPorAnio")
     Page<ReporteMonopatinesPorCantViajesDTO> getReporteMonopatinesPorCantViajes(Pageable pageable, @RequestParam int anio, @RequestParam int cantViajes);
 }
