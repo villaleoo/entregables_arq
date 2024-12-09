@@ -16,6 +16,6 @@ public interface AccountRepository extends JpaRepository<Cuenta,Long> {
     @Query("SELECT c FROM Cuenta c WHERE c.username =:username OR c.email=:username")
     Optional<Cuenta> findByUserName(String username);
 
-    @Query("SELECT new org.example.apigateway.DTO.account.AccountDTO(c.role.type,c.username,c.email,c.dischargeDate,c.isAvailable) FROM Cuenta c")
+    @Query("SELECT new org.example.apigateway.DTO.account.AccountDTO(c.id_account,c.role.type,c.username,c.email,c.dischargeDate,c.isAvailable) FROM Cuenta c")
     List<AccountDTO> findAllProtected();
 }

@@ -28,8 +28,11 @@ import org.example.microgestion.repository.FeeRepository;
 import org.example.microgestion.repository.PauseTravelRepository;
 import org.example.microgestion.repository.TravelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -68,12 +71,16 @@ public class TravelService {
         PaymentDTO mp = this.getPayment(account.getId_account());
 
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
-        Optional<Tarifa> resFee =this.feesRepository.findTopByDateBefore(Date.from(zonedDateTime.toInstant()));
+        Pageable pageable = PageRequest.of(0, 1);
+        List<Tarifa> fees = feesRepository.findLatestTarifa(Date.from(zonedDateTime.toInstant()), pageable);
+        Tarifa fee = fees.get(0);
+
+
 
         if(mp.getBalance() <= 0){
             throw new RuntimeException("Debe tener saldo ingresado en su cuenta de mercado pago para hacer un viaje.");
         }
-        if(resFee.isEmpty()){
+        if(fees.size() == 0){
             throw new RuntimeException("No hay tarifa de servicio valida.");
         }
 
@@ -84,9 +91,12 @@ public class TravelService {
         if(!account.isAvailable()){
             throw new RuntimeException("La cuenta ingresada no esta habilitada para su uso.");
         }
+        if(!mono.isAvailable()){
+            throw new RuntimeException("El monopatin ingresado se encuentra en mantenimiento.");
+        }
 
 
-        Tarifa fee = resFee.get();
+
 
         Viaje newTravel=new Viaje(user.getId_user(), account.getId_account(), mono.getId_monopatin(),
                     stopInit.getId_stop(),stopEnd.getId_stop(), Date.from(zonedDateTime.toInstant()),fee.getNormalFee());
@@ -133,20 +143,20 @@ public class TravelService {
         travel.setState(false);
 
         long totalMinutesTravel;
-        double totalPay;
+        double totalPay;    /*incluye lo que se le cobro al inicio*/
         String message;
 
         if(travel.getPauses().isEmpty()){
             totalMinutesTravel= Math.abs(this.getMinutesDifference(travel.getDate_end(),travel.getDate_init()));
             totalPay=totalMinutesTravel*travel.getFeeActive();
-            message="Debito automatico por finalizacion de viaje. Total cobrado $"+totalPay+" tiempo de viaje: "+totalMinutesTravel+"min.";
+            message="Debito automatico por finalizacion de viaje. Total cobrado $"+(totalPay+travel.getFee().getNormalFee())+" tiempo de viaje: "+totalMinutesTravel+"min.";
 
         }else{
             PausasViaje ultimatePause =this.getUltimatePause(travel.getPauses());
 
             totalMinutesTravel=Math.abs(this.getMinutesDifference(Date.from(zonedDateTime.toInstant()),ultimatePause.getDate_end_pause()));
             totalPay=totalMinutesTravel * travel.getFeeActive();
-            message="Debito automatico por finalizacion de viaje. Total cobrado $"+totalPay+" correspondiente a los minutos entre la finalizacion de la ultima pausa y la fecha de fin de viaje ("+totalMinutesTravel+"min.)";
+            message="Debito automatico por finalizacion de viaje. Total cobrado $"+(totalPay+travel.getFee().getNormalFee())+" correspondiente a los minutos entre la finalizacion de la ultima pausa y la fecha de fin de viaje ("+totalMinutesTravel+"min.)";
         }
 
 

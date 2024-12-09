@@ -49,6 +49,9 @@ public class UserService {
 
     public UserDTO saveClient(NewUserDTO entity) throws IOException {
         Long idAccount=this.getAccount(entity.getId_account());
+        /*falta validar que ante un nuevo usuario verificar si ya existe el usuario vinculado a esa cuenta findClientInAcc(emailNuevoUsuario, idCuenta)*/
+        /*si el nuevo usuario no esta vinculado a la cuenta, lo agrego, sino le indico y muesto datos de cuenta//usuario*/
+        /*falta validar que la cuenta que encuentra tiene que ser de tipo CLIENTE*/
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
 
 
@@ -58,7 +61,7 @@ public class UserService {
             user.setId_account(idAccount);
             this.repositoryUser.save(user);
 
-            return new UserDTO(entity.getName(), entity.getSurname(), entity.getPhone(), entity.getEmail(), Date.from(zonedDateTime.toInstant()));
+            return new UserDTO(user.getId_user(),entity.getName(), entity.getSurname(), entity.getPhone(), entity.getEmail(), Date.from(zonedDateTime.toInstant()));
         }
 
         throw new EntityNotFoundException("La cuenta vinculada al nuevo usuario no existe.");
@@ -96,7 +99,7 @@ public class UserService {
         throw new EntityNotFoundException("No se encontro usuario con id: "+id);
     }
 
-    private Long getAccount(Long id) throws IOException {
+    private Long getAccount(Long id) {
         ResponseEntity<?> res = this.authClient.getById(id);
 
         if(res.getStatusCode().is2xxSuccessful() && res.getBody()!=null){

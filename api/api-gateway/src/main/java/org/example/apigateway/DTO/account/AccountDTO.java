@@ -14,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountDTO {
+    private long id_account;
     private String role;
     private String username;
     private String email;

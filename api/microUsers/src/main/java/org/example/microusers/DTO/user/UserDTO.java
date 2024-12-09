@@ -11,6 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
+    private Long id_user;
     private String name;
     private String surname;
     private String phone;

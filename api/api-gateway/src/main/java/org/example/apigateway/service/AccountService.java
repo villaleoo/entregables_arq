@@ -30,6 +30,7 @@ public class AccountService {
     public Cuenta findById(Long id){
         Optional<Cuenta> res =this.repository.findById(id);
         if(res.isPresent()){
+            System.out.println("en cuentassss");
             System.out.println(res.get());
             return res.get();
         }
@@ -64,7 +65,7 @@ public class AccountService {
         if(Objects.equals(c.getRole().getType(), Constants.client)){
             if(this.deletePayment(id)){
                 this.repository.delete(c);
-                return new ResponseAccountDTO(c.getUsername(),c.getEmail());
+                return new ResponseAccountDTO(c.getId_account(),c.getUsername(),c.getEmail());
             }else{
                 throw new RuntimeException("Fallo desvincular el medio de pago de cuenta.");
             }
@@ -72,7 +73,7 @@ public class AccountService {
             this.repository.delete(c);
         }
 
-        return new ResponseAccountDTO(c.getUsername(),c.getEmail());
+        return new ResponseAccountDTO(c.getId_account(),c.getUsername(),c.getEmail());
     }
 
     public ResponseRechargeDTO recharge(Long id, RechargeDTO recharge){

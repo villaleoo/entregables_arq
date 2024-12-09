@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseAccountDTO {
+    private Long id_account;
     private String username;
     private String email;
 }

@@ -68,7 +68,7 @@ public class AuthService {
         this.repository.save(account);
 
 
-        return new ResponseEntity<>(new ResponseAccountDTO(account.getUsername(), account.getEmail()), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseAccountDTO(account.getId_account(), account.getUsername(), account.getEmail()), HttpStatus.CREATED);
 
     }
 
@@ -105,7 +105,7 @@ public class AuthService {
 
         this.paymentClient.addPayment(new NewPaymentDTO(uuid,account.getId_account()));
 
-        return new ResponseEntity<>(new ResponseAccountDTO(account.getUsername(), account.getEmail()), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseAccountDTO(account.getId_account(), account.getUsername(), account.getEmail()), HttpStatus.CREATED);
 
     }
 
